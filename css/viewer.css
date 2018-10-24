@@ -1,0 +1,17 @@
+html,body{
+    margin:0; 
+    padding:0; 
+    color:black;
+    overflow:hidden
+}
+#loadingScreen{
+    position:absolute;
+    left:40%;
+    top:40%;
+    color:green;
+    font-size:1.5em;
+   
+}
+#loadingScreen.done{
+    display:none;
+}
