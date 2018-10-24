@@ -16,37 +16,60 @@
             }
         },
         changeStateTo(newstate){
-            state = newstate;
+            this.dispatch('exit');
+            this.state = newstate;
+            this.dispatch('enter');
         },
         transitions:{
             measuring:{
+                entry:function(){
+
+                },
+                exit:function(){
+                    
+                },
                 toViewing:function(){
-                    console.log(state);
+                    console.log(this.state);
                 },
                 update:function(){
 
                 },
             },
             viewing:{
+                entry:function(){
+                    //add event listener for measuring buttons
+
+                    
+                },
+                exit:function(){
+                    
+                },
                 update:function(){
                     gControls.update();
                     gDirLight.position.set(gCamera.position.x,gCamera.position.y, gCamera.position.z)            
                 },
-                toMeasure:function(){
-                    console.log(state);
+                toMeasure:function(param){
+                    console.log(this.state);
+                    this.changeStateTo('measure');
                     //exit viewing state set measuring state.
 
                 },
                 toText:function(){
-                    console.log(state);
+                    console.log(this.state);
                 },
             },
             reading:{
+                entry:function(){
+
+                },
+                exit:function(){
+                    
+                },
                 update:function(){
                     
                 },
                 toReading:function(){
-                    console.log(state);
+                    console.log(this.state);
                 },
 
             },
@@ -167,5 +190,10 @@
     //instantiation
     setup();
     loadModel("models/iwefaa-centre.gltf")
+    //setup initial viewer state event listeners
+    StateMachine.changeStateTo('viewing');
+    document.getElementById('measure_button').addEventListener('click', function(e){
+        StateMachine.dispatch('toMeasure',e);
+    })
     gameLoop();
     

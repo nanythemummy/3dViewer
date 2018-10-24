@@ -2,7 +2,14 @@ html,body{
     margin:0; 
     padding:0; 
     color:black;
-    overflow:hidden
+    overflow:hidden;
+}
+a#measure_button{
+    color:green;
+    font-size:2em;
+    position:absolute;
+    left:1%;
+    top:10%;
 }
 #loadingScreen{
     position:absolute;
