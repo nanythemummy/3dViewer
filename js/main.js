@@ -4,6 +4,14 @@
     var gRenderer;
     var gControls;
     var gDirLight;
+    var gRayCaster;
+    var gClickArray;
+    var gSceneObjects=[];
+    var gPins=[];
+    var gMousePos=new THREE.Vector2();
+    var gMeasure_clicks=function(array){
+        //display the measurement between two points
+    };
     const StateMachine={
         //figure out what state we are in and what the current action does to it.
         //default state
@@ -18,12 +26,28 @@
         changeStateTo(newstate){
             this.dispatch('exit');
             this.state = newstate;
-            this.dispatch('enter');
+            this.dispatch('entry');
         },
         transitions:{
             measuring:{
                 entry:function(){
+                    document.addEventListener('keyup',function(keyevt)
+                    {
+                        
+                        if (keyevt.code==='Space' && gPins.length <2) 
+                        {
+                            keyevt.preventDefault();
+                            gRayCaster.setFromCamera(gMousePos,gCamera);
+                            var intersects= gRayCaster.intersectObjects(gSceneObjects);
+                            var intersect=intersects.length>0 ? intersects[0]:null;
+                            if (intersect)
+                            {
+                                 getPin(intersect.point,'rgb(255,0,0)');  
+                            }
+                        }
+                       
 
+                    });//end of the keyevent listener function
                 },
                 exit:function(){
                     
@@ -32,7 +56,8 @@
                     console.log(this.state);
                 },
                 update:function(){
-
+                    gControls.update();
+                    gDirLight.position.set(gCamera.position.x,gCamera.position.y, gCamera.position.z) 
                 },
             },
             viewing:{
@@ -50,7 +75,7 @@
                 },
                 toMeasure:function(param){
                     console.log(this.state);
-                    this.changeStateTo('measure');
+                    this.changeStateTo('measuring');
                     //exit viewing state set measuring state.
 
                 },
@@ -106,6 +131,8 @@
         gRenderer.setSize(window.innerWidth,window.innerHeight);
         //required for gltfloader as per the example page https://threejs.org/docs/#examples/loaders/GLTFLoader
         gRenderer.gammaOutput=true;
+        gRayCaster=new THREE.Raycaster();
+        gRayCaster.params.Points.threshold = 0.1;
       //  gRenderer.gammaFactor=2.2;
         //adding the orbit controls, which allow the camera to rotate around the centre of the scene.
         gControls=new THREE.OrbitControls(gCamera,gRenderer.domElement);
@@ -138,6 +165,14 @@
             //on loaded callback
             function(object){
                 gLoadingScreen.hide();
+                object.scene.traverse(function(child)
+                {
+                    if(child instanceof THREE.Mesh)
+                    {
+                        gSceneObjects.push(child);
+                    }
+                });
+                
                 gScene.add(object.scene);
                
 
@@ -186,7 +221,16 @@
         return mesh;
 
     }
+    function getPin(position,color){
+        var pin=new THREE.SphereGeometry(0.1,10,10);
+        var material=new THREE.MeshBasicMaterial({color:color});
+        var mesh=new THREE.Mesh(pin,material);
+        gScene.add(mesh);
+        mesh.position.copy(position);
+        gPins.push(mesh);
 
+        
+    }
     //instantiation
     setup();
     loadModel("models/iwefaa-centre.gltf")
@@ -195,5 +239,12 @@
     document.getElementById('measure_button').addEventListener('click', function(e){
         StateMachine.dispatch('toMeasure',e);
     })
+    document.addEventListener('mousemove',function(evt){
+            evt.preventDefault();
+            gMousePos.x=(evt.clientX / window.innerWidth)*2-1;
+            gMousePos.y=-(evt.clientY/window.innerHeight)*2+1;
+         }, 
+         false
+    );
     gameLoop();
     
