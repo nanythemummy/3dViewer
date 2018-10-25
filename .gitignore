@@ -1,4 +1,4 @@
 .DS_Store
 *.code-workspace
 launch.json
-models/*
+models/
