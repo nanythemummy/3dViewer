@@ -8,9 +8,66 @@
     var gClickArray;
     var gSceneObjects=[];
     var gPins=[];
+    var gLines=[];
     var gMousePos=new THREE.Vector2();
-    var gMeasure_clicks=function(array){
-        //display the measurement between two points
+    var MeasureKeyListener = function(keyevt)
+    {
+        if (keyevt.code==='Escape'){
+            keyevt.preventDefault();
+            StateMachine.changeStateTo('viewing');
+        }
+        if (keyevt.code==='Space' && gPins.length <2) 
+        {
+            keyevt.preventDefault();
+            gRayCaster.setFromCamera(gMousePos,gCamera);
+            var intersects= gRayCaster.intersectObjects(gSceneObjects);
+            var intersect=intersects.length>0 ? intersects[0]:null;
+            if (intersect)
+            {
+                    getPin(intersect.point,'rgb(255,0,0)');  
+            }
+        }
+        if(gPins.length==2){
+            drawDistance(gPins[0].position,gPins[1].position);
+        }
+        
+
+    };//end of the keyevent listener function
+    //get model width, height, as well as the draw distance and projectTo2d code
+    //--borrowed from Mark-jan's viewer at https://mjn.host.cs.st-andrews.ac.uk/egyptian/coffins/viewer3d.js
+    var getModelWidth=function(){
+        var style=window.getComputedStyle(document.getElementById('3dScene'),null);
+        var width=style.getPropertyValue('width').replace('px','');
+        return width;
+    };
+    var getModelHeight=function(){
+        var style=window.getComputedStyle(document.getElementById('3dScene'),null);
+        var height=style.getPropertyValue('height').replace('px','');
+        return height;
+    };
+
+    var projectTo2d = function(point3d, screenwidth,screenheight){
+        var p = new THREE.Vector3().copy(p);
+        p.project(gCamera);
+        return {x: Math.round((p.x+1)/2*screenwidth),
+                y: Math.round(-(p.y-1)/2*screenheight) }
+        
+    };
+    var drawDistance = function(point1,point2){
+        var material = new THREE.LineBasicMaterial({color:0x000ff});
+        var geometry=new THREE.Geometry();
+        var pt1=new THREE.Vector3().copy(point1)
+        var pt2 = new THREE.Vector3().copy(point2)
+        var ptTopt2=pt1.distanceTo(pt2);
+        geometry.vertices.push(pt1);
+        geometry.vertices.push(pt2);
+        var line=new THREE.Line(geometry,material);
+        gLines.push(line);
+        gScene.add(line);
+        var dist=document.getElementById('dist');
+        dist.className= 'set';
+        dist.innerHTML= "<p>"+(Math.round(ptTopt2*100))+"</p>";
+
     };
     const StateMachine={
         //figure out what state we are in and what the current action does to it.
@@ -31,26 +88,21 @@
         transitions:{
             measuring:{
                 entry:function(){
-                    document.addEventListener('keyup',function(keyevt)
-                    {
-                        
-                        if (keyevt.code==='Space' && gPins.length <2) 
-                        {
-                            keyevt.preventDefault();
-                            gRayCaster.setFromCamera(gMousePos,gCamera);
-                            var intersects= gRayCaster.intersectObjects(gSceneObjects);
-                            var intersect=intersects.length>0 ? intersects[0]:null;
-                            if (intersect)
-                            {
-                                 getPin(intersect.point,'rgb(255,0,0)');  
-                            }
-                        }
-                       
-
-                    });//end of the keyevent listener function
+                    document.addEventListener('keyup',MeasureKeyListener)
                 },
                 exit:function(){
-                    
+                    while( gPins.length>0) 
+                    {
+                        var pin = gPins.pop();
+                        gScene.remove(pin);
+                    }
+                    while(gLines.length>0){
+                        var line= gLines.pop();
+                        gScene.remove(line);
+                    }
+                    var dist=document.getElementById('dist');
+                    dist.className= '';
+                    document.removeEventListener('keyup', MeasureKeyListener)
                 },
                 toViewing:function(){
                     console.log(this.state);
@@ -58,6 +110,7 @@
                 update:function(){
                     gControls.update();
                     gDirLight.position.set(gCamera.position.x,gCamera.position.y, gCamera.position.z) 
+                    
                 },
             },
             viewing:{
@@ -222,7 +275,7 @@
 
     }
     function getPin(position,color){
-        var pin=new THREE.SphereGeometry(0.1,10,10);
+        var pin=new THREE.SphereGeometry(0.01,10,10);
         var material=new THREE.MeshBasicMaterial({color:color});
         var mesh=new THREE.Mesh(pin,material);
         gScene.add(mesh);
@@ -246,5 +299,10 @@
          }, 
          false
     );
+    window.addEventListener('resize',function(evt){
+        gCamera.aspect=window.innerWidth/window.innerHeight;
+        gCamera.updateProjectionMatrix();
+        gRenderer.setSize(window.innerWidth,window.innerHeight);
+    },false);
     gameLoop();
     
