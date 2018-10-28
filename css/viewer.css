@@ -22,12 +22,10 @@ a#measure_button{
 #loadingScreen.done{
     display:none;
 }
-#dist{
-    display:none;
-}
-#dist.set {
+
+#dist {
     color:green;
-    font-size:2em;
+    font-size:1em;
     position:absolute;
     left:1%;
     top:1%;

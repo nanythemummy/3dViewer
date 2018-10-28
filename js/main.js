@@ -14,7 +14,7 @@
     {
         if (keyevt.code==='Escape'){
             keyevt.preventDefault();
-            StateMachine.changeStateTo('viewing');
+            clearPins();
         }
         if (keyevt.code==='Space' && gPins.length <2) 
         {
@@ -32,7 +32,22 @@
         }
         
 
-    };//end of the keyevent listener function
+    };
+    //end of the keyevent listener function
+    //removes the 3d pins.
+    var clearPins=function(){
+        while( gPins.length>0) 
+        {
+            var pin = gPins.pop();
+            gScene.remove(pin);
+        }
+        while(gLines.length>0){
+            var line= gLines.pop();
+            gScene.remove(line);
+        }
+        var dist=document.getElementById('dist');
+        dist.innerHTML="Select Points to Measure Distance";
+    };
     //get model width, height, as well as the draw distance and projectTo2d code
     //--borrowed from Mark-jan's viewer at https://mjn.host.cs.st-andrews.ac.uk/egyptian/coffins/viewer3d.js
     var getModelWidth=function(){
@@ -66,7 +81,7 @@
         gScene.add(line);
         var dist=document.getElementById('dist');
         dist.className= 'set';
-        dist.innerHTML= "<p>"+(Math.round(ptTopt2*100))+"</p>";
+        dist.innerHTML= "<p>"+(Math.round(ptTopt2*100))+"cm. </p>";
 
     };
     const StateMachine={
@@ -89,23 +104,15 @@
             measuring:{
                 entry:function(){
                     document.addEventListener('keyup',MeasureKeyListener)
+                    document.getElementById('measure_button').innerHTML="Exit";
                 },
                 exit:function(){
-                    while( gPins.length>0) 
-                    {
-                        var pin = gPins.pop();
-                        gScene.remove(pin);
-                    }
-                    while(gLines.length>0){
-                        var line= gLines.pop();
-                        gScene.remove(line);
-                    }
-                    var dist=document.getElementById('dist');
-                    dist.className= '';
+                    clearPins();
                     document.removeEventListener('keyup', MeasureKeyListener)
                 },
                 toViewing:function(){
                     console.log(this.state);
+                    this.changeStateTo('viewing');
                 },
                 update:function(){
                     gControls.update();
@@ -116,7 +123,7 @@
             viewing:{
                 entry:function(){
                     //add event listener for measuring buttons
-
+                    document.getElementById('measure_button').innerHTML="Measure";
                     
                 },
                 exit:function(){
@@ -290,7 +297,13 @@
     //setup initial viewer state event listeners
     StateMachine.changeStateTo('viewing');
     document.getElementById('measure_button').addEventListener('click', function(e){
-        StateMachine.dispatch('toMeasure',e);
+        if (StateMachine.state==='measuring'){
+            StateMachine.dispatch('toViewing',e);
+        }
+        else if(StateMachine.state==='viewing'){
+            StateMachine.dispatch('toMeasure',e);
+        }
+        
     })
     document.addEventListener('mousemove',function(evt){
             evt.preventDefault();
