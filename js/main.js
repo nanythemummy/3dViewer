@@ -59,7 +59,7 @@ function ModelViewer() {
   // model.
   this.dirLight = new THREE.DirectionalLight(0xffffff, 2);
   this.scene.add(this.dirLight);
-  this.dirLight.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
+  this.dirLight.position.copy(this.camera.position);
 
   this.sceneObjects = [];
 
@@ -70,7 +70,7 @@ function ModelViewer() {
 
 ModelViewer.prototype.update = function update() {
   this.controls.update();
-  this.dirLight.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
+  this.dirLight.position.copy(this.camera.position);
 };
 
 ModelViewer.prototype.render = function render() {
