@@ -31,6 +31,11 @@ LoadingScreen.prototype.hide = function hide() {
   this.domElement.className = 'done';
 };
 
+LoadingScreen.prototype.setError = function setError() {
+  this.domElement.innerHTML = '<p>Error loading model!</p>';
+  this.domElement.className = 'error';
+};
+
 function ModelViewer() {
   this.domElement = document.getElementById('viewer');
   this.loadingScreen = new LoadingScreen();
@@ -99,7 +104,8 @@ ModelViewer.prototype.loadModel = function loadModel(modelname) {
       this.loadingScreen.setProgress(loaded);
     },
     (error) => {
-      console.log(`An Error Happened: ${error}`);
+      console.error('Error loading model: ', error);
+      this.loadingScreen.setError();
     });
 };
 
