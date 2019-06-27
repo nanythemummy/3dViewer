@@ -21,23 +21,23 @@ function getModelHeight() {
 }
 
 function LoadingScreen() {
-  function setProgress(percent) {
-    const loadingscreen = document.getElementById('loading');
-    loadingscreen.innerHTML = `<p> Loading.... ${percent}% </p>`;
-  }
-  function show() {
-    const loadingscreen = document.getElementById('loading');
-    setProgress(0);
-    loadingscreen.className = 'inprogress';
-  }
-  function hide() {
-    const loadingscreen = document.getElementById('loading');
-    loadingscreen.className = 'done';
-  }
-  return { setProgress, show, hide };
+  this.domElement = document.getElementById('loading');
 }
 
-const gLoadingScreen = LoadingScreen();
+LoadingScreen.prototype.setProgress = function setProgress(percent) {
+  this.domElement.innerHTML = `<p> Loading.... ${percent}% </p>`;
+};
+
+LoadingScreen.prototype.show = function show() {
+  this.setProgress(0);
+  this.domElement.className = 'inprogress';
+};
+
+LoadingScreen.prototype.hide = function hide() {
+  this.domElement.className = 'done';
+};
+
+const gLoadingScreen = new LoadingScreen();
 
 function setup() {
   gScene = new THREE.Scene();
