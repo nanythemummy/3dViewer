@@ -135,9 +135,8 @@ ModelViewer.prototype.resize = function resize() {
 const gViewer = new ModelViewer();
 gViewer.loadModel('models/iwefaa-centre.gltf');
 
-function gameLoop() {
+(function gameLoop() {
   requestAnimationFrame(gameLoop);
   gViewer.update();
   gViewer.render();
-}
-gameLoop();
+}());
