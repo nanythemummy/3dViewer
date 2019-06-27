@@ -1,10 +1,4 @@
 /* global THREE */
-let gScene;
-let gCamera;
-let gRenderer;
-let gControls;
-let gDirLight;
-const gSceneObjects = [];
 
 // Get model width, height
 // --borrowed from Mark-jan's viewer at https://mjn.host.cs.st-andrews.ac.uk/egyptian/coffins/viewer3d.js
@@ -37,88 +31,94 @@ LoadingScreen.prototype.hide = function hide() {
   this.domElement.className = 'done';
 };
 
-const gLoadingScreen = new LoadingScreen();
+function ModelViewer() {
+  this.domElement = document.getElementById('viewer');
+  this.loadingScreen = new LoadingScreen();
 
-function setup() {
-  gScene = new THREE.Scene();
-  gCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  this.scene = new THREE.Scene();
+  this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
   // The initial coordinates of the camera are at (0,0,0),
   // but that's where we want the model centered. Move the
   // camera in front of the origin so that we can easily
   // see the model.
-  gCamera.position.set(0, 0, 3);
+  this.camera.position.set(0, 0, 3);
 
-  gRenderer = new THREE.WebGLRenderer();
-  gRenderer.setSize(window.innerWidth, window.innerHeight);
+  this.renderer = new THREE.WebGLRenderer();
+  this.renderer.setSize(window.innerWidth, window.innerHeight);
 
   // required for gltfloader as per the example page:
   // https://threejs.org/docs/#examples/loaders/GLTFLoader
-  gRenderer.gammaOutput = true;
-  //  gRenderer.gammaFactor=2.2;
+  this.renderer.gammaOutput = true;
+  //  this.renderer.gammaFactor = 2.2;
 
-  gControls = new THREE.OrbitControls(gCamera, gRenderer.domElement);
-  gControls.screenSpacePanning = true;
+  this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+  this.controls.screenSpacePanning = true;
 
   // A directional light follows the camera and is always
   // pointed at the origin, so we can always see the
   // model.
-  gDirLight = new THREE.DirectionalLight(0xffffff, 2);
-  gScene.add(gDirLight);
-  gDirLight.position.set(gCamera.position.x, gCamera.position.y, gCamera.position.z);
+  this.dirLight = new THREE.DirectionalLight(0xffffff, 2);
+  this.scene.add(this.dirLight);
+  this.dirLight.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
 
-  document.getElementById('viewer').appendChild(gRenderer.domElement);
+  this.sceneObjects = [];
+
+  this.domElement.appendChild(this.renderer.domElement);
+  window.addEventListener('resize', () => { this.resize(); }, false);
+  this.resize();
 }
 
-function update() {
-  gControls.update();
-  gDirLight.position.set(gCamera.position.x, gCamera.position.y, gCamera.position.z);
-}
+ModelViewer.prototype.update = function update() {
+  this.controls.update();
+  this.dirLight.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
+};
 
-function render() {
-  gRenderer.render(gScene, gCamera);
-}
+ModelViewer.prototype.render = function render() {
+  this.renderer.render(this.scene, this.camera);
+};
 
-function gameLoop() {
-  requestAnimationFrame(gameLoop);
-  update();
-  render();
-}
+ModelViewer.prototype.setModel = function setModel(modelScene) {
+  modelScene.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      this.sceneObjects.push(child);
+    }
+  });
+  this.scene.add(modelScene);
+};
 
-function loadModel(modelname) {
+ModelViewer.prototype.loadModel = function loadModel(modelname) {
   const loader = new THREE.GLTFLoader();
-  gLoadingScreen.show();
+  this.loadingScreen.show();
   loader.load(modelname,
     (object) => {
-      gLoadingScreen.hide();
-      object.scene.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          gSceneObjects.push(child);
-        }
-      });
-      gScene.add(object.scene);
+      this.loadingScreen.hide();
+      this.setModel(object.scene);
     },
     (xhr) => {
       const loaded = Math.round(xhr.loaded / xhr.total * 100);
-      gLoadingScreen.setProgress(loaded);
+      this.loadingScreen.setProgress(loaded);
     },
     (error) => {
       console.log(`An Error Happened: ${error}`);
     });
-}
+};
 
-setup();
-
-loadModel('models/iwefaa-centre.gltf');
-
-function resizeListener() {
+// ModelViewer.resize handles a resize of the browser window. The WebGL display
+// is resized to fill the entire window.
+ModelViewer.prototype.resize = function resize() {
   const newwidth = getModelWidth();
   const newheight = getModelHeight();
-  gCamera.aspect = newwidth / newheight;
-  gCamera.updateProjectionMatrix();
-  gRenderer.setSize(newwidth, newheight);
+  this.camera.aspect = newwidth / newheight;
+  this.camera.updateProjectionMatrix();
+  this.renderer.setSize(newwidth, newheight);
+};
+
+const gViewer = new ModelViewer();
+gViewer.loadModel('models/iwefaa-centre.gltf');
+
+function gameLoop() {
+  requestAnimationFrame(gameLoop);
+  gViewer.update();
+  gViewer.render();
 }
-
-window.addEventListener('resize', resizeListener, false);
-resizeListener(null);
-
 gameLoop();
