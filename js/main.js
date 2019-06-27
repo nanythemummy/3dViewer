@@ -60,7 +60,7 @@ function ModelViewer() {
   // required for gltfloader as per the example page:
   // https://threejs.org/docs/#examples/loaders/GLTFLoader
   this.renderer.gammaOutput = true;
-  //  this.renderer.gammaFactor = 2.2;
+  this.renderer.gammaFactor = 2.2;
 
   this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
   this.controls.screenSpacePanning = true;
