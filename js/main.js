@@ -14,6 +14,8 @@ function getModelHeight() {
   return height;
 }
 
+// LoadingScreen controls the "loading" element on the page, and shows the
+// progress in loading a model file.
 function LoadingScreen() {
   this.domElement = document.getElementById('loading');
 }
@@ -36,6 +38,10 @@ LoadingScreen.prototype.setError = function setError() {
   this.domElement.className = 'error';
 };
 
+// ModelViewer controls the "scene" element on the page, and provides a WebGL
+// view of that model. It constructs a bare-bones scene with just the model, a
+// camera, and a directional light. It supports basic mouse/touch/keyboard
+// orbit/zoom/pan controls.
 function ModelViewer() {
   this.domElement = document.getElementById('viewer');
   this.loadingScreen = new LoadingScreen();
@@ -73,15 +79,20 @@ function ModelViewer() {
   this.resize();
 }
 
+// ModelViewer.update handles any state change induced by our controls.
 ModelViewer.prototype.update = function update() {
   this.controls.update();
   this.dirLight.position.copy(this.camera.position);
 };
 
+// ModelViewer.render draws the scene onto our WebGL display element.
 ModelViewer.prototype.render = function render() {
   this.renderer.render(this.scene, this.camera);
 };
 
+// ModelViewer.setModel adds the given model, expected as a scene object, to
+// the viewer's scene graph. The given scene is added as a child of the
+// viewer's scene.
 ModelViewer.prototype.setModel = function setModel(modelScene) {
   modelScene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
@@ -91,6 +102,8 @@ ModelViewer.prototype.setModel = function setModel(modelScene) {
   this.scene.add(modelScene);
 };
 
+// ModelViewer.loadModel loads a GLTF model file with the given URL, and
+// updates the global model viewer and loading screen accordingly.
 ModelViewer.prototype.loadModel = function loadModel(modelname) {
   const loader = new THREE.GLTFLoader();
   this.loadingScreen.show();
