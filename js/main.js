@@ -9,29 +9,29 @@ const gSceneObjects = [];
 // get model width, height
 // --borrowed from Mark-jan's viewer at https://mjn.host.cs.st-andrews.ac.uk/egyptian/coffins/viewer3d.js
 function getModelWidth() {
-  const style = window.getComputedStyle(document.getElementById('Scene3d'), null);
+  const style = window.getComputedStyle(document.getElementById('viewer'), null);
   const width = style.getPropertyValue('width').replace('px', '');
   return width;
 }
 
 function getModelHeight() {
-  const style = window.getComputedStyle(document.getElementById('Scene3d'), null);
+  const style = window.getComputedStyle(document.getElementById('viewer'), null);
   const height = style.getPropertyValue('height').replace('px', '');
   return height;
 }
 
 function LoadingScreen() {
   function setProgress(percent) {
-    const loadingscreen = document.getElementById('loadingScreen');
+    const loadingscreen = document.getElementById('loading');
     loadingscreen.innerHTML = `<p> Loading.... ${percent}% </p>`;
   }
   function show() {
-    const loadingscreen = document.getElementById('loadingScreen');
+    const loadingscreen = document.getElementById('loading');
     setProgress(0);
     loadingscreen.className = 'inprogress';
   }
   function hide() {
-    const loadingscreen = document.getElementById('loadingScreen');
+    const loadingscreen = document.getElementById('loading');
     loadingscreen.className = 'done';
   }
   return { setProgress, show, hide };
@@ -61,7 +61,7 @@ function setup() {
   gScene.add(gDirLight);
   gDirLight.position.set(gCamera.position.x, gCamera.position.y, gCamera.position.z);
 
-  document.getElementById('Scene3d').appendChild(gRenderer.domElement);
+  document.getElementById('viewer').appendChild(gRenderer.domElement);
 }
 
 function update() {
