@@ -90,10 +90,49 @@ ModelViewer.prototype.render = function render() {
   this.renderer.render(this.scene, this.camera);
 };
 
+// centerModel ensures that the given scene, which is assumed to represent a
+// single model, is centered around the origin.
+function centerModel(scene) {
+  // Compute the bounding box of the scene.
+  // Unfortunately, arbitrary Object3D objects don't
+  // know their bounding box, but anything with geometry
+  // (i.e. a Mesh) can compute one.
+  const bbox = new THREE.Box3();
+  scene.traverse((child) => {
+    if (child.geometry) {
+      child.geometry.computeBoundingBox();
+      bbox.union(child.geometry.boundingBox);
+    }
+  });
+
+  // Figure out where the center of the bounding box is,
+  // and translate everything in the reverse direction,
+  // so that the origin will become the center.
+  const center = new THREE.Vector3();
+  bbox.getCenter(center);
+  const axis = center.clone().negate().normalize();
+  const distance = center.length();
+
+  // NOTE: It so happens that our model has a single node
+  // and mesh, which are transformed to a single Scene
+  // and Group in the three.js scene graph. In theory,
+  // then, it should suffice to translate the group, or
+  // maybe even the scene. I choose instead to translate
+  // the individual objects I measured above, so as to
+  // minimize my assumptions of the structure of the
+  // scene graph.
+  scene.traverse((child) => {
+    if (child.geometry) {
+      child.translateOnAxis(axis, distance);
+    }
+  });
+}
+
 // ModelViewer.setModel adds the given model, expected as a scene object, to
 // the viewer's scene graph. The given scene is added as a child of the
 // viewer's scene.
 ModelViewer.prototype.setModel = function setModel(modelScene) {
+  centerModel(modelScene);
   modelScene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       this.sceneObjects.push(child);
