@@ -6,7 +6,7 @@ let gControls;
 let gDirLight;
 const gSceneObjects = [];
 
-// get model width, height
+// Get model width, height
 // --borrowed from Mark-jan's viewer at https://mjn.host.cs.st-andrews.ac.uk/egyptian/coffins/viewer3d.js
 function getModelWidth() {
   const style = window.getComputedStyle(document.getElementById('viewer'), null);
@@ -40,23 +40,28 @@ function LoadingScreen() {
 const gLoadingScreen = LoadingScreen();
 
 function setup() {
-  // basic setup of scene, renderer, etc.
   gScene = new THREE.Scene();
   gCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-  // so I can see stuff at 0,0 since the camera also initializes at 0,0
+  // The initial coordinates of the camera are at (0,0,0),
+  // but that's where we want the model centered. Move the
+  // camera in front of the origin so that we can easily
+  // see the model.
   gCamera.position.set(0, 0, 3);
 
   gRenderer = new THREE.WebGLRenderer();
   gRenderer.setSize(window.innerWidth, window.innerHeight);
-  // required for gltfloader as per the example page https://threejs.org/docs/#examples/loaders/GLTFLoader
+
+  // required for gltfloader as per the example page:
+  // https://threejs.org/docs/#examples/loaders/GLTFLoader
   gRenderer.gammaOutput = true;
   //  gRenderer.gammaFactor=2.2;
 
-  // adding the orbit controls, which allow the camera to rotate around the centre of the scene.
   gControls = new THREE.OrbitControls(gCamera, gRenderer.domElement);
   gControls.screenSpacePanning = true;
 
-  // adding a directional light which will always shine on the object because it follows the camera.
+  // A directional light follows the camera and is always
+  // pointed at the origin, so we can always see the
+  // model.
   gDirLight = new THREE.DirectionalLight(0xffffff, 2);
   gScene.add(gDirLight);
   gDirLight.position.set(gCamera.position.x, gCamera.position.y, gCamera.position.z);
@@ -83,7 +88,6 @@ function loadModel(modelname) {
   const loader = new THREE.GLTFLoader();
   gLoadingScreen.show();
   loader.load(modelname,
-    // on loaded callback
     (object) => {
       gLoadingScreen.hide();
       object.scene.traverse((child) => {
@@ -93,18 +97,15 @@ function loadModel(modelname) {
       });
       gScene.add(object.scene);
     },
-    // progress percent callback.
     (xhr) => {
       const loaded = Math.round(xhr.loaded / xhr.total * 100);
       gLoadingScreen.setProgress(loaded);
     },
-    // callback for loading errors
     (error) => {
       console.log(`An Error Happened: ${error}`);
     });
 }
 
-// instantiation
 setup();
 
 loadModel('models/iwefaa-centre.gltf');
