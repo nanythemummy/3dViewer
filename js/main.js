@@ -1,19 +1,5 @@
 /* global THREE */
 
-// Get model width, height
-// --borrowed from Mark-jan's viewer at https://mjn.host.cs.st-andrews.ac.uk/egyptian/coffins/viewer3d.js
-function getModelWidth() {
-  const style = window.getComputedStyle(document.getElementById('viewer'), null);
-  const width = style.getPropertyValue('width').replace('px', '');
-  return width;
-}
-
-function getModelHeight() {
-  const style = window.getComputedStyle(document.getElementById('viewer'), null);
-  const height = style.getPropertyValue('height').replace('px', '');
-  return height;
-}
-
 // LoadingScreen controls the "loading" element on the page, and shows the
 // progress in loading a model file.
 function LoadingScreen() {
@@ -44,10 +30,12 @@ LoadingScreen.prototype.setError = function setError() {
 // orbit/zoom/pan controls.
 function ModelViewer() {
   this.domElement = document.getElementById('viewer');
+  const width = this.getWidth();
+  const height = this.getHeight();
   this.loadingScreen = new LoadingScreen();
 
   this.scene = new THREE.Scene();
-  this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
   // The initial coordinates of the camera are at (0,0,0),
   // but that's where we want the model centered. Move the
   // camera in front of the origin so that we can easily
@@ -55,7 +43,7 @@ function ModelViewer() {
   this.camera.position.set(0, 0, 3);
 
   this.renderer = new THREE.WebGLRenderer();
-  this.renderer.setSize(window.innerWidth, window.innerHeight);
+  this.renderer.setSize(width, height);
 
   // required for gltfloader as per the example page:
   // https://threejs.org/docs/#examples/loaders/GLTFLoader
@@ -78,6 +66,20 @@ function ModelViewer() {
   window.addEventListener('resize', () => { this.resize(); }, false);
   this.resize();
 }
+
+// ModelViewer.getWidth returns the current width of the viewer in pixels.
+ModelViewer.prototype.getWidth = function getWidth() {
+  // This returns fractional pixels due to layout calculations, where
+  // clientWidth does not. Not sure if we need the extra precision, but it
+  // preserves existing behavior.
+  return this.domElement.getBoundingClientRect().width;
+};
+
+// ModelViewer.getWidth returns the current height of the viewer in pixels.
+ModelViewer.prototype.getHeight = function getHeight() {
+  // See getWidth about fractional pixels.
+  return this.domElement.getBoundingClientRect().height;
+};
 
 // ModelViewer.update handles any state change induced by our controls.
 ModelViewer.prototype.update = function update() {
@@ -164,8 +166,8 @@ ModelViewer.prototype.loadModel = function loadModel(modelname) {
 // ModelViewer.resize handles a resize of the browser window. The WebGL display
 // is resized to fill the entire window.
 ModelViewer.prototype.resize = function resize() {
-  const newwidth = getModelWidth();
-  const newheight = getModelHeight();
+  const newwidth = this.getWidth();
+  const newheight = this.getHeight();
   this.camera.aspect = newwidth / newheight;
   this.camera.updateProjectionMatrix();
   this.renderer.setSize(newwidth, newheight);
