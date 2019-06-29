@@ -189,6 +189,3 @@ ModelController.prototype.run = function run() {
     self.viewer.render();
   }());
 };
-
-const gController = new ModelController('models/iwefaa-centre.gltf');
-gController.run();
