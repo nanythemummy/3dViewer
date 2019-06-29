@@ -47,7 +47,7 @@
 
   <xsl:template match="model" mode="codegen">
     <script>
-      const gController = new ModelController('<xsl:value-of select="@dest"/>');
+      const gController = new ModelController('<xsl:value-of select="@dest"/>', []);
       gController.run();
     </script>
   </xsl:template>
