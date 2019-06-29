@@ -157,26 +157,35 @@ function ModelController(modelname) {
   this.loadingScreen = new LoadingScreen();
   this.viewer = new ModelViewer();
   this.loadModel(modelname);
+  this.loadModel(modelName).catch((error) => {
+    console.error('Error loading model: ', error);
+  });
 }
 
 // ModelController.loadModel loads a GLTF model file with the given URL, and
-// updates the global model viewer and loading screen accordingly.
+// updates the global model viewer and loading screen accordingly. The loaded
+// scene is added as a child to the viewer's scene graph. loadModel returns
+// a Promise that resolves to the loaded scene, or if the loading results in
+// an error, it rejects the promise with an error.
 ModelController.prototype.loadModel = function loadModel(modelname) {
   const loader = new THREE.GLTFLoader();
   this.loadingScreen.show();
-  loader.load(modelname,
-    (object) => {
-      this.loadingScreen.hide();
-      this.viewer.setModel(object.scene);
-    },
-    (xhr) => {
-      const loaded = Math.round(xhr.loaded / xhr.total * 100);
-      this.loadingScreen.setProgress(loaded);
-    },
-    (error) => {
-      console.error('Error loading model: ', error);
-      this.loadingScreen.setError();
-    });
+  return new Promise((resolve, reject) => {
+    loader.load(modelname,
+      (object) => {
+        this.loadingScreen.hide();
+        this.viewer.setModel(object.scene);
+        resolve(object.scene);
+      },
+      (xhr) => {
+        const loaded = Math.round(xhr.loaded / xhr.total * 100);
+        this.loadingScreen.setProgress(loaded);
+      },
+      (error) => {
+        this.loadingScreen.setError();
+        reject(error);
+      });
+  });
 };
 
 // ModelController.run starts the update/render loop for the model
