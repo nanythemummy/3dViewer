@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="amenirdis.html">
   <name>Amenirdis</name>
-  <model src="${assets}/amenirdis/amenirdis.gltf" dest="models/amenirdis.gltf"/>
+  <model src="${assets}/amenirdis/amenirdis.gltf" dest="models/amenirdis.gltf">
+    <link name="hitbox_text_1" ref="text1"/>
+  </model>
+  <texts>
+    <text id="text1">
+      <!--- TBD -->
+    </text>
+  </texts>
 </page>
