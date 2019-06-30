@@ -234,9 +234,11 @@ ModelLinkSelector.prototype.select = function select(obj) {
 // in the model that have links associated with them, so that their initial
 // state is deselected.
 ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
+  const foundLinks = {};
   modelScene.traverse((child) => {
     for (let i = 0; i < this.modelLinks.length; i += 1) {
       if (this.modelLinks[i].name === child.name) {
+        foundLinks[child.name] = this.modelLinks[i];
         // Clone the material to ensure each hitbox has its own
         // independently-controllable opacity. Otherwise, multiple
         // hitboxes may get highlighted when one gets selected.
@@ -246,6 +248,11 @@ ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
       }
     }
   });
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (!Object.prototype.hasOwnProperty.call(foundLinks, this.modelLinks[i].name)) {
+      console.warn('Broken link: ', this.modelLinks[i]);
+    }
+  }
 };
 
 // ModelController manages a model and its viewer.
