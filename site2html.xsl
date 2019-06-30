@@ -46,13 +46,18 @@
   </xsl:template>
 
   <xsl:template match="model" mode="codegen">
+    <xsl:variable name="model-name">
+      <j:string><xsl:value-of select="@dest"/></j:string>
+    </xsl:variable>
     <xsl:variable name="model-links">
       <j:array>
         <xsl:apply-templates select="link" mode="codegen"/>
       </j:array>
     </xsl:variable>
     <script>
-      const gController = new ModelController('<xsl:value-of select="@dest"/>', <xsl:value-of select="xml-to-json($model-links)"/>);
+      const gModelName = <xsl:value-of select="xml-to-json($model-name)"/>;
+      const gModelLinks = <xsl:value-of select="xml-to-json($model-links)"/>;
+      const gController = new ModelController(gModelName, gModelLinks);
       gController.run();
     </script>
   </xsl:template>
