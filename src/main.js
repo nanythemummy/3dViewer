@@ -1,4 +1,5 @@
 /* global THREE */
+/* eslint no-param-reassign: "off" */
 
 // LoadingScreen controls the "loading" element on the page, and shows the
 // progress in loading a model file.
@@ -152,31 +153,158 @@ ModelViewer.prototype.resize = function resize() {
   this.renderer.setSize(newwidth, newheight);
 };
 
+// ModelViewer.intersectObject returns the object identified by a mouse
+// click, if any.
+ModelViewer.prototype.intersectObject = function intersectObject(mouseDownEvent) {
+  // Convert mouse event coordinates to coordinates from the top-
+  // left corner of our canvas.
+  //
+  // The event's clientX and clientY give us coords relative to the
+  // inner top-left corner of our window, which isn't what we want.
+  // Our element's bounding client rect tells us what the top-left
+  // corner of our element is relative to that.
+  const domRect = this.domElement.getBoundingClientRect();
+  const clientX = mouseDownEvent.clientX - domRect.left;
+  const clientY = mouseDownEvent.clientY - domRect.top;
+  const clientW = domRect.width; // slightly more precise than this.domElement.clientWidth
+  const clientH = domRect.height;
+
+  // Convert the canvas coordinates ((0,0) is top left of canvas,
+  // (w,h) is bottom right) to normalized device coordinates
+  // ((-1,1) is top left, (0,0) is center, (1,-1) is bottom right).
+  const mouse = new THREE.Vector2(
+    (clientX / clientW) * 2 - 1,
+    (-clientY / clientH) * 2 + 1,
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, this.camera);
+  const intersects = raycaster.intersectObject(this.scene, true);
+  if (intersects.length < 1) {
+    return null;
+  }
+  return intersects[0].object;
+};
+
+// fixupModelLink munges an incoming model link to make sure that a valid
+// reference to a GLTF object becomes a valid reference to the corresponding
+// Three.js object. In particular, it attempts to do the same munging of GLTF
+// object names that GLTFLoader does. See:
+// https://github.com/mrdoob/three.js/blob/master/src/animation/PropertyBinding.js#L105-L122
+function fixupModelLink(link) {
+  return {
+    name: THREE.PropertyBinding.sanitizeNodeName(link.name),
+    ref: link.ref,
+  };
+}
+
+// ModelLinkSelector manages regions on the model that link to other resources,
+// and handles their selection and deselection. viewer handles model display
+// and interaction, and modelLinks is an array of link definitions associated
+// with our model.
+function ModelLinkSelector(modelLinks) {
+  this.modelLinks = modelLinks.map(fixupModelLink);
+  this.selection = null; // the currently-selected object
+}
+
+// ModelLinkSelector.clearSelection clears the currently-selected object,
+// removing its highlight in the scene.
+ModelLinkSelector.prototype.clearSelection = function clearSelection() {
+  if (this.selection) {
+    this.selection.material.opacity = 0.0;
+    this.selection = null;
+  }
+};
+
+// ModelLinkSelector.select checks to see if the given object has a link
+// associated with it. If it does, we highlight it (by adjusting its
+// transparency) and select it.
+ModelLinkSelector.prototype.select = function select(obj) {
+  this.clearSelection();
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (this.modelLinks[i].name === obj.name) {
+      this.selection = obj;
+      this.selection.material.opacity = 0.5;
+      break;
+    }
+  }
+};
+
+// ModelLinkSelector.initLinks makes transparent and hides all of the regions
+// in the model that have links associated with them, so that their initial
+// state is deselected.
+ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
+  const foundLinks = {};
+  modelScene.traverse((child) => {
+    for (let i = 0; i < this.modelLinks.length; i += 1) {
+      if (this.modelLinks[i].name === child.name) {
+        foundLinks[child.name] = this.modelLinks[i];
+        // Clone the material to ensure each hitbox has its own
+        // independently-controllable opacity. Otherwise, multiple
+        // hitboxes may get highlighted when one gets selected.
+        child.material = child.material.clone();
+        child.material.transparent = true;
+        child.material.opacity = 0.0;
+      }
+    }
+  });
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (!Object.prototype.hasOwnProperty.call(foundLinks, this.modelLinks[i].name)) {
+      console.warn('Broken link: ', this.modelLinks[i]);
+    }
+  }
+};
+
 // ModelController manages a model and its viewer.
-function ModelController(modelname) {
+function ModelController(modelName, modelLinks) {
   this.loadingScreen = new LoadingScreen();
   this.viewer = new ModelViewer();
-  this.loadModel(modelname);
+  this.selector = new ModelLinkSelector(modelLinks);
+  this.viewer.domElement.addEventListener('mousedown', (e) => { this.onMouseDown(e); }, false);
+  this.loadModel(modelName).then((modelScene) => {
+    this.selector.initLinks(modelScene);
+  }).catch((error) => {
+    console.error('Error loading model: ', error);
+  });
 }
 
 // ModelController.loadModel loads a GLTF model file with the given URL, and
-// updates the global model viewer and loading screen accordingly.
+// updates the global model viewer and loading screen accordingly. The loaded
+// scene is added as a child to the viewer's scene graph. loadModel returns
+// a Promise that resolves to the loaded scene, or if the loading results in
+// an error, it rejects the promise with an error.
 ModelController.prototype.loadModel = function loadModel(modelname) {
   const loader = new THREE.GLTFLoader();
   this.loadingScreen.show();
-  loader.load(modelname,
-    (object) => {
-      this.loadingScreen.hide();
-      this.viewer.setModel(object.scene);
-    },
-    (xhr) => {
-      const loaded = Math.round(xhr.loaded / xhr.total * 100);
-      this.loadingScreen.setProgress(loaded);
-    },
-    (error) => {
-      console.error('Error loading model: ', error);
-      this.loadingScreen.setError();
-    });
+  return new Promise((resolve, reject) => {
+    loader.load(modelname,
+      (object) => {
+        this.loadingScreen.hide();
+        this.viewer.setModel(object.scene);
+        resolve(object.scene);
+      },
+      (xhr) => {
+        const loaded = Math.round(xhr.loaded / xhr.total * 100);
+        this.loadingScreen.setProgress(loaded);
+      },
+      (error) => {
+        this.loadingScreen.setError();
+        reject(error);
+      });
+  });
+};
+
+ModelController.prototype.onMouseDown = function onMouseDown(e) {
+  const obj = this.viewer.intersectObject(e);
+  // FIXME: we only want to clear the selection if we're not
+  // repositioning the camera (i.e. dragging), which means
+  // this ought to be moved to mouseUp and combined with some
+  // more sophisticated mouse logic to detect dragging.
+  if (obj) {
+    this.selector.select(obj);
+  } else {
+    this.selector.clearSelection();
+  }
 };
 
 // ModelController.run starts the update/render loop for the model

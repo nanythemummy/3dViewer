@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:j="http://www.w3.org/2005/xpath-functions">
   <xsl:output method="html" indent="yes" version="5.0"/>
 
   <xsl:template match="site">
@@ -46,9 +46,27 @@
   </xsl:template>
 
   <xsl:template match="model" mode="codegen">
+    <xsl:variable name="model-name">
+      <j:string><xsl:value-of select="@dest"/></j:string>
+    </xsl:variable>
+    <xsl:variable name="model-links">
+      <j:array>
+        <xsl:apply-templates select="link" mode="codegen"/>
+      </j:array>
+    </xsl:variable>
     <script>
-      const gController = new ModelController('<xsl:value-of select="@dest"/>');
+      const gModelName = <xsl:value-of select="xml-to-json($model-name)"/>;
+      const gModelLinks = <xsl:value-of select="xml-to-json($model-links)"/>;
+      const gController = new ModelController(gModelName, gModelLinks);
       gController.run();
     </script>
   </xsl:template>
+
+  <xsl:template match="link" mode="codegen">
+    <j:map>
+      <j:string key="name"><xsl:value-of select="@name"/></j:string>
+      <j:string key="ref"><xsl:value-of select="@ref"/></j:string>
+    </j:map>
+  </xsl:template>
+
 </xsl:stylesheet>
