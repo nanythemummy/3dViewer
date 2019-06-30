@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="iwefaa.html">
+  <name>Iwefaa</name>
+  <model src="${assets}/iwefaa/iwefaa_viewer.gltf" dest="models/iwefaa.gltf"/>
+</page>
