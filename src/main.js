@@ -32,7 +32,6 @@ function ModelViewer() {
   this.domElement = document.getElementById('viewer');
   const width = this.getWidth();
   const height = this.getHeight();
-  this.loadingScreen = new LoadingScreen();
 
   this.scene = new THREE.Scene();
   this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
@@ -143,15 +142,32 @@ ModelViewer.prototype.setModel = function setModel(modelScene) {
   this.scene.add(modelScene);
 };
 
-// ModelViewer.loadModel loads a GLTF model file with the given URL, and
+// ModelViewer.resize handles a resize of the browser window. The WebGL display
+// is resized to fill the entire window.
+ModelViewer.prototype.resize = function resize() {
+  const newwidth = this.getWidth();
+  const newheight = this.getHeight();
+  this.camera.aspect = newwidth / newheight;
+  this.camera.updateProjectionMatrix();
+  this.renderer.setSize(newwidth, newheight);
+};
+
+// ModelController manages a model and its viewer.
+function ModelController(modelname) {
+  this.loadingScreen = new LoadingScreen();
+  this.viewer = new ModelViewer();
+  this.loadModel(modelname);
+}
+
+// ModelController.loadModel loads a GLTF model file with the given URL, and
 // updates the global model viewer and loading screen accordingly.
-ModelViewer.prototype.loadModel = function loadModel(modelname) {
+ModelController.prototype.loadModel = function loadModel(modelname) {
   const loader = new THREE.GLTFLoader();
   this.loadingScreen.show();
   loader.load(modelname,
     (object) => {
       this.loadingScreen.hide();
-      this.setModel(object.scene);
+      this.viewer.setModel(object.scene);
     },
     (xhr) => {
       const loaded = Math.round(xhr.loaded / xhr.total * 100);
@@ -163,21 +179,13 @@ ModelViewer.prototype.loadModel = function loadModel(modelname) {
     });
 };
 
-// ModelViewer.resize handles a resize of the browser window. The WebGL display
-// is resized to fill the entire window.
-ModelViewer.prototype.resize = function resize() {
-  const newwidth = this.getWidth();
-  const newheight = this.getHeight();
-  this.camera.aspect = newwidth / newheight;
-  this.camera.updateProjectionMatrix();
-  this.renderer.setSize(newwidth, newheight);
+// ModelController.run starts the update/render loop for the model
+// and viewer.
+ModelController.prototype.run = function run() {
+  const self = this;
+  (function gameLoop() {
+    requestAnimationFrame(gameLoop);
+    self.viewer.update();
+    self.viewer.render();
+  }());
 };
-
-const gViewer = new ModelViewer();
-gViewer.loadModel('models/iwefaa-centre.gltf');
-
-(function gameLoop() {
-  requestAnimationFrame(gameLoop);
-  gViewer.update();
-  gViewer.render();
-}());
