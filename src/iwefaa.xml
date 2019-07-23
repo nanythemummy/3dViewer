@@ -1,5 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="iwefaa.html">
   <name>Iwefaa</name>
-  <model src="${assets}/iwefaa/iwefaa_viewer.gltf" dest="models/iwefaa.gltf"/>
+  <model src="${assets}/iwefaa/iwefaa_viewer.gltf" dest="models/iwefaa.gltf">
+    <link name="group_hitbox_text_1_hitbox_text_1_1" ref="text1col1"/>
+    <link name="hitbox_text_1_2_group_hitbox_text_1" ref="text1col2"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_3" ref="text1col3"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_4" ref="text1col4"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_5" ref="text1col5"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_6" ref="text1col6"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_7" ref="text1col7"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_8" ref="text1col8"/>
+    <link name="group_hitbox_text_1_hitbox_text_1_9" ref="text1col9"/>
+    <link name="hitbox_text_2_1_group_hitbox_text_2" ref="text2col1"/>
+    <link name="group_hitbox_text_2_hitbox_text_2_2" ref="text2col2"/>
+    <link name="group_hitbox_text_2_hitbox_text_2_3" ref="text2col3"/>
+    <link name="group_hitbox_text_2_hitbox_text_2_4" ref="text2col4"/>
+    <link name="group_hitbox_text_2_hitbox_text_2_5" ref="text2col5"/>
+    <link name="group_hitbox_text_2_hitbox_text_2_6" ref="text2col6"/>
+    <link name="hitbox_text_3" ref="text3"/>
+    <link name="hitbox_text_4" ref="text4"/>
+    <link name="hitbox_text_5" ref="text5"/>
+    <link name="hitbox_text_6" ref="text6"/>
+    <link name="hitbox_text_7" ref="text7"/>
+    <link name="hitbox_text_8" ref="text8"/>
+    <link name="hitbox_text_9_1_group_hitbox_text_9" ref="text9col1"/>
+    <link name="group_hitbox_text_9_hitbox_text_9_2" ref="text9col2"/>
+    <link name="group_hitbox_text_9_hitbox_text_9_3" ref="text9col3"/>
+    <link name="hitbox_text_10_1_group_hitbox_text_10" ref="text10col1"/>
+    <link name="group_hitbox_text_10_hitbox_text_10_2" ref="text10col2"/>
+    <link name="hitbox_text_11" ref="text11"/>
+    <link name="group_hitbox_text_12_hitbox_text_12_1" ref="text12col1"/>
+    <link name="hitbox_text_12_2_group_hitbox_text_12" ref="text12col2"/>
+    <link name="hitbox_text_13" ref="text13"/>
+    <link name="hitbox_text_14" ref="text14"/>
+    <link name="hitbox_text_15" ref="text15"/>
+    <link name="hitbox_text_16" ref="text16"/>
+    <link name="hitbox_text_17_1_group_hitbox_text_17" ref="text17col1"/>
+    <link name="group_hitbox_text_17_hitbox_text_17_2" ref="text17col2"/>
+    <link name="hitbox_text_18" ref="text18"/>
+    <link name="hitbox_text_19" ref="text19"/>
+    <link name="hitbox_text_20" ref="text20"/>
+    <link name="hitbox_text_21" ref="text21"/>
+    <link name="hitbox_text_22" ref="text22"/>
+  </model>
+  <texts>
+    <text id="text1">
+      <frag id="text1col1"/>
+      <frag id="text1col2"/>
+      <frag id="text1col3"/>
+      <frag id="text1col4"/>
+      <frag id="text1col5"/>
+      <frag id="text1col6"/>
+      <frag id="text1col7"/>
+      <frag id="text1col8"/>
+      <frag id="text1col9"/>
+    </text>
+    <text id="text2">
+      <frag id="text2col1"/>
+      <frag id="text2col2"/>
+      <frag id="text2col3"/>
+      <frag id="text2col4"/>
+      <frag id="text2col5"/>
+      <frag id="text2col6"/>
+    </text>
+    <text id="text3"/>
+    <text id="text4"/>
+    <text id="text5"/>
+    <text id="text6"/>
+    <text id="text7"/>
+    <text id="text8"/>
+    <text id="text9">
+      <frag id="text9col1"/>
+      <frag id="text9col2"/>
+      <frag id="text9col3"/>
+    </text>
+    <text id="text10">
+      <frag id="text10col1"/>
+      <frag id="text10col2"/>
+    </text>
+    <text id="text11"/>
+    <text id="text12">
+      <frag id="text12col1"/>
+      <frag id="text12col2"/>
+    </text>
+    <text id="text13"/>
+    <text id="text14"/>
+    <text id="text15"/>
+    <text id="text16"/>
+    <text id="text17">
+      <frag id="text17col1"/>
+      <frag id="text17col2"/>
+    </text>
+    <text id="text18"/>
+    <text id="text19"/>
+    <text id="text20"/>
+    <text id="text21"/>
+    <text id="text22"/>
+  </texts>
 </page>
