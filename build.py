@@ -129,7 +129,7 @@ def validateSite(config):
     Assumes site.xml has been preprocessed.
     """
     print('Validating site XML...')
-    schemafname = os.path.join('src', 'schema', 'site.xsd')
+    schemafname = os.path.join(config.schemadir, 'site.xsd')
     xmlSchemaValidate(config, schema=schemafname, target=config.fullsitexml)
 
 
@@ -188,6 +188,7 @@ def getConfig(args):
     # Some extra configuration defined here for convenience
     config.fullsitexml = os.path.join(config.builddir, 'site.included.xml')
     config.stylesheetdir = os.path.join('tools', 'xslt')
+    config.schemadir = os.path.join('tools', 'schema')
 
     return config
 
