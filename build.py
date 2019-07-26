@@ -9,6 +9,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from xml.etree import ElementInclude
 
@@ -50,6 +51,15 @@ def xslTransform(config, stylesheet, src, dest):
     version of XSLT. We splice in XIncludes if they are present.
     """
     subprocess.run([config.saxonpath, '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest, '-xi'], check=True)
+
+
+def xmlSchemaValidate(config, schema, target):
+    """Use XML Schema to validate an XML file.
+
+    We use XML Starlet for this, as Saxon only includes schema validation with
+    the paid version of their tool.
+    """
+    subprocess.run([config.xmlstarletpath, 'val', '-q', '-e', '-s', schema, target], check=True)
 
 
 def copyModel(config, model):
@@ -114,6 +124,39 @@ def buildSite(config):
     xslTransform(config, stylesheet=os.path.join('tools', 'xslt', 'site2html.xsl'), src=indexsrc, dest=indexdest)
 
 
+def validateSite(config):
+    """Validate that the site XML matches our custom schema."""
+    fd, tempfname = tempfile.mkstemp(prefix='site.', suffix='.xml')
+    os.close(fd)
+    print('Validating site XML...')
+    # Transforming with identity.xsl has the effect of simply pulling in
+    # XIncludes and nothing else.
+    xslTransform(config, stylesheet=os.path.join('tools', 'xslt', 'identity.xsl'), src=config.sitexml, dest=tempfname)
+    schemafname = os.path.join('src', 'schema', 'site.xsd')
+    xmlSchemaValidate(config, schema=schemafname, target=tempfname)
+    os.unlink(tempfname)
+
+
+class NoSuchTool(Exception):
+    """We were unable to locate a tool required by our build."""
+    pass
+
+
+def resolveToolLocation(config, locationkey, toolname):
+    """Locate a configurable tool that our build needs.
+
+    locationkey is the name of the config attribute with the tool we want.
+    toolname is the name of the tool, which we will use to attempt to
+    locate the tool ourselves if the location was not explicitly configured.
+    """
+    toolpath = getattr(config, locationkey)
+    if not toolpath or not os.path.exists(toolpath):
+        toolpath = shutil.which(toolname)
+        if not toolpath:
+            raise NoSuchTool()
+        setattr(config, locationkey, toolpath)
+
+
 def getConfig(args):
     """Get the configuration for our tool.
 
@@ -124,16 +167,22 @@ def getConfig(args):
     parser.add_argument('--distdir', help='where build output is written', default='dist')
     parser.add_argument('--sitexml', help='location of site XML definition', default='src/site.xml')
     parser.add_argument('--saxonpath', help='location of Saxon XSLT processor')
+    parser.add_argument('---xmlstarletpath', help='location of XML Starlet, used for XML Include/Schema processing')
+    parser.add_argument('--no-val', dest='validate', action='store_false', help='Skip XML validation step', default=True)
     config = parser.parse_args(args[1:])
     if config.distdir == '/':
         # We're going to blow away the output directory before writing to it,
         # so we ought to be at least a little careful here!
         parser.error('Cannot set dist directory to root!')
-    if not config.saxonpath or not os.path.exists(config.saxonpath):
-        # Fall back to searching on $PATH for the Saxon processor.
-        config.saxonpath = shutil.which('saxon')
-        if not config.saxonpath:
-            raise RuntimeError('Saxon not found. Install Saxon with Homebrew or specify the location of the executable using --saxonpath.')
+    try:
+        resolveToolLocation(config, 'saxonpath', 'saxon')
+    except NoSuchTool:
+        parser.error('Saxon not found. Install Saxon with Homebrew or specify the location of the executable using --saxonpath.')
+    try:
+        resolveToolLocation(config, 'xmlstarletpath', 'xmlstarlet')
+    except NoSuchTool:
+        parser.error('XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.')
+
     return config
 
 
@@ -158,6 +207,8 @@ def prepareDistDir(config):
 def main(args):
     os.chdir(os.path.dirname(args[0]))
     config = getConfig(args)
+    if config.validate:
+      validateSite(config)
     prepareDistDir(config)
     buildSite(config)
 
