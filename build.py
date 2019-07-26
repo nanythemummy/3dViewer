@@ -111,7 +111,7 @@ def buildSite(config):
     print('Building site HTML...')
     indexsrc = site.attrib['src']
     indexdest = os.path.join(config.distdir, 'index.html')
-    xslTransform(config, stylesheet='site2html.xsl', src=indexsrc, dest=indexdest)
+    xslTransform(config, stylesheet=os.path.join('tools', 'xslt', 'site2html.xsl'), src=indexsrc, dest=indexdest)
 
 
 def getConfig(args):
