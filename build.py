@@ -20,27 +20,14 @@ def expandPath(config, path):
     return os.path.abspath(path)
 
 
-def pageIncludeLoader(href, parse, encoding=None):
-    """Load a document included by XInclude.
-
-    We augment the default functionality by resolving all hrefs relative to the
-    src directory. This is what Saxon does when processing those files, and it's
-    what we expect. Doing it this way means we can leave our working directory
-    untouched, so that other parts of our build script can work relative to the
-    project root.
-    """
-    return ElementInclude.default_loader(os.path.join('src', href), parse, encoding)
-
-
 def loadSite(config):
-    """Load the site's XML definition."""
+    """Load the site's XML definition.
+
+    Assumes the site XML has been preprocessed.
+    """
     print('Loading site: {}'.format(config.sitexml))
-    site = ET.parse(config.sitexml).getroot()
-    # The site includes our pages. Use ElementInclude to splice them
-    # into our element tree. Note the use of a custom XML loader,
-    # explained above.
-    ElementInclude.include(site, loader=pageIncludeLoader)
-    site.attrib['src'] = config.sitexml
+    site = ET.parse(config.fullsitexml).getroot()
+    site.attrib['src'] = config.fullsitexml
     return site
 
 
@@ -70,11 +57,10 @@ def copyElementAsset(config, elem):
     shutil.copy(src, dest)
 
 
-def copyAssets(config, site):
-    """Copy all assets to the output directory.
+def copyAssets(config):
+    """Copy all assets to the output directory."""
+    site = loadSite(config)
 
-    The site is assumed to be a loaded site element.
-    """
     # Most of our assets can just be copied over wholesale from
     # the static directory.
     print('Copying static assets')
@@ -112,31 +98,28 @@ def copyAssets(config, site):
 def buildSite(config):
     """Build the entire site.
 
+    Assumes the site XML has been preprocessed.
     Assets are copied to the ouptut directory wholesale.
-    HTML is generated from a site.xml and one or more page XML files
-    pulled in by site.xml. We use XSLT as defined by site2html.xsl and
-    page2html.xsl to do the transformation.
+    Finally, HTML is generated from the site XML.
+    We use XSLT as defined by site2html.xsl to do the transformation.
     """
-    site = loadSite(config)
-    copyAssets(config, site)
+    copyAssets(config)
 
     print('Building site HTML...')
     indexsrc = site.attrib['src']
     indexdest = os.path.join(config.distdir, 'index.html')
-    xslTransform(config, stylesheet=os.path.join('tools', 'xslt', 'site2html.xsl'), src=indexsrc, dest=indexdest)
+    xslpath = os.path.join(config.stylesheetdir, 'site2html.xsl')
+    xslTransform(config, stylesheet=xslpath, src=indexsrc, dest=indexdest)
 
 
 def validateSite(config):
-    """Validate that the site XML matches our custom schema."""
-    fd, tempfname = tempfile.mkstemp(prefix='site.', suffix='.xml')
-    os.close(fd)
+    """Validate that our site XML matches our custom schema.
+
+    Assumes site.xml has been preprocessed.
+    """
     print('Validating site XML...')
-    # Transforming with identity.xsl has the effect of simply pulling in
-    # XIncludes and nothing else.
-    xslTransform(config, stylesheet=os.path.join('tools', 'xslt', 'identity.xsl'), src=config.sitexml, dest=tempfname)
     schemafname = os.path.join('src', 'schema', 'site.xsd')
-    xmlSchemaValidate(config, schema=schemafname, target=tempfname)
-    os.unlink(tempfname)
+    xmlSchemaValidate(config, schema=schemafname, target=config.fullsitexml)
 
 
 class NoSuchTool(Exception):
@@ -166,16 +149,22 @@ def getConfig(args):
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--assetsdir', help='where model assets are stored', default='../assets')
-    parser.add_argument('--distdir', help='where build output is written', default='dist')
+    parser.add_argument('--distdir', help='where final build output is written', default='dist')
+    parser.add_argument('--builddir', help='where intermediate build output is written', default='build')
     parser.add_argument('--sitexml', help='location of site XML definition', default='src/site.xml')
     parser.add_argument('--saxonpath', help='location of Saxon XSLT processor')
     parser.add_argument('---xmlstarletpath', help='location of XML Starlet, used for XML Include/Schema processing')
     parser.add_argument('--no-val', dest='validate', action='store_false', help='Skip XML validation step', default=True)
     config = parser.parse_args(args[1:])
+
+    # We're going to blow away the dist and build directories before writing to
+    # them, so we ought to be at least a little careful here!
     if config.distdir == '/':
-        # We're going to blow away the output directory before writing to it,
-        # so we ought to be at least a little careful here!
         parser.error('Cannot set dist directory to root!')
+    if config.builddir == '/':
+        parser.error('Cannot set build directory to root!')
+
+    # Fill in defaults for tool locations if necessary.
     try:
         resolveToolLocation(config, 'saxonpath', 'saxon')
     except NoSuchTool:
@@ -185,7 +174,39 @@ def getConfig(args):
     except NoSuchTool:
         parser.error('XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.')
 
+    # Some extra configuration defined here for convenience
+    config.fullsitexml = os.path.join(config.builddir, 'site.included.xml')
+    config.stylesheetdir = os.path.join('tools', 'xslt')
+
     return config
+
+
+def preprocessSite(config):
+    """Process XIncludes in site.xml, writing the results to dest.
+
+    This is so that future steps have a fully-expanded site.xml to
+    work with, and don't have to worry about pulling in the page XML.
+    """
+    print('Preprocessing: {} -> {}'.format(config.sitexml, config.fullsitexml))
+    # Transforming with identity.xsl has the effect of simply pulling in
+    # XIncludes and nothing else.
+    xslpath = os.path.join(config.stylesheetdir, 'identity.xsl')
+    xslTransform(config, stylesheet=xslpath, src=config.sitexml, dest=config.fullsitexml)
+
+
+def cleanDirectory(dirpath):
+    """Clean out the contents of a directory.
+
+    Note that we intentionally don't just use shutil.rmtree on dirpath and
+    recreate it -- development servers like Python's SimpleHTTPServer will not
+    switch to the new directory. Instead, this function just clears out its
+    contents.
+    """
+    for root, dirs, files in os.walk(dirpath):
+        for f in files:
+            os.unlink(os.path.join(root, f))
+        for d in dirs:
+            shutil.rmtree(os.path.join(root, d))
 
 
 def prepareDistDir(config):
@@ -196,21 +217,27 @@ def prepareDistDir(config):
         return
 
     print('Cleaning dist directory: {}'.format(config.distdir))
-    # Don't just use shutil.rmtree on config.distdir and recreate it --
-    # development servers like Python's SimpleHTTPServer will not switch to the
-    # new directory. Instead, just clear out its contents.
-    for root, dirs, files in os.walk(config.distdir):
-        for f in files:
-            os.unlink(os.path.join(root, f))
-        for d in dirs:
-            shutil.rmtree(os.path.join(root, d))
+    cleanDirectory(config.distdir)
+
+
+def prepareBuildDir(config):
+    """Clean the intermediate build directory, or create it if it doesn't exist."""
+    if not os.path.exists(config.builddir):
+        print('Creating build directory: {}'.format(config.builddir))
+        os.makedirs(config.builddir)
+        return
+
+    print('Cleaning build directory: {}'.format(config.builddir))
+    cleanDirectory(config.builddir)
 
 
 def main(args):
     os.chdir(os.path.dirname(args[0]))
     config = getConfig(args)
+    prepareBuildDir(config)
+    preprocessSite(config)
     if config.validate:
-      validateSite(config)
+        validateSite(config)
     prepareDistDir(config)
     buildSite(config)
 
