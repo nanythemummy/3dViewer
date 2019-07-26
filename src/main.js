@@ -205,6 +205,7 @@ function fixupModelLink(link) {
 function ModelLinkSelector(modelLinks) {
   this.modelLinks = modelLinks.map(fixupModelLink);
   this.selection = null; // the currently-selected object
+  this.selectedDiv = null; // the currently-selected annotation
 }
 
 // ModelLinkSelector.clearSelection clears the currently-selected object,
@@ -213,6 +214,10 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
   if (this.selection) {
     this.selection.material.opacity = 0.0;
     this.selection = null;
+  }
+  if (this.selectedDiv) {
+    this.selectedDiv.classList.remove('selected');
+    this.selectedDiv = null;
   }
 };
 
@@ -225,6 +230,11 @@ ModelLinkSelector.prototype.select = function select(obj) {
     if (this.modelLinks[i].name === obj.name) {
       this.selection = obj;
       this.selection.material.opacity = 0.5;
+      this.selectedDiv = document.getElementById(this.modelLinks[i].ref);
+      if (this.selectedDiv) {
+        this.selectedDiv.classList.add('selected');
+        this.selectedDiv.scrollIntoView();
+      }
       break;
     }
   }

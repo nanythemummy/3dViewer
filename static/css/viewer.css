@@ -58,10 +58,23 @@ body {
   position: relative;
 }
 
+div.text, div.frag {
+  margin: 0px 3px;
+  padding: 5px;
+}
+
+div.text.selected, div.frag.selected {
+  border: 2px solid #F2D65D;
+  border-radius: 3px;
+  padding: 3px; /* subtract border from padding */
+}
+
 /* hieroglyphic image (generally drawn in black) */
 img.hi {
   background-color: #D9CEB2;
   padding: 0.5em 1em;
+  max-width: 100%;
+  height: auto;
 }
 
 /* transliteration */
