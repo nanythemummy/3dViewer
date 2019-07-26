@@ -36,6 +36,9 @@
           <div id="loading"></div>
           <div id="viewer"></div>
         </div>
+        <div id="right">
+          <xsl:apply-templates select="texts"/>
+        </div>
         <script src="js/three.min.js"/>
         <script src="js/loaders/GLTFLoader.js"/>
         <script src="js/controls/OrbitControls.js"/>
@@ -69,4 +72,39 @@
     </j:map>
   </xsl:template>
 
+  <xsl:template match="texts">
+    <h2>Texts</h2>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="text">
+    <div class="text" id="{@id}">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="frag">
+    <div class="text-fragment" id="{@id}">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="himg">
+    <img class="hi" src="{@dest}"/>
+  </xsl:template>
+
+  <xsl:template match="al">
+    <p class="al">
+      <xsl:copy-of select="node()"/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="tr">
+    <p class="tr" xml:lang="{@xml:lang}">
+      <xsl:copy-of select="node()"/>
+    </p>
+  </xsl:template>
+
+  <!-- Not currently used in HTML generation -->
+  <xsl:template match="hi"/>
 </xsl:stylesheet>

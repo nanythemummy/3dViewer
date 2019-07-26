@@ -62,26 +62,22 @@ def xmlSchemaValidate(config, schema, target):
     subprocess.run([config.xmlstarletpath, 'val', '-q', '-e', '-s', schema, target], check=True)
 
 
-def copyModel(config, model):
-    """Copy the given model asset to the output directory.
-
-    The model is assumed to be an element with attributes that indicate the
-    source and destination.
-    """
-    modelsrc = expandPath(config, model.attrib['src'])
-    modeldest = os.path.join(config.distdir, model.attrib['dest'])
-    print('Copying {} to {}'.format(modelsrc, modeldest))
-    shutil.copy(modelsrc, modeldest)
+def copyElementAsset(config, elem):
+    """Copy a asset, represented by an XML element, to the output directory."""
+    src = expandPath(config, elem.attrib['src'])
+    dest = os.path.join(config.distdir, elem.attrib['dest'])
+    print('Copying {} to {}'.format(src, dest))
+    shutil.copy(src, dest)
 
 
 def copyAssets(config, site):
-    """Copy all static assets to the output directory.
+    """Copy all assets to the output directory.
 
     The site is assumed to be a loaded site element.
     """
-    print('Copying static assets')
     # Most of our assets can just be copied over wholesale from
     # the static directory.
+    print('Copying static assets')
     staticdir = 'static'
     for item in os.listdir(staticdir):
         src = os.path.join(staticdir, item)
@@ -104,7 +100,13 @@ def copyAssets(config, site):
     modelsdestdir = os.path.join(config.distdir, 'models')
     os.makedirs(modelsdestdir)
     for model in site.findall('.//model'):
-        copyModel(config, model)
+        copyElementAsset(config, model)
+
+    print('Copying hieroglyphics')
+    imgdestdir = os.path.join(config.distdir, 'img')
+    os.makedirs(imgdestdir)
+    for himg in site.findall('.//himg'):
+        copyElementAsset(config, himg)
 
 
 def buildSite(config):

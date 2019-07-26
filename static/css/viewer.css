@@ -14,7 +14,7 @@ body {
 
 #left {
   float: left;
-  width: 100%;
+  width: 50%;
   height: 100%;
   background-color: black;
   overflow: hidden;
@@ -41,4 +41,18 @@ body {
 
 #loading.done {
   display: none;
+}
+
+#right {
+  float: left;
+  width: 50%;
+  height: 100%;
+  background-color: black;
+  color: #FFFFDB;
+  position: relative;
+}
+
+img.hi {
+  background-color: #D9CEB2;
+  padding: 0.5em 1em;
 }
