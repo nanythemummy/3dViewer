@@ -1,3 +1,9 @@
+/* font for displaying transliteration */
+@font-face {
+  font-family: GentiumPlusW;
+  src: url(/fonts/GentiumPlus-R.woff);
+}
+
 html {
   height: 100%;
 }
@@ -52,7 +58,21 @@ body {
   position: relative;
 }
 
+/* hieroglyphic image (generally drawn in black) */
 img.hi {
   background-color: #D9CEB2;
   padding: 0.5em 1em;
+}
+
+/* transliteration */
+.al {
+  font-family: GentiumPlusW;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* translation */
+.tr {
+  font-weight: normal;
+  font-style: italic;
 }

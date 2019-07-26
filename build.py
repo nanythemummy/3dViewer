@@ -11,7 +11,8 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
-from xml.etree import ElementInclude
+
+import convertTransliteration as tlit
 
 
 def expandPath(config, path):
@@ -95,21 +96,31 @@ def copyAssets(config):
         copyElementAsset(config, himg)
 
 
+def convertTransliteration(config, src, dest):
+    """Convert transliterations from MdC to Unicode."""
+    with open(dest, 'w') as outfile:
+        with open(src) as infile:
+            tlit.transform(infile, outfile)
+
+
 def buildSite(config):
     """Build the entire site.
 
     Assumes the site XML has been preprocessed.
     Assets are copied to the ouptut directory wholesale.
+    Transliterations are converted to Unicode.
     Finally, HTML is generated from the site XML.
     We use XSLT as defined by site2html.xsl to do the transformation.
     """
     copyAssets(config)
 
+    tlitfname = os.path.join(config.builddir, 'site.tlit.xml')
+    convertTransliteration(config, src=config.fullsitexml, dest=tlitfname)
+
     print('Building site HTML...')
-    indexsrc = site.attrib['src']
     indexdest = os.path.join(config.distdir, 'index.html')
     xslpath = os.path.join(config.stylesheetdir, 'site2html.xsl')
-    xslTransform(config, stylesheet=xslpath, src=indexsrc, dest=indexdest)
+    xslTransform(config, stylesheet=xslpath, src=tlitfname, dest=indexdest)
 
 
 def validateSite(config):

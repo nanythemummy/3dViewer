@@ -93,7 +93,7 @@
     <img class="hi" src="{@dest}"/>
   </xsl:template>
 
-  <xsl:template match="al">
+  <xsl:template match="al[@encoding='unicode']">
     <p class="al">
       <xsl:copy-of select="node()"/>
     </p>
@@ -107,4 +107,5 @@
 
   <!-- Not currently used in HTML generation -->
   <xsl:template match="hi"/>
+  <xsl:template match="al[@encoding='mdc']"/>
 </xsl:stylesheet>
