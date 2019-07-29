@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+  <xs:element name="page">
+    <xs:annotation>
+      <xs:documentation>
+        Describes the content for a model page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name="name" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              The name of this model. This will be displayed prominently on the
+              page, and used in the page title as well.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element ref="model"/>
+        <xs:element ref="texts" minOccurs="0" maxOccurs="1"/>
+
+      </xs:sequence>
+
+      <xs:attribute name="dest" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Where the HTML for this page should be written. Specify a path
+            relative to the build output directory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute ref="xml:base">
+        <xs:annotation>
+          <xs:documentation>
+            This attribute may be added during XInclude processing.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="model">
+    <xs:annotation>
+      <xs:documentation>
+        Describes a model we want to display.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element ref="link" minOccurs="0" maxOccurs="unbounded"/>
+
+      </xs:sequence>
+
+      <xs:attribute name="src" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Where the 3D model source can be installed from. Specify a path
+            relative to the project root, or use ${assets}/... to specify a
+            path within the assets repo.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="dest" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Where the 3D model should be installed. Specify a path relative
+            to the build output directory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="link">
+    <xs:annotation>
+      <xs:documentation>
+        Identifies a link on the model. Each link is a selectable hitbox
+        (object) on the model that refers to a description of the text and its
+        annotations elsewhere on the page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The name of the hitbox object in the model. (Note that Three.js
+            mangles names upon loading a GLTF file, per its own naming
+            restrictions, but you may specify either the mangled or unmangled
+            name here.)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="ref" type="xs:IDREF">
+        <xs:annotation>
+          <xs:documentation>
+            The text or fragment that this link refers to. May refer to the ID
+            of a text or frag element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="texts">
+    <xs:annotation>
+      <xs:documentation>
+        Describes texts associated with the model.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element ref="text" maxOccurs="unbounded"/>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="text">
+    <xs:annotation>
+      <xs:documentation>
+        Describes a single text associated with the model. It may be in one
+        location, or it may be spread across multiple locations on the model
+        (each represented by a frag sublement).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice>
+        <xs:group ref="textElements"/>
+        <xs:element ref="frag" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:choice>
+
+      <xs:attribute name="id" type="xs:ID">
+        <xs:annotation>
+          <xs:documentation>
+            The ID of the text. May be a target for links on the model.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="frag">
+    <xs:annotation>
+      <xs:documentation>
+        Describes a piece of text in one location on the model. It is
+        considered part of a larger, sequential, and cohesive collection of
+        text (e.g. it may be a column or row of an inscription).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="textElements"/>
+      </xs:sequence>
+
+      <xs:attribute name="id" type="xs:ID">
+        <xs:annotation>
+          <xs:documentation>
+            The ID of the fragment. May be a target for links on the model.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="textElements">
+    <xs:annotation>
+      <xs:documentation>
+        Elements describing a hieroglyphic text fragment.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="himg" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="hi" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="al" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="tr" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:element name="himg">
+    <xs:annotation>
+      <xs:documentation>
+        A picture of the rendered hieroglyphic text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+
+      <xs:attribute name="src" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Where the image can be installed from. Specify a path
+            relative to the project root, or use ${assets}/... to specify a
+            path within the assets repo.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="dest" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Where the image should be installed. Specify a path
+            relative to the build output directory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="hi">
+    <xs:annotation>
+      <xs:documentation>
+        An encoding of hieroglyphic text. Nominally, this is the source that
+        the image is generated from.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+
+          <xs:attribute name="encoding" type="hi-encoding">
+            <xs:annotation>
+              <xs:documentation>
+                How the hieroglyphs are encoded, in case we want to support
+                multiple or alternative ways of generating hieroglyphs in the
+                future.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="hi-encoding">
+    <xs:annotation>
+      <xs:documentation>
+        A string enumeration for supported hieroglyphic encodings.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="mdc-jsesh">
+        <xs:annotation>
+          <xs:documentation>
+            JSesh-flavored Manual de Codage (MdC).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="al">
+    <xs:annotation>
+      <xs:documentation>
+        An encoding of the transliteration (alphabetic encoding) of
+        ancient Egyptian text.
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+
+          <xs:attribute name="encoding" type="al-encoding">
+            <xs:annotation>
+              <xs:documentation>
+                How this transliteration is encoded.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="al-encoding">
+    <xs:annotation>
+      <xs:documentation>
+        A string enumeration for supported ancient Egyptian transliteration
+        encodings.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+
+      <xs:enumeration value="mdc">
+        <xs:annotation>
+          <xs:documentation>
+            Manual de Codage (MdC).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
+      <xs:enumeration value="unicode">
+        <xs:annotation>
+          <xs:documentation>
+            Unicode's representation of ancient Egyptian transliteration, in
+            UTF-8 encoding.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="tr">
+    <xs:annotation>
+      <xs:documentation>
+        A translation of the text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+
+          <xs:attribute ref="xml:lang">
+            <xs:annotation>
+              <xs:documentation>
+                The language the translation is in.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
