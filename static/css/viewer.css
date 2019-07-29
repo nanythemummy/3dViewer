@@ -93,3 +93,19 @@ img.hi {
   font-weight: normal;
   font-style: italic;
 }
+
+#right a:link {
+  color: #99F;
+}
+
+#right a:visited {
+  color: #a3a;
+}
+
+#right a:hover {
+  color: #99F;
+}
+
+#right a:active {
+  color: #a3a;
+}

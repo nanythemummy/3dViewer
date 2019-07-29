@@ -79,12 +79,16 @@
 
   <xsl:template match="text">
     <div class="text" id="{@id}">
+      <xsl:if test="not(./frag)">
+        <a class="model-link" data-text-id="{@id}" href="#"><xsl:number/>.</a>
+      </xsl:if>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="frag">
     <div class="text-fragment" id="{@id}">
+      <a class="model-link" data-text-id="{@id}" href="#"><xsl:number/>.</a>
       <xsl:apply-templates/>
     </div>
   </xsl:template>

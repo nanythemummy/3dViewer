@@ -275,6 +275,15 @@ ModelLinkSelector.prototype.findLinkByModelObj = function findLinkByModelObj(obj
   return null;
 };
 
+ModelLinkSelector.prototype.findLinkByRef = function findLinkByRef(textId) {
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (this.modelLinks[i].ref === textId) {
+      return this.modelLinks[i];
+    }
+  }
+  return null;
+};
+
 // ModelController manages a model and its viewer.
 function ModelController(modelName, modelLinks) {
   this.loadingScreen = new LoadingScreen();
@@ -286,6 +295,10 @@ function ModelController(modelName, modelLinks) {
   }).catch((error) => {
     console.error('Error loading model: ', error);
   });
+  const textToModelLinks = document.getElementsByClassName('model-link');
+  for (let i = 0; i < textToModelLinks.length; i += 1) {
+    textToModelLinks[i].addEventListener('click', (e) => { this.onTextLinkClick(e); }, false);
+  }
 }
 
 // ModelController.loadModel loads a GLTF model file with the given URL, and
@@ -326,6 +339,17 @@ ModelController.prototype.onMouseDown = function onMouseDown(e) {
   } else {
     this.selector.clearSelection();
   }
+};
+
+ModelController.prototype.onTextLinkClick = function onTextLinkClick(e) {
+  e.preventDefault();
+  const textId = e.target.getAttribute('data-text-id');
+  const link = this.selector.findLinkByRef(textId);
+  if (!link) {
+    console.error('Error: no model link corresponding to text ID: ', textId);
+    return;
+  }
+  this.selector.select(link);
 };
 
 // ModelController.run starts the update/render loop for the model
