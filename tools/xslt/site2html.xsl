@@ -90,7 +90,9 @@
   </xsl:template>
 
   <xsl:template match="himg">
-    <img class="hi" src="{@dest}"/>
+    <div class="hi-container">
+      <img class="hi" src="{@dest}"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="al[@encoding='unicode']">

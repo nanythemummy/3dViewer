@@ -56,6 +56,7 @@ body {
   background-color: black;
   color: #FFFFDB;
   position: relative;
+  overflow: auto;
 }
 
 div.text, div.frag {
@@ -69,10 +70,13 @@ div.text.selected, div.frag.selected {
   padding: 3px; /* subtract border from padding */
 }
 
-/* hieroglyphic image (generally drawn in black) */
-img.hi {
+.hi-container {
   background-color: #D9CEB2;
   padding: 0.5em 1em;
+}
+
+/* hieroglyphic image (generally drawn in black) */
+img.hi {
   max-width: 100%;
   height: auto;
 }
