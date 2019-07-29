@@ -224,19 +224,14 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
 // ModelLinkSelector.select checks to see if the given object has a link
 // associated with it. If it does, we highlight it (by adjusting its
 // transparency) and select it.
-ModelLinkSelector.prototype.select = function select(obj) {
+ModelLinkSelector.prototype.select = function select(link) {
   this.clearSelection();
-  for (let i = 0; i < this.modelLinks.length; i += 1) {
-    if (this.modelLinks[i].name === obj.name) {
-      this.selection = obj;
-      this.selection.material.opacity = 0.5;
-      this.selectedDiv = document.getElementById(this.modelLinks[i].ref);
-      if (this.selectedDiv) {
-        this.selectedDiv.classList.add('selected');
-        this.selectedDiv.scrollIntoView();
-      }
-      break;
-    }
+  this.selection = link.obj;
+  this.selection.material.opacity = 0.5;
+  this.selectedDiv = document.getElementById(link.ref);
+  if (this.selectedDiv) {
+    this.selectedDiv.classList.add('selected');
+    this.selectedDiv.scrollIntoView();
   }
 };
 
@@ -249,6 +244,9 @@ ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
     for (let i = 0; i < this.modelLinks.length; i += 1) {
       if (this.modelLinks[i].name === child.name) {
         foundLinks[child.name] = this.modelLinks[i];
+        // Remember this model object so we can quickly select it
+        // if someone clicks on a link in the text section.
+        this.modelLinks[i].obj = child;
         // Clone the material to ensure each hitbox has its own
         // independently-controllable opacity. Otherwise, multiple
         // hitboxes may get highlighted when one gets selected.
@@ -263,6 +261,18 @@ ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
       console.warn('Broken link: ', this.modelLinks[i]);
     }
   }
+};
+
+ModelLinkSelector.prototype.findLinkByModelObj = function findLinkByModelObj(obj) {
+  if (!obj) {
+    return null;
+  }
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (this.modelLinks[i].obj.name === obj.name) {
+      return this.modelLinks[i];
+    }
+  }
+  return null;
 };
 
 // ModelController manages a model and its viewer.
@@ -310,8 +320,9 @@ ModelController.prototype.onMouseDown = function onMouseDown(e) {
   // repositioning the camera (i.e. dragging), which means
   // this ought to be moved to mouseUp and combined with some
   // more sophisticated mouse logic to detect dragging.
-  if (obj) {
-    this.selector.select(obj);
+  const link = this.selector.findLinkByModelObj(obj);
+  if (link) {
+    this.selector.select(link);
   } else {
     this.selector.clearSelection();
   }
