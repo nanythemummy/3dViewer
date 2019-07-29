@@ -289,7 +289,7 @@ function ModelController(modelName, modelLinks) {
   this.loadingScreen = new LoadingScreen();
   this.viewer = new ModelViewer();
   this.selector = new ModelLinkSelector(modelLinks);
-  this.viewer.domElement.addEventListener('mousedown', (e) => { this.onMouseDown(e); }, false);
+  this.viewer.domElement.addEventListener('click', (e) => { this.onViewerClick(e); }, false);
   this.loadModel(modelName).then((modelScene) => {
     this.selector.initLinks(modelScene);
   }).catch((error) => {
@@ -327,7 +327,7 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
   });
 };
 
-ModelController.prototype.onMouseDown = function onMouseDown(e) {
+ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const obj = this.viewer.intersectObject(e);
   // FIXME: we only want to clear the selection if we're not
   // repositioning the camera (i.e. dragging), which means
