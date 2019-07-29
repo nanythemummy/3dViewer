@@ -205,6 +205,7 @@ function fixupModelLink(link) {
 function ModelLinkSelector(modelLinks) {
   this.modelLinks = modelLinks.map(fixupModelLink);
   this.selection = null; // the currently-selected object
+  this.selectedDiv = null; // the currently-selected annotation
 }
 
 // ModelLinkSelector.clearSelection clears the currently-selected object,
@@ -214,19 +215,23 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
     this.selection.material.opacity = 0.0;
     this.selection = null;
   }
+  if (this.selectedDiv) {
+    this.selectedDiv.classList.remove('selected');
+    this.selectedDiv = null;
+  }
 };
 
 // ModelLinkSelector.select checks to see if the given object has a link
 // associated with it. If it does, we highlight it (by adjusting its
 // transparency) and select it.
-ModelLinkSelector.prototype.select = function select(obj) {
+ModelLinkSelector.prototype.select = function select(link) {
   this.clearSelection();
-  for (let i = 0; i < this.modelLinks.length; i += 1) {
-    if (this.modelLinks[i].name === obj.name) {
-      this.selection = obj;
-      this.selection.material.opacity = 0.5;
-      break;
-    }
+  this.selection = link.obj;
+  this.selection.material.opacity = 0.5;
+  this.selectedDiv = document.getElementById(link.ref);
+  if (this.selectedDiv) {
+    this.selectedDiv.classList.add('selected');
+    this.selectedDiv.scrollIntoView();
   }
 };
 
@@ -239,6 +244,9 @@ ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
     for (let i = 0; i < this.modelLinks.length; i += 1) {
       if (this.modelLinks[i].name === child.name) {
         foundLinks[child.name] = this.modelLinks[i];
+        // Remember this model object so we can quickly select it
+        // if someone clicks on a link in the text section.
+        this.modelLinks[i].obj = child;
         // Clone the material to ensure each hitbox has its own
         // independently-controllable opacity. Otherwise, multiple
         // hitboxes may get highlighted when one gets selected.
@@ -255,17 +263,42 @@ ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
   }
 };
 
+ModelLinkSelector.prototype.findLinkByModelObj = function findLinkByModelObj(obj) {
+  if (!obj) {
+    return null;
+  }
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (this.modelLinks[i].obj.name === obj.name) {
+      return this.modelLinks[i];
+    }
+  }
+  return null;
+};
+
+ModelLinkSelector.prototype.findLinkByRef = function findLinkByRef(textId) {
+  for (let i = 0; i < this.modelLinks.length; i += 1) {
+    if (this.modelLinks[i].ref === textId) {
+      return this.modelLinks[i];
+    }
+  }
+  return null;
+};
+
 // ModelController manages a model and its viewer.
 function ModelController(modelName, modelLinks) {
   this.loadingScreen = new LoadingScreen();
   this.viewer = new ModelViewer();
   this.selector = new ModelLinkSelector(modelLinks);
-  this.viewer.domElement.addEventListener('mousedown', (e) => { this.onMouseDown(e); }, false);
+  this.viewer.domElement.addEventListener('click', (e) => { this.onViewerClick(e); }, false);
   this.loadModel(modelName).then((modelScene) => {
     this.selector.initLinks(modelScene);
   }).catch((error) => {
     console.error('Error loading model: ', error);
   });
+  const textToModelLinks = document.getElementsByClassName('model-link');
+  for (let i = 0; i < textToModelLinks.length; i += 1) {
+    textToModelLinks[i].addEventListener('click', (e) => { this.onTextLinkClick(e); }, false);
+  }
 }
 
 // ModelController.loadModel loads a GLTF model file with the given URL, and
@@ -294,17 +327,29 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
   });
 };
 
-ModelController.prototype.onMouseDown = function onMouseDown(e) {
+ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const obj = this.viewer.intersectObject(e);
   // FIXME: we only want to clear the selection if we're not
   // repositioning the camera (i.e. dragging), which means
   // this ought to be moved to mouseUp and combined with some
   // more sophisticated mouse logic to detect dragging.
-  if (obj) {
-    this.selector.select(obj);
+  const link = this.selector.findLinkByModelObj(obj);
+  if (link) {
+    this.selector.select(link);
   } else {
     this.selector.clearSelection();
   }
+};
+
+ModelController.prototype.onTextLinkClick = function onTextLinkClick(e) {
+  e.preventDefault();
+  const textId = e.target.getAttribute('data-text-id');
+  const link = this.selector.findLinkByRef(textId);
+  if (!link) {
+    console.error('Error: no model link corresponding to text ID: ', textId);
+    return;
+  }
+  this.selector.select(link);
 };
 
 // ModelController.run starts the update/render loop for the model

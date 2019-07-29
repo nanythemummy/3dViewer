@@ -1,4 +1,16 @@
+# MacOS droppings
 .DS_Store
+
+# VSCode project file (don't share this for now to avoid
+# extra commit chatter)
 *.code-workspace
+
 launch.json
+
+# Build output directories
+/build/
 /dist/
+
+# Python droppings
+/venv/
+/__pycache__/
