@@ -45,6 +45,7 @@
   </model>
   <texts>
     <text id="text1">
+      <desc>Foot Register, from center towards mummy-right. (Book of the Dead Spell 89)</desc>
       <frag id="text1col1">
         <himg src="${assets}/iwefaa/texts/text_1_1.svg" dest="img/iwefaa_1_1.svg"/>
         <hi encoding="mdc-jsesh">PF4_-st-A40-ir</hi>
@@ -101,6 +102,7 @@
       </frag>
     </text>
     <text id="text2">
+      <desc>Foot Register, center towards mummy left, retrograde. Final line accross toes from mummy left to right. Book of the Dead 89</desc>
       <frag id="text2col1">
         <himg src="${assets}/iwefaa/texts/text_2_1.svg" dest="img/iwefaa_2_1.svg"/>
         <hi encoding="mdc-jsesh">PF4_-aA-k-di-D54-w</hi>
@@ -139,42 +141,49 @@
       </frag>
     </text>
     <text id="text3">
+      <desc>Basin, Vertical offering inscription on mummy-left side</desc>
       <himg src="${assets}/iwefaa/texts/text_3.svg" dest="img/iwefaa_3.svg"/>
       <hi encoding="mdc-jsesh">PF5__-sw\98**t{{518,10,100}}-di-Htp:(p*t)-ra-r:a-G9\97**tA{{548,98,43}}**tA{{561,269,40}}-tm-nb:(tA:tA)-iwn*(nw:niwt)-D37\:f-(X3*t):X4-H*(q:t)-F1:t-H1{{346,0,157}}**t{{0,740,100}}:3-kA-st:ir-A40-xnt-imnt\*(mn:t)-i-w-f:aA:Y1-A2-kA{{32,133,71}}**n{{0,810,62}}**1{{824,103,58}}**H8{{931,0,58}}**S9{{831,411,58}}</hi>
       <al encoding="mdc">Htp di nsw.t ra-Hr-Ax.ty-itm nb tA.wy iwnw di=f t Hnq.t kA.(w){t} Apd.w{t} (n) kA (n) wsir xnty imn.tiw iw=f-aA sA kA-{n}-Sw.ty</al>
       <tr xml:lang="en">Royal offerings of Re-Horakhty-Atum, lord of the two lands and of the city of Heliopolis, that he may give bread, beer, beef and poultry to the Osiris, foremost of westerners, Iwefaa, son of Ka-n-Shuty. (sic)</tr>
     </text>
     <text id="text4">
+      <desc>Basin, Vertical offering inscription on mummy-right side</desc>
       <himg src="${assets}/iwefaa/texts/text_4.svg" dest="img/iwefaa_4.svg"/>
       <hi encoding="mdc-jsesh">PF4__-sw\98**t{{518,10,100}}-di-Htp:(t*p)-ra-r:a-G9\97**tA{{548,98,43}}**tA{{561,269,40}}-tm-nb:(tA:tA)-(nw:niwt)*iwn-D37:f-X3*t:X4-H-q:t-F1:t-t*H1:3-kA-st:ir-A40-xnt-imnt*(mn:t)-i-w-f:aA:Y1-H8*1-A28-S9</hi>
       <al encoding="mdc">Htp di nsw.t ra-Hr-Ax.ty-itm nb tA.wy iwnw di=f t Hnq.t kA.(w){t} Apd.w{t} (n) kA (n) wsir xnty imn.tiw iw=f-aA sA qAi-Sw.ty</al>
       <tr xml:lang="en">Royal offerings of Re-Horakhty-Atum, lord of the two lands and of the city of Heliopolis, that he may give bread, beer, beef and poultry to the Osiris, foremost of westerners, Iwefaa, son of Qaishuty</tr>
     </text>
     <text id="text5">
+      <desc>Third Register from the top, from mummy-left to mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_5.svg" dest="img/iwefaa_5.svg"/>
       <hi encoding="mdc-jsesh">PF4-D-md-i-n-G5</hi>
       <al encoding="mdc">Dd md.w in Hr</al>
       <tr xml:lang="en">Recitation by Horus</tr>
     </text>
     <text id="text6">
+      <desc>Third Register from the top, from mummy-left to mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_6.svg" dest="img/iwefaa_6.svg"/>
       <hi encoding="mdc-jsesh">PF4-sw-t-di-Htp:t*p-st-A40-ir-nb-R18-D37:f-Htp:t*p</hi>
       <al encoding="mdc">Htp di nsw.t wsir nb tA-sty di=f Htp</al>
       <tr xml:lang="en">Royal offerings of Osiris lord of the Thinite Nome, may he give offerings.</tr>
     </text>
     <text id="text7">
+      <desc>Third Register from the top, from mummy-left to mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_7.svg" dest="img/iwefaa_7.svg"/>
       <hi encoding="mdc-jsesh">PF4_-D-md-i-n-O9</hi>
       <al encoding="mdc">Dd md.w in nb.t-hw.t</al>
       <tr xml:lang="en">Recitation by Nepthys</tr>
     </text>
     <text id="text8">
+      <desc>Third Register from the top, from mummy-left to mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_8.svg" dest="img/iwefaa_8.svg"/>
       <hi encoding="mdc-jsesh">PF4_-D-md-i-n-G5-i-n:p</hi>
       <al encoding="mdc">Dd md.w in Hr-inp</al>
       <tr xml:lang="en">Recitation by Horus-Anubis</tr>
     </text>
     <text id="text9">
+      <desc>Third Register from the top, from mummy-left to mummy-right</desc>
       <frag id="text9col1">
         <himg src="${assets}/iwefaa/texts/text_9_1.svg" dest="img/iwefaa_9_1.svg"/>
         <hi encoding="mdc-jsesh">PF4-D-md-i-n</hi>
@@ -195,6 +204,7 @@
       </frag>
     </text>
     <text id="text10">
+      <desc>Second Register, From Mummy Left to Mummy Right</desc>
       <frag id="text10col1">
         <himg src="${assets}/iwefaa/texts/text_10_1.svg" dest="img/iwefaa_10_1.svg"/>
         <hi encoding="mdc-jsesh">PF4-D-md-i-n</hi>
@@ -209,12 +219,14 @@
       </frag>
     </text>
     <text id="text11">
+      <desc>Second Register, From Mummy Left to Mummy Right</desc>
       <himg src="${assets}/iwefaa/texts/text_11.svg" dest="img/iwefaa_11.svg"/>
       <hi encoding="mdc-jsesh">PF4-D-md-i-n-ra-r:a</hi>
       <al encoding="mdc">Dd md.w in ra</al>
       <tr xml:lang="en">Recitation by Re</tr>
     </text>
     <text id="text12">
+      <desc>Second Register, From Mummy Left to Mummy Right</desc>
       <frag id="text12col1">
         <himg src="${assets}/iwefaa/texts/text_12_1.svg" dest="img/iwefaa_12_1.svg"/>
         <hi encoding="mdc-jsesh">PF4-D-md-i-n-HA-wr:r</hi>
@@ -229,30 +241,35 @@
       </frag>
     </text>
     <text id="text13">
+      <desc>Second Register, From Mummy Left to Mummy Right</desc>
       <himg src="${assets}/iwefaa/texts/text_13.svg" dest="img/iwefaa_13.svg"/>
       <hi encoding="mdc-jsesh">PF4-s-r:q</hi>
       <al encoding="mdc">srq</al>
       <tr xml:lang="en">Serqet</tr>
     </text>
     <text id="text14">
+      <desc>Second Register, From Mummy Left to Mummy Right</desc>
       <himg src="${assets}/iwefaa/texts/text_14.svg" dest="img/iwefaa_14.svg"/>
       <hi encoding="mdc-jsesh">PF4-D_-md-i-n-r:q-b</hi>
       <al encoding="mdc">Dd md.w in rqb</al>
       <tr xml:lang="en">Recitation by Reqeb(?)</tr>
     </text>
     <text id="text15">
+      <desc>Second Register, From Mummy Left to Mummy Right</desc>
       <himg src="${assets}/iwefaa/texts/text_15.svg" dest="img/iwefaa_15.svg"/>
       <hi encoding="mdc-jsesh">PF4-D-md-i-n</hi>
       <al encoding="mdc">Dd md.w in</al>
       <tr xml:lang="en">Recitation by...</tr>
     </text>
     <text id="text16">
+      <desc>Top register, from center towards mummy-left</desc>
       <himg src="${assets}/iwefaa/texts/text_16.svg" dest="img/iwefaa_16.svg"/>
       <hi encoding="mdc-jsesh">PF5-D-md-i-n-O9-t:H8</hi>
       <al encoding="mdc">Dd md.w in nb.t-hw.t</al>
       <tr xml:lang="en">Recitation by Nepthys</tr>
     </text>
     <text id="text17">
+      <desc>Top register, from center towards mummy-left</desc>
       <frag id="text17col1">
         <himg src="${assets}/iwefaa/texts/text_17_1.svg" dest="img/iwefaa_17_1.svg"/>
         <hi encoding="mdc-jsesh">PF5-D-md-i-n</hi>
@@ -267,30 +284,35 @@
       </frag>
     </text>
     <text id="text18">
+      <desc>Top Register, from center towards mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_18.svg" dest="img/iwefaa_18.svg"/>
       <hi encoding="mdc-jsesh">PF4-D-md-i-n-st-A40-ir</hi>
       <al encoding="mdc">Dd md.w in wsir</al>
       <tr xml:lang="en">Reitation by Osiris</tr>
     </text>
     <text id="text19">
+      <desc>Top Register, from center towards mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_19.svg" dest="img/iwefaa_19.svg"/>
       <hi encoding="mdc-jsesh">PF4-D-md-i-n-G5-A1</hi>
       <al encoding="mdc">Dd md.w in Hr</al>
       <tr xml:lang="en">Recitation by Horus</tr>
     </text>
     <text id="text20">
+      <desc>Top Register, from center towards mummy-right</desc>
       <himg src="${assets}/iwefaa/texts/text_20.svg" dest="img/iwefaa_20.svg"/>
       <hi encoding="mdc-jsesh">PF4-D-md-i-n-st-t:H8-I12</hi>
       <al encoding="mdc">Dd md.w in As.t</al>
       <tr xml:lang="en">Recitation by Isis</tr>
     </text>
     <text id="text21">
+      <desc>Inscription on Mummy's right shoulder</desc>
       <himg src="${assets}/iwefaa/texts/text_21.svg" dest="img/iwefaa_21.svg"/>
       <hi encoding="mdc-jsesh">PF4_-H8:t</hi>
       <al encoding="mdc">As.t</al>
       <tr xml:lang="en">Isis</tr>
     </text>
     <text id="text22">
+      <desc>Inscription on Mummy's left shoulder</desc>
       <himg src="${assets}/iwefaa/texts/text_22.svg" dest="img/iwefaa_22.svg"/>
       <hi encoding="mdc-jsesh">PF5-H8:t</hi>
       <al encoding="mdc">As.t</al>

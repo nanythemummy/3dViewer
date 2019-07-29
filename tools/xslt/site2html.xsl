@@ -116,6 +116,7 @@
   </xsl:template>
 
   <!-- Not currently used in HTML generation -->
+  <xsl:template match="desc"/>
   <xsl:template match="hi"/>
   <xsl:template match="al[@encoding='mdc']"/>
 </xsl:stylesheet>
