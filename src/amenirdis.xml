@@ -6,6 +6,7 @@
   </model>
   <texts>
     <text id="text1">
+      <desc>Leg and foot registers, center column</desc>
       <himg src="${assets}/amenirdis/texts/text_1.svg" dest="img/amenirdis_text_1.svg"/>
       <hi encoding="mdc-jsesh">sw-di-Htp:(t-p)-ir:(A40-st)-O3-F1-H1-X4:N33A-H-Hz-s-Xn-n:(pr-nw)-i-mn:n-ir:r-D37:z-1-!</hi>
       <al encoding="mdc">Htp di nsw.t wsir pr.t xrw t Hnq.t xA.(w) Apd.(w)

@@ -134,10 +134,13 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:choice>
-        <xs:group ref="textElements"/>
-        <xs:element ref="frag" minOccurs="1" maxOccurs="unbounded"/>
-      </xs:choice>
+      <xs:sequence>
+        <xs:element ref="desc"/>
+        <xs:choice>
+          <xs:group ref="textElements"/>
+          <xs:element ref="frag" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:choice>
+      </xs:sequence>
 
       <xs:attribute name="id" type="xs:ID">
         <xs:annotation>
@@ -147,6 +150,14 @@
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
+  </xs:element>
+
+  <xs:element name="desc" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        A brief description of the text, e.g. the text location or source.
+      </xs:documentation>
+    </xs:annotation>
   </xs:element>
 
   <xs:element name="frag">

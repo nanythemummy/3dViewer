@@ -50,7 +50,7 @@ class Converter(saxutils.XMLGenerator):
         self.indentlevel += 1
         if name == 'al' and attrs.get('encoding') == 'mdc':
             self.converting = True
-            self.txt = ''
+            self.text = ''
 
     def characters(self, data):
         super(Converter, self).characters(data)
