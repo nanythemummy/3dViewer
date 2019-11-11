@@ -7,10 +7,13 @@
 
 launch.json
 
+
 # Build output directories
 /build/
 /dist/
+/assets/
 
 # Python droppings
 /venv/
+/3dvenv/
 /__pycache__/

@@ -1,0 +1,15 @@
+Introduction
+-----------------------------
+This project was built in order to display annotated 3d models, specifically, models of Ancient Egyptian coffins for the project 
+Book of the Dead in 3D. It takes a model which has had hitboxes added to areas of interest. These hitboxes are mapped to annotations in xml files.
+The built process translates the xml files into static pages.
+
+Requirements
+----------------------------
+For osx, Homebrew is recommended, as is virtualenv.
+-Python3
+-Latest JDK; Works with Oracle JDK 12.0.2
+-XMLStarlet
+-Saxon
+-Python classical languages toolkit (in the requirements.txt)
+

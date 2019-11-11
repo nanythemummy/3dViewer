@@ -53,7 +53,7 @@ body {
   float: left;
   width: 50%;
   height: 100%;
-  background-color: black;
+  background-color:#d9ceb2;
   color: #FFFFDB;
   position: relative;
   overflow: auto;
@@ -62,16 +62,16 @@ body {
 div.text, div.frag {
   margin: 0px 3px;
   padding: 5px;
+  line-height: 1.6;
 }
 
 div.text.selected, div.frag.selected {
-  border: 2px solid #F2D65D;
-  border-radius: 3px;
+  background-color: #9e9989;  
   padding: 3px; /* subtract border from padding */
 }
 
 .hi-container {
-  background-color: #D9CEB2;
+
   padding: 0.5em 1em;
 }
 
@@ -84,14 +84,18 @@ img.hi {
 /* transliteration */
 .al {
   font-family: GentiumPlusW;
-  font-weight: normal;
+  font-weight: bold;
   font-style: normal;
+  margin:0;
+ 
 }
 
 /* translation */
 .tr {
   font-weight: normal;
   font-style: italic;
+  margin:0;
+  
 }
 
 #right a:link {
