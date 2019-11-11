@@ -9,7 +9,22 @@ Requirements
 For osx, Homebrew is recommended, as is virtualenv.
 -Python3
 -Latest JDK; Works with Oracle JDK 12.0.2
--XMLStarlet
--Saxon
--Python classical languages toolkit (in the requirements.txt)
+-XMLStarlet  (brew install xmlstarlet)
+-Saxon (brew install saxon)
+-Python classical languages toolkit (in the requirements.txt) (pip install -r requirements.txt)
+
+Use
+------------------------------
+-Build script requires an assets folder. You can put this anywhere, but there ought to be a symlink to it a level up from whatever 
+directory the build script is in.
+-Your assets directory should look like this:
+    -assets
+        -coffin name/
+            -coffinname.gltf
+            -texts/
+                -coffinname.gly
+                -text1.svg
+                -text2.svg
+                etc.
+-
 
