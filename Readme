@@ -26,5 +26,10 @@ directory the build script is in.
                 -text1.svg
                 -text2.svg
                 etc.
--
+- To generate HTML pages from the xml files in src, you need to run build.py. chmod +x on build.py and ./build.py 
+to run in the current directory. Basically, the hitbox names in the model (gltf file) need to map to a text.svg in your xml file for the page.xml correpsonding
+with the object. The xml maps both of these with a translation. The template of what the xml is supposed to be is
+defined in the tools/schema/page.xslt and site.xslt.
+-The resulting html files and svgs will be placed in the dist directory, from which they can be served.
+
 
