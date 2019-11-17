@@ -5,6 +5,7 @@
 # build rules defined here.
 
 import argparse
+import logging
 import os
 import shutil
 import subprocess
@@ -12,6 +13,10 @@ import sys
 import xml.etree.ElementTree as ET
 
 import convertTransliteration as tlit
+
+
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout, format='%(levelname)s: %(message)s')
+log = logging.getLogger(__name__)
 
 
 def expandPath(config, path):
@@ -25,7 +30,7 @@ def loadSite(config):
 
     Assumes the site XML has been preprocessed.
     """
-    print('Loading site: {}'.format(config.sitexml))
+    log.debug('Loading site: %s', config.sitexml)
     site = ET.parse(config.fullsitexml).getroot()
     site.attrib['src'] = config.fullsitexml
     return site
@@ -37,7 +42,15 @@ def xslTransform(config, stylesheet, src, dest):
     We use the Saxon XSLT processor, which supports the latest and greatest
     version of XSLT. We splice in XIncludes if they are present.
     """
-    subprocess.run([config.saxonpath, '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest, '-xi'], check=True)
+    description = stylesheet
+    log.debug('Transform: %s -> (%s) -> %s', src, description, dest)
+    cmd = [config.saxonpath, '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest, '-xi]
+    if config.verbose:
+        cmd.append('verbose=true')
+    destdir = os.path.dirname(dest)
+    if destdir:
+        cmd.append('destdir=' + destdir)
+    subprocess.run(cmd, check=True)
 
 
 def xmlSchemaValidate(config, schema, target):
@@ -46,6 +59,7 @@ def xmlSchemaValidate(config, schema, target):
     We use XML Starlet for this, as Saxon only includes schema validation with
     the paid version of their tool.
     """
+    log.debug('Validating XML against schema %s: %s', schema, target)
     subprocess.run([config.xmlstarletpath, 'val', '-q', '-e', '-s', schema, target], check=True)
 
 
@@ -53,7 +67,7 @@ def copyElementAsset(config, elem):
     """Copy a asset, represented by an XML element, to the output directory."""
     src = expandPath(config, elem.attrib['src'])
     dest = os.path.join(config.distdir, elem.attrib['dest'])
-    print('Copying {} to {}'.format(src, dest))
+    log.debug('Copying asset: %s -> %s', src, dest)
     shutil.copy(src, dest)
 
 
@@ -63,14 +77,16 @@ def copyAssets(config):
 
     # Most of our assets can just be copied over wholesale from
     # the static directory.
-    print('Copying static assets')
+    log.info('Copying all static assets...')
     staticdir = 'static'
     for item in os.listdir(staticdir):
         src = os.path.join(staticdir, item)
         dest = os.path.join(config.distdir, item)
         if os.path.isdir(src):
+            log.debug('Copying directory: %s -> %s', src, dest)
             shutil.copytree(src, dest)
         else:
+            log.debug('Copying: %s -> %s', src, dest)
             shutil.copy(src, dest)
 
     # This is awkward: I have main.js in src/ to distinguish it from
@@ -78,7 +94,7 @@ def copyAssets(config):
     # now! Just handle this case specially.
     shutil.copy(os.path.join('src', 'main.js'), os.path.join(config.distdir, 'js', 'main.js'))
 
-    print('Copying models')
+    log.info('Copying models...')
     # Models could in theory be copied wholesale from our assets
     # repository, but I'll do a somewhat more streamlined path and
     # follow model definitions to figure out which models are
@@ -88,7 +104,7 @@ def copyAssets(config):
     for model in site.findall('.//model'):
         copyElementAsset(config, model)
 
-    print('Copying hieroglyphics')
+    log.info('Copying hieroglyphics...')
     imgdestdir = os.path.join(config.distdir, 'img')
     os.makedirs(imgdestdir)
     for himg in site.findall('.//himg'):
@@ -97,6 +113,8 @@ def copyAssets(config):
 
 def convertTransliteration(config, src, dest):
     """Convert transliterations from MdC to Unicode."""
+    log.info('Processing transliterations...')
+    log.debug('Tlit transform: %s -> %s', src, dest)
     with open(dest, 'w') as outfile:
         with open(src) as infile:
             tlit.transform(infile, outfile)
@@ -116,7 +134,7 @@ def buildSite(config):
     tlitfname = os.path.join(config.builddir, 'site.tlit.xml')
     convertTransliteration(config, src=config.fullsitexml, dest=tlitfname)
 
-    print('Building site HTML...')
+    log.info('Building site HTML...')
     indexdest = os.path.join(config.distdir, 'index.html')
     xslpath = os.path.join(config.stylesheetdir, 'site2html.xsl')
     xslTransform(config, stylesheet=xslpath, src=tlitfname, dest=indexdest)
@@ -127,7 +145,7 @@ def validateSite(config):
 
     Assumes site.xml has been preprocessed.
     """
-    print('Validating site XML...')
+    log.info('Validating site XML against schema...')
     schemafname = os.path.join(config.schemadir, 'site.xsd')
     xmlSchemaValidate(config, schema=schemafname, target=config.fullsitexml)
 
@@ -165,6 +183,7 @@ def getConfig(args):
     parser.add_argument('--saxonpath', help='location of Saxon XSLT processor')
     parser.add_argument('---xmlstarletpath', help='location of XML Starlet, used for XML Include/Schema processing')
     parser.add_argument('--no-val', dest='validate', action='store_false', help='Skip XML validation step', default=True)
+    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='Verbose output')
     config = parser.parse_args(args[1:])
 
     # We're going to blow away the dist and build directories before writing to
@@ -189,6 +208,11 @@ def getConfig(args):
     config.stylesheetdir = os.path.join('tools', 'xslt')
     config.schemadir = os.path.join('tools', 'schema')
 
+    if config.verbose:
+        log.setLevel(logging.DEBUG)
+    else:
+        log.setLevel(logging.INFO)
+
     return config
 
 
@@ -198,7 +222,8 @@ def preprocessSite(config):
     This is so that future steps have a fully-expanded site.xml to
     work with, and don't have to worry about pulling in the page XML.
     """
-    print('Preprocessing: {} -> {}'.format(config.sitexml, config.fullsitexml))
+    log.info('Preprocessing site XML...')
+    log.debug('Assembling: %s', config.fullsitexml)
     # Transforming with identity.xsl has the effect of simply pulling in
     # XIncludes and nothing else.
     xslpath = os.path.join(config.stylesheetdir, 'identity.xsl')
@@ -223,22 +248,22 @@ def cleanDirectory(dirpath):
 def prepareDistDir(config):
     """Clean the output directory, or create it if it doesn't exist."""
     if not os.path.exists(config.distdir):
-        print('Creating dist directory: {}'.format(config.distdir))
+        log.info('Creating dist directory: %s', config.distdir)
         os.makedirs(config.distdir)
         return
 
-    print('Cleaning dist directory: {}'.format(config.distdir))
+    log.info('Cleaning dist directory: %s', config.distdir)
     cleanDirectory(config.distdir)
 
 
 def prepareBuildDir(config):
     """Clean the intermediate build directory, or create it if it doesn't exist."""
     if not os.path.exists(config.builddir):
-        print('Creating build directory: {}'.format(config.builddir))
+        log.info('Creating build directory: %s', config.builddir)
         os.makedirs(config.builddir)
         return
 
-    print('Cleaning build directory: {}'.format(config.builddir))
+    log.info('Cleaning build directory: %s', config.builddir)
     cleanDirectory(config.builddir)
 
 

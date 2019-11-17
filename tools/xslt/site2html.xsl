@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:j="http://www.w3.org/2005/xpath-functions">
-  <xsl:output method="html" indent="yes" version="5.0"/>
+<xsl:stylesheet
+        version="3.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:j="http://www.w3.org/2005/xpath-functions" >
 
+  <xsl:output method="html" indent="yes" version="5.0"/>
+  <xsl:param name="verbose" as="xs:boolean" required="no">false</xsl:param>
+  <xsl:param name="destdir" as="xs:string" required="no"/>
   <xsl:template match="site">
     <html>
       <head>
@@ -20,6 +26,19 @@
     <li><a href="{@dest}"><xsl:value-of select="name"/></a></li>
 
     <!--- On the side, generate the page itself, e.g. iwefaa.html -->
+    <xsl:if test="$verbose">
+      <xsl:message>
+        <xsl:text>DEBUG: XSLT generating page: </xsl:text>
+        <xsl:choose>
+          <xsl:when test="$destdir">
+            <xsl:value-of select="concat($destdir, '/', @dest)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="@dest"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:message>
+    </xsl:if>
     <xsl:result-document href="{@dest}">
       <xsl:apply-templates select="." mode="pagegen"/>
     </xsl:result-document>
