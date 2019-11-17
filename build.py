@@ -111,7 +111,7 @@ def copyAssets(config):
         copyElementAsset(config, himg)
 
 
-def convertTransliteration(config, src, dest):
+def convertTransliteration(src, dest):
     """Convert transliterations from MdC to Unicode."""
     log.info('Processing transliterations...')
     log.debug('Tlit transform: %s -> %s', src, dest)
@@ -131,8 +131,8 @@ def buildSite(config):
     """
     copyAssets(config)
 
-    tlitfname = os.path.join(config.builddir, 'site.tlit.xml')
-    convertTransliteration(config, src=config.fullsitexml, dest=tlitfname)
+    tlitfname = os.path.join(config.builddir, 'site.transliterated.xml')
+    convertTransliteration(src=config.fullsitexml, dest=tlitfname)
 
     log.info('Building site HTML...')
     indexdest = os.path.join(config.distdir, 'index.html')
