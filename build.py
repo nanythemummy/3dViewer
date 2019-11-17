@@ -9,7 +9,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 import xml.etree.ElementTree as ET
 
 import convertTransliteration as tlit
