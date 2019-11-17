@@ -4,6 +4,15 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:j="http://www.w3.org/2005/xpath-functions" >
+  <!--
+    site2html.xsl generates the entire site's HTML from
+    the source XML.
+
+    The primary output of this document is a barebones
+    index.html that links to all the pages in the site.
+    For each link, the page it points to is generated as a
+    side effect using xsl:result-document.
+  -->
 
   <xsl:output method="html" indent="yes" version="5.0"/>
   <xsl:param name="verbose" as="xs:boolean" required="no">false</xsl:param>
