@@ -36,15 +36,19 @@ def loadSite(config):
     return site
 
 
-def xslTransform(config, stylesheet, src, dest):
+def xslTransform(config, stylesheet, src, dest, includes=False):
     """Use XSLT to transform an XML file to an output file.
 
     We use the Saxon XSLT processor, which supports the latest and greatest
     version of XSLT. We splice in XIncludes if they are present.
     """
     description = stylesheet
+    if includes:
+        description += ', with XIncludes'
     log.debug('Transform: %s -> (%s) -> %s', src, description, dest)
-    cmd = [config.saxonpath, '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest, '-xi]
+    cmd = [config.saxonpath, '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest]
+    if includes:
+        cmd.append('-xi')
     if config.verbose:
         cmd.append('verbose=true')
     destdir = os.path.dirname(dest)
@@ -227,7 +231,8 @@ def preprocessSite(config):
     # Transforming with identity.xsl has the effect of simply pulling in
     # XIncludes and nothing else.
     xslpath = os.path.join(config.stylesheetdir, 'identity.xsl')
-    xslTransform(config, stylesheet=xslpath, src=config.sitexml, dest=config.fullsitexml)
+    xslTransform(
+        config, stylesheet=xslpath, src=config.sitexml, dest=config.fullsitexml, includes=True)
 
 
 def cleanDirectory(dirpath):
