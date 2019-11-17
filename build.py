@@ -273,7 +273,11 @@ def prepareBuildDir(config):
 
 
 def main(args):
-    os.chdir(os.path.dirname(args[0]))
+    # Script is assumed to live in the root of the project
+    # directory.
+    rootdir = os.path.dirname(args[0])
+    if rootdir and rootdir != '.':
+        os.chdir(rootdir)
     config = getConfig(args)
     prepareBuildDir(config)
     preprocessSite(config)
