@@ -67,6 +67,15 @@ def xmlSchemaValidate(config, schema, target):
     subprocess.run([config.xmlstarletpath, 'val', '-q', '-e', '-s', schema, target], check=True)
 
 
+def xmlValidate(config, target):
+    """Check an XML file for well-formedness.
+
+    We use XML Starlet for this for convenience.
+    """
+    log.debug('Validating XML: %s', target)
+    subprocess.run([config.xmlstarletpath, 'val', '-q', '-e', target], check=True)
+
+
 def copyElementAsset(config, elem):
     """Copy a asset, represented by an XML element, to the output directory."""
     src = expandPath(config, elem.attrib['src'])
@@ -220,19 +229,54 @@ def getConfig(args):
     return config
 
 
-def preprocessSite(config):
+def assembleSite(config):
     """Process XIncludes in site.xml, writing the results to dest.
 
     This is so that future steps have a fully-expanded site.xml to
     work with, and don't have to worry about pulling in the page XML.
     """
-    log.info('Preprocessing site XML...')
     log.debug('Assembling: %s', config.fullsitexml)
     # Transforming with identity.xsl has the effect of simply pulling in
     # XIncludes and nothing else.
     xslpath = os.path.join(config.stylesheetdir, 'identity.xsl')
     xslTransform(
         config, stylesheet=xslpath, src=config.sitexml, dest=config.fullsitexml, includes=True)
+
+
+def extractIncludes(config, source):
+    """Preprocess the source XML to a text file containing just includes.
+
+    The source XML is assumed to be well-formed.
+    """
+    outputfname, _ = os.path.splitext(os.path.basename(source))
+    outputfname += '_includes.txt'
+    outputpath = os.path.join(config.builddir, outputfname)
+    xslpath = os.path.join(config.stylesheetdir, 'includes.xsl')
+    xslTransform(config, stylesheet=xslpath, src=source, dest=outputpath)
+    return outputpath
+
+
+def validateXMLAndIncludes(config, source):
+    """Check that the source XML and its includes are well-formed."""
+    sourcedir = os.path.dirname(source)
+    xmlValidate(config, source)
+    includespath = extractIncludes(config, source)
+    with open(includespath, 'r') as includes:
+        for include in includes:
+            include = include.strip()
+            if not include:
+                continue
+            include = os.path.join(sourcedir, include)
+            if not os.path.isfile(include):
+                raise RuntimeError('Unable to locate included file: {}'.format(include))
+            validateXMLAndIncludes(config, include)
+
+
+def preprocessSite(config):
+    log.info('Preprocessing site XML...')
+    if config.validate:
+        validateXMLAndIncludes(config, config.sitexml)
+    assembleSite(config)
 
 
 def cleanDirectory(dirpath):
