@@ -124,7 +124,7 @@ def buildSite(config):
     """Build the entire site.
 
     Assumes the site XML has been preprocessed.
-    Assets are copied to the ouptut directory wholesale.
+    Assets are copied to the output directory wholesale.
     Transliterations are converted to Unicode.
     Finally, HTML is generated from the site XML.
     We use XSLT as defined by site2html.xsl to do the transformation.
@@ -140,7 +140,7 @@ def buildSite(config):
     xslTransform(config, stylesheet=xslpath, src=tlitfname, dest=indexdest)
 
 
-def validateSite(config):
+def validateSiteSchema(config):
     """Validate that our site XML matches our custom schema.
 
     Assumes site.xml has been preprocessed.
@@ -204,7 +204,7 @@ def getConfig(args):
         parser.error('XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.')
 
     # Some extra configuration defined here for convenience
-    config.fullsitexml = os.path.join(config.builddir, 'site.included.xml')
+    config.fullsitexml = os.path.join(config.builddir, 'site.preprocessed.xml')
     config.stylesheetdir = os.path.join('tools', 'xslt')
     config.schemadir = os.path.join('tools', 'schema')
 
@@ -273,7 +273,7 @@ def main(args):
     prepareBuildDir(config)
     preprocessSite(config)
     if config.validate:
-        validateSite(config)
+        validateSiteSchema(config)
     prepareDistDir(config)
     buildSite(config)
 
