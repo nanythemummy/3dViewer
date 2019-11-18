@@ -42,9 +42,9 @@ You must have:
 
 ### Python Libraries
 
-You will need to install at least one Python library to build the website. We recommend
-installing it in a Python "virtualenv" that will keep your project's Python libraries separate
-from other projects so that they don't conflict.
+You will need to install at least one Python library, the Classical Languages Toolkit (CLTK), to
+build the website. We recommend installing it in a Python "virtualenv" that will keep your project's
+Python libraries separate from other projects so that they don't conflict.
 
 There are many ways to set up a virtualenv in Python, but here's how we do it. From the top of this
 repo, run the following: `python3 -m venv venv`. This will create a directory `venv/` in your
