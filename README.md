@@ -173,3 +173,8 @@ full XML schema for our data is located in the `tools/schema/` directory.
      that errors can be caught and corrected quickly.
    * For now, we don't support live reload. So, every time you make a change and rerun the build,
      you'll need to reload the browser to see it.
+
+## Docker
+
+We are experimenting with an alternate development setup that uses Docker. If you want to try it
+out, you can skip the Requirements and Setup above, and just see [DOCKER.md](DOCKER.md) for details.
