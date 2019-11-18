@@ -46,7 +46,7 @@ def xslTransform(config, stylesheet, src, dest, includes=False):
     if includes:
         description += ', with XIncludes'
     log.debug('Transform: %s -> (%s) -> %s', src, description, dest)
-    cmd = [config.saxonpath, '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest]
+    cmd = ['java', '-jar', 'tools/saxon9he.jar', '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest]
     if includes:
         cmd.append('-xi')
     if config.verbose:
@@ -193,7 +193,6 @@ def getConfig(args):
     parser.add_argument('--distdir', help='where final build output is written', default='dist')
     parser.add_argument('--builddir', help='where intermediate build output is written', default='build')
     parser.add_argument('--sitexml', help='location of site XML definition', default='src/site.xml')
-    parser.add_argument('--saxonpath', help='location of Saxon XSLT processor')
     parser.add_argument('---xmlstarletpath', help='location of XML Starlet, used for XML Include/Schema processing')
     parser.add_argument('--no-val', dest='validate', action='store_false', help='Skip XML validation step', default=True)
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='Verbose output')
@@ -207,10 +206,6 @@ def getConfig(args):
         parser.error('Cannot set build directory to root!')
 
     # Fill in defaults for tool locations if necessary.
-    try:
-        resolveToolLocation(config, 'saxonpath', 'saxon')
-    except NoSuchTool:
-        parser.error('Saxon not found. Install Saxon with Homebrew or specify the location of the executable using --saxonpath.')
     try:
         resolveToolLocation(config, 'xmlstarletpath', 'xmlstarlet')
     except NoSuchTool:

@@ -29,16 +29,13 @@ You must have:
   this:
    * Via homebrew: `brew install python3`
    * Via the standard [Python 3 distribution for MacOS](https://www.python.org/downloads/)
-* The **Java Development Kit (JDK)**. Again, two ways to install:
+* A suitable **Java Development Kit (JDK)**, version 8 or later. Again, two ways to install:
    * Via homebrew: `brew cask install java` (installs OpenJDK)
    * Via the standard [Oracle JDK SE distribution for MacOS](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html).
      Oracle provides a number of professional options for downloads, but the free(est) edition
      (Standard Edition, aka SE) will do.
 * **XML Starlet**, a suite of tools for XML validation and hacking. Install via Homebrew:
   `brew install xmlstarlet`.
-* **Saxon**, a powerful tool for XML processing. Like with Java, there are several professional
-  versions available, but we'll assume you're using the free edition (Home Edition, aka HE). Install
-  via Homebrew: `brew install saxon`.
 * The Python Classical Languages Toolkit, which we will install below as part of setup.
 
 ## Setup
