@@ -324,6 +324,7 @@ def main(args):
         validateSiteSchema(config)
     prepareDistDir(config)
     buildSite(config)
+    return 0
 
 
 if __name__ == '__main__':
