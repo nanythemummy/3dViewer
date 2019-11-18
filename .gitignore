@@ -7,11 +7,12 @@
 
 launch.json
 
+# External assets repo
+/assets/
 
 # Build output directories
 /build/
 /dist/
-/assets/
 
 # Python droppings
 /venv/

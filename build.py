@@ -189,7 +189,7 @@ def getConfig(args):
     Currently, only comamnd-line configuration is supported.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--assetsdir', help='where model assets are stored', default='../assets')
+    parser.add_argument('--assetsdir', help='where model assets are stored', default='assets')
     parser.add_argument('--distdir', help='where final build output is written', default='dist')
     parser.add_argument('--builddir', help='where intermediate build output is written', default='build')
     parser.add_argument('--sitexml', help='location of site XML definition', default='src/site.xml')

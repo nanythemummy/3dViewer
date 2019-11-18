@@ -73,9 +73,9 @@ Once your virtualenv is active, install the Python library dependencies thus:
 ### Assets
 
 We manage our 3D models and hieroglyphic source material in a separate repo from this project. You
-will have the easiest time if you place the assets repo alongside this repo's folder, i.e. so that
-the two share the same parent directory. You can place it elsewhere if you wish, but in that case
-you will need to pass the build script an option to tell it where to find the assets.
+will have the easiest time if you place the assets repo _inside_ this repo's top-level directory.
+You can place it elsewhere if you wish, but in that case you will need to pass the build script an
+option to tell it where to find the assets.
 
 There are also a set of static "assets" inside this repo that are specifically for use by this
 website – CSS, web fonts, and Javascript. When you build the project, they will be installed along
