@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="psamtik-seneb.html">
+  <name>CMA 71.2254 Psamtik-Seneb</name>
+  <model src="${assets}/psamtik-seneb/psamtik-seneb.gltf" dest="models/psamtik-seneb.gltf">
+    <link name="hitbox_text_1" ref="Text1"/>
+    <link name="hitbox_text_2" ref="Text2a"/>
+    <link name="hitbox_text_2_1" ref="Text2b"/>
+    <link name="hitbox_vig_1" ref="VigCol1"/>
+    <link name="hitbox_vig_2" ref="VigCol2"/>
+    <link name="hitbox_text_5" ref="Text11"/>
+    <link name="hitbox_text_4" ref="Text12"/>
+  </model>
+  <texts>
+    <text id="Text1">
+      <desc>Cover central RtoL col a and col b</desc>
+      <himg src="${assets}/psamtik-seneb/texts/text1.svg" dest="img/psamtik-seneb_text1.svg"/>
+      <hi encoding="mdc-jsesh">PF4-|col a-xa:a#12-L7-S42-V16-&lt;-p-s-m-T:k-&gt;-s-n:b-m-nfr#12-f:r-tm-m-z:S-n:M77#34-!
+                               PF4-|col b-r-S:(i-(F63:x))#12-pr:f-m-Ax-(x*t):N18-A6-R8A-n-mA-D4-A-A-f-!</hi>
+      <al encoding="mdc">[x]a xrp-sA-srq.t psmTk-snb m [n]fr-tm m sSn
+                         r S(r.t)i ra pr=f m Ax.t wab nTr.w n mAA=f</al>
+      <tr xml:lang="en">The Scorpion Controller Psamtik-Seneb appears as Nefertum in the lotus
+      at the nose of Ra when he emerges in the Akhet, that the gods become pure at seeing him.</tr>
+    </text>
+  <text id="Text2a">
+  <desc>Cover RtoL col c and col d</desc>
+  <himg src="${assets}/psamtik-seneb/texts/text2a.svg" dest="img/psamtik-seneb_text2a.svg"/>
+  <hi encoding="mdc-jsesh">PF4-|col c-Ax-#b-Ax-Ax-r-#e-(di-t):n-E15-m-Hr:r#123-V16-Q6G-n:t-ir:(st-A40)-! 
+       PF4-|col d-i-w-s-n:m#34-#b-V16-Q6G-#e-n:t-ir:(st-A40)-L7*S42-V16-&lt;-p-s-m-T:k-&gt;-s-n:b-mAa:P8h-!</hi>
+  <al encoding="mdc">Ax[.w r]di{t}.n inpw m-[H?]r? sA qrs.t n.t wsir
+                     iw=sn [m sA qrs.t] n.t wsir xrp-sA-srq.t psmTk-snb mAa-xrw</al>
+  <tr xml:lang="en">The Akhu Spirits Anubis has placed as (lit. over) protection of the sarcophagus of Osiris,
+       that they be protection of the Sarcophagus of the Osiris Scorpion Controller Psamtik-Seneb, justified.</tr>
+  </text>
+  <text id="Text2b">
+  <desc>Cover LtoR col e and col f</desc>
+  <himg src="${assets}/psamtik-seneb/texts/text2b.svg" dest="img/psamtik-seneb_text2b.svg"/>
+  <hi encoding="mdc-jsesh">PF5-|col e-Ax#12-Ax-Ax-r-(di-t):n-E15-m-V16-Q6G-n:t-ir:(st-A40)-!  
+       PF5-|col f-#b-i-#e-w-s-n:m#12-V16-Q6G-n:t-ir:(st-A40)-L7*S42-V16-&lt;-p-s-m-T:k-&gt;-s-n:b-mAa:P8h-!</hi>
+  <al encoding="mdc">Ax.w rdi{t}.n inpw m sA qrs.t n.t wsir
+                     [i]w=s[n] m sA qrs.t n.t wsir xrp-sA-srq.t psmTk-snb mAa-xrw</al>
+  <tr xml:lang="en">The Akhu Spirits Anubis has placed as protection of the sarcophagus of Osiris,
+       that they be protection of the Sarcophagus of the Osiris Scorpion Controller Psamtik-Seneb, justified.</tr>
+  </text>
+<text id="VigCol1">
+  <desc>Cover Vignette column - Mummy Right RtoL vigcol 1 Texts 3, 5, 7, 9</desc>
+  <himg src="${assets}/psamtik-seneb/texts/vigcol1.svg" dest="img/psamtik-seneb_vigcol1.svg"/>
+  <hi encoding="mdc-jsesh">PF4-|vig col 1a-Aa14-s#134-#b-..-.-#e-!   
+                           PF4-|vig col 1b-#b-..-..-#e-f#24-! 
+                           PF4-|vig col 1c-U1-D4-G1-I9-!   
+                           PF4-|vig col 1d-#b-..-..-.-#e-! </hi>
+  <al encoding="mdc">im[sty] [dwA-mw.t]=f mA(A)-&lt;it&gt;=f [Hr-mxn.t-ir.ty]</al>   
+  <tr xml:lang="en">Im[sety] [Duamut]ef Maa(it)ef [Horus Mekhentirty]</tr>
+  </text>  
+
+
+<text id="VigCol2">
+  <desc>Cover Vignette column - Mummy Left LtoR vigcol 2 Texts 4, 6, 8, 10</desc>
+  <himg src="${assets}/psamtik-seneb/texts/vigcol2.svg" dest="img/psamtik-seneb_vigcol2.svg"/>
+  <hi encoding="mdc-jsesh">PF5-|vig col 2a-H-Aa5A\69**p{{331,272,69}}-!   
+                           PF5-|vig col 2b-W15-sn-sn-sn-f-! 
+                           PF5-|vig col 2c-#b-..-..-.-#e-! 
+                           PF5-|vig col 2d-#b-..-..-.-#e-! </hi>
+  <al encoding="mdc">Hapy qbh-sn.w=f [Xry-bAq=f] [inpw]</al>   
+  <tr xml:lang="en">Hapi Qebehsenuf [Kheribaqef] [Anubis]</tr>
+  </text>  
+  <text id="Text11">
+  <desc>Basin - Horizontal, Mummy Right, L to R, Bandeau inscription</desc>
+  <himg src="${assets}/psamtik-seneb/texts/text11.svg" dest="img/psamtik-seneb_text11.svg"/>
+  <hi encoding="mdc-jsesh">D\138**S43{{117,570,82}}-M18-n:k-zA:k-G5-Aa27-n:f-T-w-(L7*S42):V16-&lt;-p-s-m-T:k-&gt;-s-n:b-U1:a-Aa11v-xrw-w-!   
+       aHa-a:r:k-T:z-Aa39-T-w-ms-s-n:T-w-G14-t:k-(nw-t):pt-!
+       i-m-D35:k-V96-i-m-D35:k-a:S-(nw*nw*nw):M187-aHa-a:k-W18:t-nTr*nTr*nTr-!</hi>
+  <al encoding="mdc">Dd-mdw i(i) n=k zA=k Hr nD.n=f Tw xrp-sA-srq.t psmTk-snb mAa-xrw
+                     aHa r.k Tz Tw ms.n Tw mw.t=k nw.t
+                     im(i)=k gAw im(i)=k aS aHa=k xnti nTr.w</al>
+  <tr xml:lang="en">Words spoken: Your son Horus has come. He has saved you, Scorpion Controller Psamtik-Seneb, true of voice.
+       So stand up! Raise yourself! Your mother Nut has given birth to you.
+       You will not suffer want. You will not groan. You will stand at the front of the gods.</tr>
+  </text>
+<text id="Text12">
+  <desc>Basin - Horizontal, Mummy Left, R to L, Bandeau inscription</desc>
+  <himg src="${assets}/psamtik-seneb/texts/text12.svg" dest="img/psamtik-seneb_text12.svg"/>
+  <hi encoding="mdc-jsesh">D\138**S43{{117,570,82}}-M18-D54:n-G5-m-s-x:nw-D32A\141**W10{{340,668,65}}-k-(L7*S42):V16-&lt;-p-s-m-T:k-&gt;-s-n:b-U1:a-Aa11v-xrw-w-!   
+       T:z-Aa39-T-w-T14A-.\1:V13:.\1-w-tp:Z1-k:r-Ax-(x*t):N18-pr:r-k:r-t:pt-!
+       ms*s-T-w-m-(nw*t):pt-anx-n:x-.\1:V13:.\1-w-m*m-(sbA*sbA):sbA-!</hi>
+  <al encoding="mdc">Dd-mdw i(i).n Hr m sxnw=k xrp-sA-srq.t psmTk-snb mAa xrw
+                     Tz Tw rs Tw tp=k r Ax.t pr=k r (p).t
+                     ms.&lt;ti&gt;{Tw} m nw.t anx.&lt;ti&gt;{Tw} m-m sbA.w</al>
+  <tr xml:lang="en">Words spoken: It is in your embrace that Horus has come, Scorpion Controller Psamtik-seneb, true of voice.
+       Raise yourself up! Lift up your head toward the horizon, so that you may go forth to heaven!
+       May you be born in Nut (sc. the sky). May you live among the stars.</tr>
+  </text>  
+  
+  
+  
+  
+  
+  
+  
+  
+   
+  
+  
+  
+  
+  </texts>
+</page>

@@ -5,4 +5,5 @@
     xsi:noNamespaceSchemaLocation="schema/site.xsd" >
   <xi:include href="iwefaa.xml" parse="xml"/>
   <xi:include href="amenirdis.xml" parse="xml"/>
+  <xi:include href="psamtik-seneb.xml" parse="xml"/>
 </site>
