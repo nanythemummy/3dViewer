@@ -29,25 +29,22 @@ You must have:
   this:
    * Via homebrew: `brew install python3`
    * Via the standard [Python 3 distribution for MacOS](https://www.python.org/downloads/)
-* The **Java Development Kit (JDK)**. Again, two ways to install:
+* A suitable **Java Development Kit (JDK)**, version 8 or later. Again, two ways to install:
    * Via homebrew: `brew cask install java` (installs OpenJDK)
    * Via the standard [Oracle JDK SE distribution for MacOS](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html).
      Oracle provides a number of professional options for downloads, but the free(est) edition
      (Standard Edition, aka SE) will do.
 * **XML Starlet**, a suite of tools for XML validation and hacking. Install via Homebrew:
   `brew install xmlstarlet`.
-* **Saxon**, a powerful tool for XML processing. Like with Java, there are several professional
-  versions available, but we'll assume you're using the free edition (Home Edition, aka HE). Install
-  via Homebrew: `brew install saxon`.
 * The Python Classical Languages Toolkit, which we will install below as part of setup.
 
 ## Setup
 
 ### Python Libraries
 
-You will need to install at least one Python library to build the website. We recommend
-installing it in a Python "virtualenv" that will keep your project's Python libraries separate
-from other projects so that they don't conflict.
+You will need to install at least one Python library, the Classical Languages Toolkit (CLTK), to
+build the website. We recommend installing it in a Python "virtualenv" that will keep your project's
+Python libraries separate from other projects so that they don't conflict.
 
 There are many ways to set up a virtualenv in Python, but here's how we do it. From the top of this
 repo, run the following: `python3 -m venv venv`. This will create a directory `venv/` in your
@@ -76,9 +73,9 @@ Once your virtualenv is active, install the Python library dependencies thus:
 ### Assets
 
 We manage our 3D models and hieroglyphic source material in a separate repo from this project. You
-will have the easiest time if you place the assets repo alongside this repo's folder, i.e. so that
-the two share the same parent directory. You can place it elsewhere if you wish, but in that case
-you will need to pass the build script an option to tell it where to find the assets.
+will have the easiest time if you place the assets repo _inside_ this repo's top-level directory.
+You can place it elsewhere if you wish, but in that case you will need to pass the build script an
+option to tell it where to find the assets.
 
 There are also a set of static "assets" inside this repo that are specifically for use by this
 website – CSS, web fonts, and Javascript. When you build the project, they will be installed along
@@ -176,3 +173,8 @@ full XML schema for our data is located in the `tools/schema/` directory.
      that errors can be caught and corrected quickly.
    * For now, we don't support live reload. So, every time you make a change and rerun the build,
      you'll need to reload the browser to see it.
+
+## Docker
+
+We are experimenting with an alternate development setup that uses Docker. If you want to try it
+out, you can skip the Requirements and Setup above, and just see [DOCKER.md](DOCKER.md) for details.
