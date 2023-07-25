@@ -8,7 +8,7 @@ import xml.sax.handler
 from xml import sax
 from  xml.sax import saxutils
 
-import cltk.corpus.egyptian.transliterate_mdc as tlit
+import cltk.alphabet.egy as tlit
 
 
 def mdcToUnicode(s):
