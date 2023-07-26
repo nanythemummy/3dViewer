@@ -13,7 +13,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 import convertTransliteration as tlit
-#added a frickin' comment.
+
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout, format='%(levelname)s: %(message)s')
 log = logging.getLogger(__name__)
