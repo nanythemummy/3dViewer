@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="psamtik-seneb.html">
   <name>CMA 71.2254 Psamtik-Seneb</name>
+  <creator>Matt Whealton</creator>
   <model src="${assets}/psamtik-seneb/psamtik-seneb.gltf" dest="models/psamtik-seneb.gltf">
     <link name="hitbox_text_1" ref="Text1"/>
     <link name="hitbox_text_2" ref="Text2a"/>

@@ -20,12 +20,15 @@
   <xsl:template match="site">
     <html>
       <head>
-        <title>3D Coffins</title>
+        <title>The Book of the Dead in 3D</title>
+        <meta description = "Translations of texts on 3D models of coffins."></meta>
       </head>
       <body>
+      <div class = "main-contents">
         <ul>
           <xsl:apply-templates/>
         </ul>
+      </div>
       </body>
     </html>
   </xsl:template>
@@ -33,6 +36,7 @@
   <xsl:template match="page">
     <!--- Generate the link for index.html -->
     <li><a href="{@dest}"><xsl:value-of select="name"/></a></li>
+    
 
     <!--- On the side, generate the page itself, e.g. iwefaa.html -->
     <xsl:if test="$verbose">
@@ -57,6 +61,8 @@
     <html>
       <head>
         <title><xsl:text disable-output-escaping="yes">3D Coffins <![CDATA[&ndash;]]> </xsl:text><xsl:value-of select="name"/></title>
+        <meta name="DC.Creator" value="{creator}"/>
+        <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/"/>
         <link rel="stylesheet" type="text/css" href="css/viewer.css"/>
       </head>
       <body>
