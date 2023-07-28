@@ -326,7 +326,14 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
       });
   });
 };
-
+ModelController.prototype.moveCamera = function moveCamera(selection){
+  var boundingbox = new THREE.Box3();
+  boundingbox.setFromObject(selection);
+  //gets the center of the bounding box and puts it in the controls target
+  boundingbox.getCenter(this.viewer.controls.target);
+  this.viewer.camera.lookAt(this.viewer.controls.target)
+  //I don'tthink this object persists in the scene because I don't ever attach it.
+}
 ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const obj = this.viewer.intersectObject(e);
   // FIXME: we only want to clear the selection if we're not
@@ -336,6 +343,7 @@ ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const link = this.selector.findLinkByModelObj(obj);
   if (link) {
     this.selector.select(link);
+    this.moveCamera(obj)
   } else {
     this.selector.clearSelection();
   }
@@ -349,6 +357,7 @@ ModelController.prototype.onTextLinkClick = function onTextLinkClick(e) {
     console.error('Error: no model link corresponding to text ID: ', textId);
     return;
   }
+  this.moveCamera(link.obj)
   this.selector.select(link);
 };
 
