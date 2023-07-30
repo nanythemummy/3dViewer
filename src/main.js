@@ -326,20 +326,31 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
       });
   });
 };
-ModelController.prototype.moveCamera = function moveCamera(selection){
+ModelController.prototype.moveCameraToObject = function moveCamera(selection){
   var boundingbox = new THREE.Box3();
   boundingbox.setFromObject(selection);
   var projection_vector = new THREE.Vector3();
   var camera_pos = new THREE.Vector3();
-  camera_pos.copy(this.viewer.camera.position)
+  camera_pos.copy(this.viewer.camera.position);
   //get the vector between the centerpoint of the clicked object 
   //and the center of the camera's orbit.
   //and normalize it.
   boundingbox.getCenter(projection_vector);
-  projection_vector.sub(this.viewer.controls.target);
+
+  //get the radius of the sphere made by the center of the 
+  //main model and the camera position.
+  //makes the assumption that the selection box's parent is the main coffin model.
+  var center_object = new THREE.Vector3();
+  if (selection.parent) {
+    boundingbox.setFromObject(selection.parent);
+    boundingbox.getCenter(center_object);
+  }
+  else{
+    center_object.copy(this.viewer.controller.target);
+  }
+  projection_vector.sub(center_object);
   projection_vector.normalize();
-  //get the radius of the sphere the camera is orbiting.
-  var radius_sphere = camera_pos.distanceTo(this.viewer.controls.target);
+  var radius_sphere = camera_pos.distanceTo(center_object);
   //multiply the radius by the normalized vector to set the new camera position.
   projection_vector.multiplyScalar(radius_sphere);
   this.viewer.camera.position.copy(projection_vector);
@@ -355,7 +366,7 @@ ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const link = this.selector.findLinkByModelObj(obj);
   if (link) {
     this.selector.select(link);
-    this.moveCamera(obj)
+    this.moveCameraToObject(obj)
   } else {
     this.selector.clearSelection();
   }
@@ -369,7 +380,7 @@ ModelController.prototype.onTextLinkClick = function onTextLinkClick(e) {
     console.error('Error: no model link corresponding to text ID: ', textId);
     return;
   }
-  this.moveCamera(link.obj)
+  this.moveCameraToObject(link.obj)
   this.selector.select(link);
 };
 
