@@ -329,10 +329,22 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
 ModelController.prototype.moveCamera = function moveCamera(selection){
   var boundingbox = new THREE.Box3();
   boundingbox.setFromObject(selection);
-  //gets the center of the bounding box and puts it in the controls target
-  boundingbox.getCenter(this.viewer.controls.target);
-  this.viewer.camera.lookAt(this.viewer.controls.target)
-  //I don'tthink this object persists in the scene because I don't ever attach it.
+  var projection_vector = new THREE.Vector3();
+  var camera_pos = new THREE.Vector3();
+  camera_pos.copy(this.viewer.camera.position)
+  //get the vector between the centerpoint of the clicked object 
+  //and the center of the camera's orbit.
+  //and normalize it.
+  boundingbox.getCenter(projection_vector);
+  projection_vector.sub(this.viewer.controls.target);
+  projection_vector.normalize();
+  //get the radius of the sphere the camera is orbiting.
+  var radius_sphere = camera_pos.distanceTo(this.viewer.controls.target);
+  //multiply the radius by the normalized vector to set the new camera position.
+  projection_vector.multiplyScalar(radius_sphere);
+  this.viewer.camera.position.copy(projection_vector);
+  this.viewer.controls.update();
+  
 }
 ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const obj = this.viewer.intersectObject(e);
