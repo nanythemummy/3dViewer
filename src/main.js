@@ -180,10 +180,15 @@ ModelViewer.prototype.intersectObject = function intersectObject(mouseDownEvent)
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, this.camera);
   const intersects = raycaster.intersectObject(this.scene, true);
-  if (intersects.length < 1) {
-    return null;
+  var firstintersect = {
+    "object":null,
+    "face":null
   }
-  return intersects[0].object;
+  if (intersects.length > 1) {
+    firstintersect["object"] = intersects[0].object;
+    firstintersect["face"]= intersects[0].face;
+  }
+  return firstintersect
 };
 
 // fixupModelLink munges an incoming model link to make sure that a valid
@@ -326,24 +331,62 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
       });
   });
 };
-ModelController.prototype.moveCamera = function moveCamera(selection){
+ModelController.prototype.moveCameraToFace = function moveCamera(selectedface,selection,altitude){
+  var cameralookatpoint =  new THREE.Vector3();
+  var boundingbox =  new THREE.Box3();
+  boundingbox.setFromObject(selection);
+  boundingbox.getCenter(cameralookatpoint);
+  console.log(cameralookatpoint);
+  var newnormal = (selectedface.normal.clone().multiplyScalar(altitude))
+  var cameramovepoint = cameralookatpoint.clone().add(newnormal)
+  //obj["object"].localToWorld(cameramovepoint)
+  //obj["object"].localToWorld(cameralookatpoint)
+  this.viewer.camera.position.copy(cameramovepoint)
+  this.viewer.camera.lookAt(cameralookatpoint)
+  this.viewer.controls.update()
+}
+ModelController.prototype.moveCameraToObject = function moveCamera(selection){
   var boundingbox = new THREE.Box3();
   boundingbox.setFromObject(selection);
-  //gets the center of the bounding box and puts it in the controls target
-  boundingbox.getCenter(this.viewer.controls.target);
-  this.viewer.camera.lookAt(this.viewer.controls.target)
-  //I don'tthink this object persists in the scene because I don't ever attach it.
+  var projection_vector = new THREE.Vector3();
+  var camera_pos = new THREE.Vector3();
+  camera_pos.copy(this.viewer.camera.position);
+  //get the vector between the centerpoint of the clicked object 
+  //and the center of the camera's orbit.
+  //and normalize it.
+  boundingbox.getCenter(projection_vector);
+
+  //get the radius of the sphere made by the center of the 
+  //main model and the camera position.
+  //makes the assumption that the selection box's parent is the main coffin model.
+  var center_object = new THREE.Vector3();
+  if (selection.parent) {
+    boundingbox.setFromObject(selection.parent);
+    boundingbox.getCenter(center_object);
+  }
+  else{
+    center_object.copy(this.viewer.controller.target);
+  }
+  projection_vector.sub(center_object);
+  projection_vector.normalize();
+  var radius_sphere = camera_pos.distanceTo(center_object);
+  //multiply the radius by the normalized vector to set the new camera position.
+  projection_vector.multiplyScalar(radius_sphere);
+  this.viewer.camera.position.copy(projection_vector);
+  this.viewer.controls.update();
+  
 }
 ModelController.prototype.onViewerClick = function onViewerClick(e) {
-  const obj = this.viewer.intersectObject(e);
+  const intersectedObject = this.viewer.intersectObject(e);
   // FIXME: we only want to clear the selection if we're not
   // repositioning the camera (i.e. dragging), which means
   // this ought to be moved to mouseUp and combined with some
   // more sophisticated mouse logic to detect dragging.
-  const link = this.selector.findLinkByModelObj(obj);
+  
+  const link = this.selector.findLinkByModelObj(intersectedObject["object"]);
   if (link) {
     this.selector.select(link);
-    this.moveCamera(obj)
+    this.moveCameraToFace(intersectedObject["face"], intersectedObject["object"], 1);
   } else {
     this.selector.clearSelection();
   }
@@ -357,7 +400,7 @@ ModelController.prototype.onTextLinkClick = function onTextLinkClick(e) {
     console.error('Error: no model link corresponding to text ID: ', textId);
     return;
   }
-  this.moveCamera(link.obj)
+  this.moveCameraToObject(link.obj)
   this.selector.select(link);
 };
 
