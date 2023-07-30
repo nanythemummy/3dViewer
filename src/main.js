@@ -180,10 +180,15 @@ ModelViewer.prototype.intersectObject = function intersectObject(mouseDownEvent)
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, this.camera);
   const intersects = raycaster.intersectObject(this.scene, true);
-  if (intersects.length < 1) {
-    return null;
+  var firstintersect = {
+    "object":null,
+    "face":null
   }
-  return intersects[0].object;
+  if (intersects.length > 1) {
+    firstintersect["object"] = intersects[0].object;
+    firstintersect["face"]= intersects[0].face;
+  }
+  return firstintersect
 };
 
 // fixupModelLink munges an incoming model link to make sure that a valid
@@ -326,6 +331,20 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
       });
   });
 };
+ModelController.prototype.moveCameraToFace = function moveCamera(selectedface,selection,altitude){
+  var cameralookatpoint =  new THREE.Vector3();
+  var boundingbox =  new THREE.Box3();
+  boundingbox.setFromObject(selection);
+  boundingbox.getCenter(cameralookatpoint);
+  console.log(cameralookatpoint);
+  var newnormal = (selectedface.normal.clone().multiplyScalar(altitude))
+  var cameramovepoint = cameralookatpoint.clone().add(newnormal)
+  //obj["object"].localToWorld(cameramovepoint)
+  //obj["object"].localToWorld(cameralookatpoint)
+  this.viewer.camera.position.copy(cameramovepoint)
+  this.viewer.camera.lookAt(cameralookatpoint)
+  this.viewer.controls.update()
+}
 ModelController.prototype.moveCameraToObject = function moveCamera(selection){
   var boundingbox = new THREE.Box3();
   boundingbox.setFromObject(selection);
@@ -358,15 +377,16 @@ ModelController.prototype.moveCameraToObject = function moveCamera(selection){
   
 }
 ModelController.prototype.onViewerClick = function onViewerClick(e) {
-  const obj = this.viewer.intersectObject(e);
+  const intersectedObject = this.viewer.intersectObject(e);
   // FIXME: we only want to clear the selection if we're not
   // repositioning the camera (i.e. dragging), which means
   // this ought to be moved to mouseUp and combined with some
   // more sophisticated mouse logic to detect dragging.
-  const link = this.selector.findLinkByModelObj(obj);
+  
+  const link = this.selector.findLinkByModelObj(intersectedObject["object"]);
   if (link) {
     this.selector.select(link);
-    this.moveCameraToObject(obj)
+    this.moveCameraToFace(intersectedObject["face"], intersectedObject["object"], 1);
   } else {
     this.selector.clearSelection();
   }
