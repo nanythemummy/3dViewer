@@ -70,7 +70,7 @@ div.text, div.frag {
 }
 
 div.text.selected, div.frag.selected {
-  background-color: #9e9989;  
+  background-color: #efeadd;  
   padding: 3px; /* subtract border from padding */
 }
 
