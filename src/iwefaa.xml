@@ -45,14 +45,9 @@
     <link name="hitbox_text_22" ref="text22"/>
   </model>
   <description>
-    <contents xml:lang="en">
-      <p>This coffin was bought on the antiquities market by George Reisner for Phoebe A Hearst, and at the beginning of this project we knew nothing else about it. However, its decorative program contains a distinctive scene which led us to its origin. The motif of Osiris in a thicket of trees on the bottom register of this coffin is characteristic of a series of coffins from the city of Akhmim<sup>1</sup>. It is a strong parallel with a group of other coffins from Akhmim, including the cartonnage of Peniu in the Roemer-Pelizaeus Museum in Hildesheim<sup>2</sup>, and the coffin of Nespaqashuty in Detmold, Germany<sup>3</sup>. All of these coffins can be dated to the 25th and 26th dynasty stylistically. Iwefaa's coffin has a few motifs that are, as far as we know, unique. These include the depiction of the Four Sons of Horus as nude, animal-headed children in the top register, and the mummiform "solarized" Osiris figure on the back.</p>
-      <p>The inscriptions on Iwefaa's coffins don't give him any titles, and the name of his father is unclear. It may be "Qashuty". The Hearst Museum is also in possession of remains of a bead-net from his mummy<sup>4</sup>, and the mummy itself<sup>5</sup>. We can tell from examining his mummy that he was probably between 40 and 60 years old and had a very slight build<sup>
-        <span style="font-size: 10.84px;">6</span>
-      </sup>.
-    </p>
-    <p>Over the course of this project, we made the exciting discovery that the Hearst also seems to have <a href="/coffins/pahma-6-19912"> Iwefaa's outer coffin </a> in its possession. Perhaps these other items will someday give us a clue to Iwefaa's identity in relation to the nobility at Akhmim.</p>
-  </contents>
+    <contents >
+    this is some simple text
+   </contents>
 </description>
 <texts>
   <text id="text1">

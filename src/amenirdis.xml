@@ -6,9 +6,9 @@
     <link name="hitbox_text_1" ref="text1"/>
   </model>
   <description>
-    <contents xml:lang="en">
-      <p>This coffin is one of a pair which belonged to a woman named Amenirdis. This is her inner, anthropoid coffin, which was nested inside of her <a href="/coffins/pahma-5-1404ab">four-posted outer coffin</a>. William Randolph Hearst brought both of Amenirdis' coffins back from Egypt in February of 1903. Amenirdis' mummy is not in the museum's collection and her ultimate fate is a mystery. We suspect because of her name, titles, and the style of her coffins that Amenirdis lived in the area of Thebes during the 25th or 26th dynasty. Amenirdis' name is common for this time period, but we have not yet found another monument which may belong to this particular Amenirdis, who is the daughter of a lector priest named Iwefaa (also a common name). We are still researching Amenirdis' background and family, so check back for updates.</p>
-    </contents>
+    <contents >
+     this is some simple text.    
+     </contents>
   </description>
   <texts>
     <text id="text1">
