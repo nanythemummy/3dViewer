@@ -12,8 +12,10 @@
           <link name="hitbox_text_4" ref="Text12"/>
      </model>
      <description>
-          <contents xml:lang="en" >
-               this is some simple text.      
+          <contents>
+               <p>by Matt Whealton</p>
+               <p>The sarcophagus of <a href="https://chrysler.emuseum.com/objects/11479/sarcophagus-of-psamtikseneb">Psamtik-Seneb (CMA 71.2254) </a>(Harrison 2007) was excavated by Henri Gaulthier at Heliopolis in 1931 (Gauthier 1933). The sarcophagus was found looted, with basin intact but the cover broken into a number of pieces. Both are decorated and inscribed with funerary texts. The piece eventually entered the art market and was restored at least twice after excavation<sup>1</sup>. It was purchased at auction by Walter P. Chrysler in 1971 and subsequently gifted to the <a href="https://chrysler.org/">Chrysler Museum</a> of Art in Norfolk, VA.</p>
+               <p>Psamtik-Seneb himself is not yet known from other records<sup>2</sup>. Although the inscriptions are transcribed in the original archeological publication, initial transliterations and translation were made of the basin texts by James Allen (Allen 1987). A complete translation of all the texts is presented publicly here for the first time<sup>3</sup>. Psamtik-Seneb lived during the 26th Dynasty. He worked as a type of physician and ritualist who provided charms to prevent injury by scorpions and other venomous creatures and treated the wounds of those stung or bitten. His title is Scorpion Controller (xrp-sA-srq.t) in Egyptian. The sarcophagus is stylistically very similar to a number of 26th Dynasty sarcophagi found at Giza, Saqqara, and Heliopolis. Two comparable examples are the sarcophagi of <a href="https://3dcoffins.berkeley.edu/coffins/pahma-5-522">Psamtik</a> at the <a href="https://portal.hearstmuseum.berkeley.edu/catalog/d5eb08d9-69b5-4121-8548-d5a88a9521f2">Phoebe A. Hearst Museum of Anthropology</a> in Berkeley, CA and of <a href="https://www.britishmuseum.org/collection/object/Y_EA1384">Pakap</a> at the British Museum, London. They were found in Saqqara and Giza, respectively, and are inscribed with similar texts as Psamtik-Seneb’s sarcophagus (Patanè 1992, von Falck 2001, Altmann-Wendling, Baumann et al. 2018).</p>   
           </contents>
      </description>
      <texts>

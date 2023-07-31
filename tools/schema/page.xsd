@@ -61,25 +61,16 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="contents" minOccurs="1" >
+        <xs:element name="contents" minOccurs="1">
           <xs:annotation>
             <xs:documentation>
-            FUCK THIS.
+            The contents of the description. It can contain html.
             </xs:documentation>
           </xs:annotation>
-          <xs:complexType>
-            <xs:simpleContent>
-              <xs:extension base="xs:string">
-                <xs:attribute ref="xml:lang">
-                  <xs:annotation>
-                    <xs:documentation>
-                The language the description is in.
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:attribute>
-
-              </xs:extension>
-            </xs:simpleContent>
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:any minOccurs="0"/>
+            </xs:sequence>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
@@ -94,9 +85,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-
         <xs:element ref="link" minOccurs="0" maxOccurs="unbounded"/>
-
       </xs:sequence>
 
       <xs:attribute name="src" type="xs:string">

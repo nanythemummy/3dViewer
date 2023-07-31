@@ -70,8 +70,11 @@
           <div id="loading"></div>
           <div id="viewer"></div>
         </div>
-        <div id="right">
+        <div id="right-bottom">
           <xsl:apply-templates select="texts"/>
+        </div>
+        <div id="right-top">
+          <xsl:apply-templates select="description"/>
         </div>
         <script src="js/three.min.js"/>
         <script src="js/loaders/GLTFLoader.js"/>
@@ -105,6 +108,16 @@
       <j:string key="ref"><xsl:value-of select="@ref"/></j:string>
     </j:map>
   </xsl:template>
+
+  <xsl:template match="description" mode="codegen">
+    <h2> Description </h2>
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="contents">
+    <xsl:copy-of select="*" copy-namespaces="no"/>
+  </xsl:template>
+
+
 
   <xsl:template match="texts">
     <h2>Texts</h2>
