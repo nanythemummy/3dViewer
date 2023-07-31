@@ -23,7 +23,7 @@ body {
   width: 50%;
   height: 100%;
   background-color: black;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
 }
 
@@ -53,11 +53,15 @@ body {
   float: left;
   width: 50%;
   height: 100%;
-  background-color:#d9ceb2;
-  color: #FFFFDB;
+  background-color:#fafafa;
+  color: #000000;
   position: relative;
   overflow: auto;
 }
+#right-top, #right-bottom{
+  margin: 3em;
+}
+
 
 div.text, div.frag {
   margin: 0px 3px;
