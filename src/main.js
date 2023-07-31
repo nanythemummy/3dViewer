@@ -232,7 +232,7 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
 ModelLinkSelector.prototype.select = function select(link) {
   this.clearSelection();
   this.selection = link.obj;
-  this.selection.material.opacity = 0.5;
+  this.selection.material.opacity = 0.25;
   this.selectedDiv = document.getElementById(link.ref);
   if (this.selectedDiv) {
     this.selectedDiv.classList.add('selected');
@@ -331,16 +331,14 @@ ModelController.prototype.loadModel = function loadModel(modelname) {
       });
   });
 };
-ModelController.prototype.moveCameraToFace = function moveCamera(selectedface,selection,altitude){
+ModelController.prototype.moveCameraToFace = function moveCamera(selectedface,selection){
   var cameralookatpoint =  new THREE.Vector3();
   var boundingbox =  new THREE.Box3();
   boundingbox.setFromObject(selection);
   boundingbox.getCenter(cameralookatpoint);
-  console.log(cameralookatpoint);
-  var newnormal = (selectedface.normal.clone().multiplyScalar(altitude))
-  var cameramovepoint = cameralookatpoint.clone().add(newnormal)
-  //obj["object"].localToWorld(cameramovepoint)
-  //obj["object"].localToWorld(cameralookatpoint)
+  var cam_altitude = this.viewer.camera.position.distanceTo(this.viewer.controls.target)
+  var newnormal = (selectedface.normal.clone().multiplyScalar(cam_altitude))
+  var cameramovepoint = this.viewer.controls.target.clone().add(newnormal)
   this.viewer.camera.position.copy(cameramovepoint)
   this.viewer.camera.lookAt(cameralookatpoint)
   this.viewer.controls.update()
@@ -365,7 +363,7 @@ ModelController.prototype.moveCameraToObject = function moveCamera(selection){
     boundingbox.getCenter(center_object);
   }
   else{
-    center_object.copy(this.viewer.controller.target);
+    center_object.copy(this.viewer.controls.target);
   }
   projection_vector.sub(center_object);
   projection_vector.normalize();
@@ -386,7 +384,7 @@ ModelController.prototype.onViewerClick = function onViewerClick(e) {
   const link = this.selector.findLinkByModelObj(intersectedObject["object"]);
   if (link) {
     this.selector.select(link);
-    this.moveCameraToFace(intersectedObject["face"], intersectedObject["object"], 1);
+    this.moveCameraToFace(intersectedObject["face"], intersectedObject["object"]);
   } else {
     this.selector.clearSelection();
   }

@@ -46,7 +46,7 @@ def xslTransform(config, stylesheet, src, dest, includes=False):
     if includes:
         description += ', with XIncludes'
     log.debug('Transform: %s -> (%s) -> %s', src, description, dest)
-    cmd = ['java', '-jar', 'tools/saxon9he.jar', '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest]
+    cmd = ['java', '-jar', 'tools/saxon-he-12.3.jar', '-xsl:' + stylesheet, '-s:' + src, '-o:' + dest]
     if includes:
         cmd.append('-xi')
     if config.verbose:

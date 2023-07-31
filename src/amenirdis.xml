@@ -5,6 +5,11 @@
   <model src="${assets}/amenirdis/amenirdis.gltf" dest="models/amenirdis.gltf">
     <link name="hitbox_text_1" ref="text1"/>
   </model>
+  <description>
+    <contents >
+     this is some simple text.    
+     </contents>
+  </description>
   <texts>
     <text id="text1">
       <desc>Leg and foot registers, center column</desc>
