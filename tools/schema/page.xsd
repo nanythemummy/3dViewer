@@ -20,7 +20,7 @@
           </xs:annotation>
         </xs:element>
 
-         <xs:element name="creator" type="xs:string">
+        <xs:element name="creator" type="xs:string">
           <xs:annotation>
             <xs:documentation>
             The person who translated the texts.
@@ -29,6 +29,7 @@
         </xs:element>
 
         <xs:element ref="model"/>
+        <xs:element ref="description"/>
         <xs:element ref="texts" minOccurs="0" maxOccurs="1"/>
 
       </xs:sequence>
@@ -49,6 +50,33 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="description">
+    <xs:annotation>
+      <xs:documentation>
+        "A description of the item on this page. Contains content blocks, which can contain html."
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="contents">
+
+          <xs:complexType>
+                    <xs:attribute ref="xml:lang">
+            <xs:annotation>
+              <xs:documentation>
+        "Language the description is in."
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+            <xs:sequence>
+              <xs:any minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 
