@@ -102,11 +102,13 @@ def copyAssets(config):
             log.debug('Copying: %s -> %s', src, dest)
             shutil.copy(src, dest)
 
-    # This is awkward: I have main.js in src/ to distinguish it from
-    # third-party code, but I want to treat it as a static asset for
-    # now! Just handle this case specially.
-    shutil.copy(os.path.join('src', 'main.js'), os.path.join(config.distdir, 'js', 'main.js'))
-
+    #there may be several first party javascript files in the dist directory.
+    #scoop those up and copy them over.
+    log.info('Copying javascript...')
+    listjs = [fl for fl in os.listdir('src') if os.path.splitext(fl)[1]=='.js']
+    for item in listjs:
+        shutil.copy(os.path.join('src', item), os.path.join(config.distdir, 'js', item))
+    
     log.info('Copying models...')
     # Models could in theory be copied wholesale from our assets
     # repository, but I'll do a somewhat more streamlined path and
