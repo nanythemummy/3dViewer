@@ -232,7 +232,7 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
 ModelLinkSelector.prototype.select = function select(link) {
   this.clearSelection();
   this.selection = link.obj;
-  this.selection.material.opacity = 0.25;
+  this.selection.material.opacity = 0.10;
   this.selectedDiv = document.getElementById(link.ref);
   if (this.selectedDiv) {
     this.selectedDiv.classList.add('selected');
@@ -291,6 +291,7 @@ ModelLinkSelector.prototype.findLinkByRef = function findLinkByRef(textId) {
 
 // ModelController manages a model and its viewer.
 function ModelController(modelName, modelLinks) {
+
   this.loadingScreen = new LoadingScreen();
   this.viewer = new ModelViewer();
   this.selector = new ModelLinkSelector(modelLinks);
@@ -374,19 +375,21 @@ ModelController.prototype.moveCameraToObject = function moveCamera(selection){
   this.viewer.controls.update();
   
 }
+
 ModelController.prototype.onViewerClick = function onViewerClick(e) {
-  const intersectedObject = this.viewer.intersectObject(e);
+  
   // FIXME: we only want to clear the selection if we're not
   // repositioning the camera (i.e. dragging), which means
   // this ought to be moved to mouseUp and combined with some
   // more sophisticated mouse logic to detect dragging.
-  
-  const link = this.selector.findLinkByModelObj(intersectedObject["object"]);
-  if (link) {
-    this.selector.select(link);
-    this.moveCameraToFace(intersectedObject["face"], intersectedObject["object"]);
-  } else {
+  if(e.altKey){
     this.selector.clearSelection();
+    const intersectedObject = this.viewer.intersectObject(e);
+    const link = this.selector.findLinkByModelObj(intersectedObject["object"]);
+    if (link) {
+      this.selector.select(link);
+      this.moveCameraToFace(intersectedObject["face"], intersectedObject["object"]);
+    }
   }
 };
 

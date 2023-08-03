@@ -64,7 +64,7 @@
     <html>
       <head>
         <title>
-          <xsl:text disable-output-escaping="yes">3D Coffins             <![CDATA[&ndash;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">3D Coffins <![CDATA[&ndash;]]></xsl:text>
           <xsl:value-of select="name"/>
         </title>
         <meta name="DC.Creator" value="{creator}"/>
@@ -72,6 +72,30 @@
         <link rel="stylesheet" type="text/css" href="css/viewer.css"/>
       </head>
       <body>
+        <nav>
+          <ul>
+            <li>
+              <button id="control_button" onclick="overlay_show()">Controls</button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Eventually, these strings need to be placed somewhere where they can be localized.-->
+        <div id="controls_overlay" onclick="overlay_hide()">
+          <h1>Controls</h1>
+          <ul>
+            <li>Hold the Alt (Option on a mac) key and left-click an area to highlight a text and see its translation in the panel to the right.
+            </li>
+            <li>Left click and drag to rotate.</li>
+            <li>
+              <p>Shift+click or right click and drag to pan right and left.
+              The arrow keys on your keyboard will also pan. </p>
+            </li>
+            <li>
+              <p>To dolly or zoom, you can use the middle mouse button, 
+            or you can pinch two fingers on your Mac mouse or trackpad.</p>
+            </li>
+          </ul>
+        </div>
         <div id="left">
           <div id="loading"></div>
           <div id="viewer"></div>
@@ -85,7 +109,7 @@
               <xsl:value-of select="creator" />
             </h4>
             <p>
-            <xsl:apply-templates select="description"/>
+              <xsl:apply-templates select="description"/>
             </p>
           </div>
           <div id="right-bottom">
@@ -96,6 +120,7 @@
         <script src="js/loaders/GLTFLoader.js"/>
         <script src="js/controls/OrbitControls.js"/>
         <script src = "js/main.js"/>
+        <script src = "js/page.js" />
         <xsl:apply-templates select="model" mode="codegen"/>
       </body>
     </html>
@@ -138,7 +163,7 @@
   <xsl:apply-templates/>
 </xsl:template>
 <xsl:template match="contents">
-  <xsl:copy-of select="*" copy-namespaces="no"/>
+  <xsl:copy-of select="node()" copy-namespaces="no"/>
 </xsl:template>
 
 
