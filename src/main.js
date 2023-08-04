@@ -232,7 +232,7 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
 ModelLinkSelector.prototype.select = function select(link) {
   this.clearSelection();
   this.selection = link.obj;
-  this.selection.material.opacity = 0.10;
+  this.selection.material.opacity = 0.20;
   this.selectedDiv = document.getElementById(link.ref);
   if (this.selectedDiv) {
     this.selectedDiv.classList.add('selected');
