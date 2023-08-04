@@ -64,7 +64,7 @@
     <html>
       <head>
         <title>
-          <xsl:text disable-output-escaping="yes">3D Coffins <![CDATA[&ndash;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">3D Coffins                                                 <![CDATA[&ndash;]]></xsl:text>
           <xsl:value-of select="name"/>
         </title>
         <meta name="DC.Creator" value="{creator}"/>
@@ -114,6 +114,10 @@
           </div>
           <div id="right-bottom">
             <xsl:apply-templates select="texts"/>
+
+          </div>
+          <div id="footnotes">
+            <xsl:apply-templates select="footnotes"/>
           </div>
         </div>
         <script src="js/three.min.js"/>
@@ -165,6 +169,20 @@
 <xsl:template match="contents">
   <xsl:copy-of select="node()" copy-namespaces="no"/>
 </xsl:template>
+<xsl:template match="footnotes" mode="codegen">
+  <h2>Notes</h2>
+  <ul>
+     <xsl:apply-templates/>
+  </ul>
+</xsl:template>
+<xsl:template match="fn" mode="codegen">
+  <li id = "@id">
+    <sup>
+      <xsl:number format="1" level="single" from="footnotes" count="fn"/>
+    </sup>
+  </li>
+</xsl:template>  
+
 
 
 
