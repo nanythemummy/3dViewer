@@ -175,11 +175,12 @@
      <xsl:apply-templates/>
   </ul>
 </xsl:template>
-<xsl:template match="fn" mode="codegen">
-  <li id = "@id">
+<xsl:template match="fn">
+  <li id = "{@id}">
     <sup>
       <xsl:number format="1" level="single" from="footnotes" count="fn"/>
     </sup>
+    <xsl:copy-of select="node()"/>
   </li>
 </xsl:template>  
 
