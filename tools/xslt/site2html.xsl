@@ -64,7 +64,7 @@
     <html>
       <head>
         <title>
-          <xsl:text disable-output-escaping="yes">3D Coffins                                                 <![CDATA[&ndash;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">3D Coffins                                                                                                 <![CDATA[&ndash;]]></xsl:text>
           <xsl:value-of select="name"/>
         </title>
         <meta name="DC.Creator" value="{creator}"/>
@@ -72,29 +72,36 @@
         <link rel="stylesheet" type="text/css" href="css/viewer.css"/>
       </head>
       <body>
-        <nav>
-          <ul>
-            <li>
-              <button id="control_button" onclick="overlay_show()">Controls</button>
-            </li>
-          </ul>
-        </nav>
+        <div id="nav_container">
+          <nav>
+            <ul>
+              <li>
+                <button id="control_button" onclick="overlay_show()" alt="Control Help"></button>
+              </li>
+            </ul>
+          </nav>
+        </div>
         <!-- Eventually, these strings need to be placed somewhere where they can be localized.-->
         <div id="controls_overlay" onclick="overlay_hide()">
-          <h1>Controls</h1>
-          <ul>
-            <li>Hold the Alt (Option on a mac) key and left-click an area to highlight a text and see its translation in the panel to the right.
-            </li>
-            <li>Left click and drag to rotate.</li>
-            <li>
-              <p>Shift+click or right click and drag to pan right and left.
-              The arrow keys on your keyboard will also pan. </p>
-            </li>
-            <li>
-              <p>To dolly or zoom, you can use the middle mouse button, 
-            or you can pinch two fingers on your Mac mouse or trackpad.</p>
-            </li>
-          </ul>
+          <div id="controls_container">
+            <h1>Controls</h1>
+            <ul>
+
+              <li>    
+                 Hold the Alt (Option on a mac) key and left-click an area to highlight a text and see its translation in the panel to the right.
+              </li>
+
+              <li>Left click and drag to rotate.</li>
+              <li>
+                Shift+click or right click and drag to pan right and left.
+                The arrow keys on your keyboard will also pan. 
+              </li>
+              <li>
+                To dolly or zoom, you can use the middle mouse button, 
+              or you can pinch two fingers on your Mac mouse or trackpad.
+              </li>
+            </ul>
+          </div>
         </div>
         <div id="left">
           <div id="loading"></div>
@@ -111,14 +118,16 @@
             <p>
               <xsl:apply-templates select="description"/>
             </p>
+            <p>
+              <xsl:apply-templates select="texts"/>
+            </p>
           </div>
           <div id="right-bottom">
-            <xsl:apply-templates select="texts"/>
+            <div id="footnotes">
+              <xsl:apply-templates select="footnotes"/>
+            </div>
+          </div>
 
-          </div>
-          <div id="footnotes">
-            <xsl:apply-templates select="footnotes"/>
-          </div>
         </div>
         <script src="js/three.min.js"/>
         <script src="js/loaders/GLTFLoader.js"/>
@@ -169,10 +178,10 @@
 <xsl:template match="contents">
   <xsl:copy-of select="node()" copy-namespaces="no"/>
 </xsl:template>
-<xsl:template match="footnotes" mode="codegen">
+<xsl:template match="footnotes">
   <h2>Notes</h2>
   <ul>
-     <xsl:apply-templates/>
+    <xsl:apply-templates/>
   </ul>
 </xsl:template>
 <xsl:template match="fn">
@@ -182,7 +191,7 @@
     </sup>
     <xsl:copy-of select="node()"/>
   </li>
-</xsl:template>  
+</xsl:template>
 
 
 
