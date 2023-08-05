@@ -7,6 +7,27 @@
 html {
   height: 100%;
 }
+#nav_container{
+  height:5%;
+  width:100%
+}
+nav{
+  display:inline;
+}
+nav ul{
+  list-style: none;
+}
+nav #control_button{
+  float:right;
+  background-color: #b7b6b6;
+  padding:2%;
+  background: no-repeat  center url("/img/icons/settings.svg");
+  border:none;
+  margin: 0em 1em 0em 1em;
+  color: #111827;
+  cursor: pointer;
+}
+
 
 body {
   font-family:GentiumPlusW;
@@ -21,8 +42,8 @@ body {
 
 #left {
   float: left;
-  width: 50%;
-  height: 90%;
+  width: 60%;
+  height: 95%;
   background-color: black;
   overflow: auto;
   position: relative;
@@ -32,6 +53,8 @@ body {
   display:none;
   width:100%;
   height:100%;
+  padding-top: 10%;
+  padding-left: 20%;
   top:0;
   left:0;
   right:0;
@@ -40,6 +63,20 @@ body {
   color:white;
   cursor:pointer;
   z-index:5;
+}
+#controls_container{
+  background-color: #00000098;
+  max-width: 60%;
+  padding:3%
+}
+#controls_container h1{
+  text-align: center;
+}
+#controls_container ul{
+  list-style:circle;
+}
+#controls_container li{
+  margin: 1em 0em 1em 0em;
 }
 #viewer {
   position: absolute;
@@ -64,16 +101,21 @@ body {
 }
 
 #right {
+  font-size: medium;
   float: left;
-  width: 50%;
-  height: 90%;
-  background-color:#fafafa;
+  width: 40%;
+  height: 95%;
+  background-color:#ffffff;
   color: #000000;
   position: relative;
   overflow: auto;
 }
 #right-top, #right-bottom{
   margin: 3em;
+}
+
+#footnotes ul{
+  list-style: none;
 }
 
 
@@ -88,10 +130,7 @@ div.text.selected, div.frag.selected {
   padding: 3px; /* subtract border from padding */
 }
 
-.hi-container {
 
-  padding: 0.5em 1em;
-}
 
 /* hieroglyphic image (generally drawn in black) */
 img.hi {

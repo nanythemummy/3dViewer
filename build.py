@@ -115,13 +115,15 @@ def copyAssets(config):
     # follow model definitions to figure out which models are
     # actually needed.
     modelsdestdir = os.path.join(config.distdir, 'models')
+
     os.makedirs(modelsdestdir)
     for model in site.findall('.//model'):
         copyElementAsset(config, model)
 
     log.info('Copying hieroglyphics...')
     imgdestdir = os.path.join(config.distdir, 'img')
-    os.makedirs(imgdestdir)
+    if not os.path.exists(imgdestdir):
+        os.makedirs(imgdestdir)
     for himg in site.findall('.//himg'):
         copyElementAsset(config, himg)
 
