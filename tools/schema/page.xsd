@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+  <xs:include schemaLocation="text.xsd"/>
 
   <xs:element name="page">
     <xs:annotation>
@@ -31,6 +32,7 @@
         <xs:element ref="model"/>
         <xs:element ref="description"/>
         <xs:element ref="texts" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="footnotes" minOccurs="0"/>
 
       </xs:sequence>
 
@@ -56,24 +58,47 @@
   <xs:element name="description">
     <xs:annotation>
       <xs:documentation>
-        "A description of the item on this page. Contains content blocks, which can contain html."
+        A description of the item on this page. Contains content blocks, which can contain html.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="contents" minOccurs="1">
+        <xs:element name="contents" minOccurs="1" type="text-markup">
           <xs:annotation>
             <xs:documentation>
             The contents of the description. It can contain html.
             </xs:documentation>
           </xs:annotation>
-          <xs:complexType mixed="true">
-            <xs:sequence>
-              <xs:any minOccurs="0"/>
-            </xs:sequence>
-          </xs:complexType>
         </xs:element>
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="footnotes">
+    <xs:annotation>
+      <xs:documentation>
+        Footnotes to accompany the description and texts.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="fn" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fn">
+    <xs:annotation>
+      <xs:documentation>
+        A footnote to accompany the description and texts.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="text-markup">
+          <xs:attribute name="id" type="xs:ID"/>
+        </xs:extension>
+      </xs:complexContent>
     </xs:complexType>
   </xs:element>
 
