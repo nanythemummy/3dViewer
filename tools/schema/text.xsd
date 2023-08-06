@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation>
+      HTML-like text markup elements that are suitable for use in the page description and texts.
+      A minimal set of attributes and markup has been defined for now, based on
+      https://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd .
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="a" type="anchor"/>
+  <xs:element name="p" type="inline-with-attrs"/>
+  <xs:element name="em" type="inline-with-attrs"/>
+  <xs:element name="sup" type="inline-with-attrs"/>
+  <xs:element name="span" type="inline-with-attrs"/>
+
+  <xs:complexType name="text-markup" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="a"/>
+      <xs:element ref="p"/>
+      <xs:element ref="em"/>
+      <xs:element ref="sup"/>
+      <xs:element ref="span"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="anchor" mixed="true">
+    <xs:group ref="inline-no-a" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="href" type="xs:anyURI"/>
+  </xs:complexType>
+
+  <xs:complexType name="inline-with-attrs" mixed="true">
+    <xs:group ref="inline" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:attributeGroup ref="attrs"/>
+  </xs:complexType>
+
+  <xs:complexType name="inline" mixed="true">
+    <xs:group ref="inline" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:complexType>
+
+  <xs:complexType name="inline-no-a" mixed="true">
+    <xs:group ref="inline-no-a" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:complexType>
+
+  <xs:group name="inline">
+    <xs:choice>
+      <xs:element ref="a"/>
+      <xs:group ref="inline-no-a"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="inline-no-a">
+    <xs:choice>
+      <xs:element ref="em"/>
+      <xs:element ref="sup"/>
+      <xs:element ref="span"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:attributeGroup name="attrs">
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="class" type="xs:NMTOKENS"/>
+    <xs:attribute name="style" type="xs:string"/>
+    <xs:attribute ref="xml:lang"/>
+    <xs:attribute name="dir">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ltr"/>
+          <xs:enumeration value="rtl"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+</xs:schema>
