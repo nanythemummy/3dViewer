@@ -185,6 +185,10 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="fnref">
+    <a id="fnref{@num}" href="#fn{@num}"><sup><xsl:value-of select="@num"/></sup></a>
+  </xsl:template>
+
   <xsl:template match="footnotes">
     <h2>Notes</h2>
     <ul>
@@ -193,11 +197,10 @@
   </xsl:template>
 
   <xsl:template match="fn">
-    <li id = "{@id}">
-      <sup>
-        <xsl:number format="1" level="single" from="footnotes" count="fn"/>
-      </sup>
-      <xsl:copy-of select="node()"/>
+    <li id = "fn{@num}">
+      <sup><xsl:value-of select="@num"/></sup><xsl:text> </xsl:text>
+      <xsl:apply-templates/>
+      <xsl:text> </xsl:text><a href="#fnref{@num}">&#8617;</a>
     </li>
   </xsl:template>
 

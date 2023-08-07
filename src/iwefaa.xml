@@ -50,10 +50,10 @@
         This coffin was bought on the antiquities market by George Reisner for Phoebe A Hearst, and at the beginning
         of this project we knew nothing else about it. However, its decorative program contains a distinctive scene
         which led us to its origin. The motif of Osiris in a thicket of trees on the bottom register of this coffin
-        is characteristic of a series of coffins from the city of Akhmim<ref id="fn1">1</ref>. It is a strong parallel
+        is characteristic of a series of coffins from the city of Akhmim<fnref num="1"/>. It is a strong parallel
         with a group of other coffins from Akhmim, including the cartonnage of Peniu in the Roemer-Pelizaeus Museum in
-        Hildesheim<sup>2</sup>, and the coffin of Nespaqashuty in Detmold, Germany<sup>3</sup>. All of these coffins
-        can be dated to the 25th and 26th dynasty stylistically.
+        Hildesheim<fnref num="2"/>, and the coffin of Nespaqashuty in Detmold, Germany<fnref num="3"/>. All of
+        these coffins can be dated to the 25th and 26th dynasty stylistically.
       </p>
       <p>
         Iwefaa's coffin has a few motifs that are, as far as we know, unique. These include the depiction of the Four
@@ -62,9 +62,9 @@
       </p>
       <p>
         The inscriptions on Iwefaa's coffins don't give him any titles, and the name of his father is unclear. It may
-        be "Qashuty". The Hearst Museum is also in possession of remains of a bead-net from his mummy<sup>4</sup>,
-        and the mummy itself<sup>5</sup>. We can tell from examining his mummified body that he was probably between
-        40 and 60 years old and had a very slight build<sup>6</sup>.
+        be "Qashuty". The Hearst Museum is also in possession of remains of a bead-net from his
+        mummy<fnref num="4"/>, and the mummy itself<fnref num="5"/>. We can tell from examining his mummified
+        body that he was probably between 40 and 60 years old and had a very slight build<fnref num="6"/>.
       </p>
       <p>
         Over the course of this project, we made the exciting discovery that the Hearst also seems to have
@@ -367,16 +367,16 @@
     </text>
   </texts>
   <footnotes>
-    <fn id="fn1">
+    <fn num="1">
       Taylor, J. H. (2009). Coffins as Evidence for a “North-South Divide” in the 22nd-25th Dynasties. In G. P. F.
       Broekman, R. J. Demarée, &amp; O. E. Kaper (Eds.), The Libyan Period in Egypt (pp. 375-415). Leuven: Peeters
       p 379.
     </fn>
-    <fn id="fn2">
+    <fn num="2">
       You can see a picture of the coffin of Peniu in  Germer, R. (1997). Mummies: Life after Death in Ancient Egypt
       (F. Elliot, Trans.). New York: Prestel. 69-72
     </fn>
-    <fn id="fn3">
+    <fn num="3">
       Probably the most published coffin in this group is that of Nespaqashuty in Detmold. There is a whole monograph
       on this coffin-set: Brech-Neldner, R., &amp; Budde, D. (1992). Der Mumiensarkophag des Nes-pa-kai-schuti.
       Detmold: Lippisches Landesmuseum. It was also part of the "Mummies of the World" Expedition and is discussed in
@@ -384,9 +384,9 @@
       Medina, K. Taylor, &amp; H. Gill-Frerking, Trans.). In A. Wieczorek &amp; W. Rosendahl (Eds.), Mummies of the
       World (pp. 329-333). New York: Prestel.
     </fn>
-    <fn id="fn4">PAHMA 6-199336 A,B</fn>
-    <fn id="fn5">PAHMA 12-11039</fn>
-    <fn id="fn6">
+    <fn num="4">PAHMA 6-199336 A,B</fn>
+    <fn num="5">PAHMA 12-11039</fn>
+    <fn num="6">
       Based on examination of the visible parts of the skeleton: the cranial sutures, the ulna and radius, and the
       ribs.
     </fn>

@@ -90,13 +90,16 @@
   <xs:element name="fn">
     <xs:annotation>
       <xs:documentation>
-        A footnote to accompany the description and texts.
+        A footnote to accompany the description and texts. The "num" property
+        is the number of the footnote, and will be used as an ID to resolve
+        "fnref" references.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:complexContent>
-        <xs:extension base="text-markup">
-          <xs:attribute name="id" type="xs:ID"/>
+        <xs:extension base="inline">
+          <xs:attributeGroup ref="attrs"/>
+          <xs:attribute name="num" type="xs:positiveInteger"/>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
