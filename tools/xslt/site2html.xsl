@@ -179,7 +179,7 @@
   </xsl:template>
 
   <!-- Copy through certain HTML-like markup as-is -->
-  <xsl:template match="p|a|em|sup|span">
+  <xsl:template match="p|div|a|em|span">
     <xsl:copy>
       <xsl:apply-templates/>
     </xsl:copy>

@@ -24,6 +24,7 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="p" type="inline"/>
+  <xs:element name="div" type="text-markup"/>
   <xs:element name="em" type="inline"/>
   <xs:element name="sup" type="inline"/>
   <xs:element name="span" type="inline"/>
@@ -79,6 +80,7 @@
     </xs:annotation>
     <xs:choice>
       <xs:element ref="p"/>
+      <xs:element ref="div"/>
       <xs:group ref="inline"/>
     </xs:choice>
   </xs:group>
@@ -107,7 +109,6 @@
       <xs:element ref="al"/>
       <xs:element ref="em"/>
       <xs:element ref="fnref"/>
-      <xs:element ref="sup"/>
       <xs:element ref="span"/>
     </xs:choice>
   </xs:group>
