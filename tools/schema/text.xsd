@@ -18,11 +18,8 @@
 
   <xs:complexType name="text-markup" mixed="true">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element ref="a"/>
       <xs:element ref="p"/>
-      <xs:element ref="em"/>
-      <xs:element ref="sup"/>
-      <xs:element ref="span"/>
+      <xs:group ref="inline"/>
     </xs:choice>
   </xs:complexType>
 
