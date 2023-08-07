@@ -175,7 +175,14 @@
   </xsl:template>
 
   <xsl:template match="contents">
-    <xsl:copy-of select="node()" copy-namespaces="no"/>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <!-- Copy through certain HTML-like markup as-is -->
+  <xsl:template match="p|a|em|sup|span">
+    <xsl:copy>
+      <xsl:apply-templates/>
+    </xsl:copy>
   </xsl:template>
 
   <xsl:template match="footnotes">
