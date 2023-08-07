@@ -97,7 +97,6 @@
     <xs:complexType mixed="true">
       <xs:complexContent>
         <xs:extension base="inline">
-          <xs:attributeGroup ref="attrs"/>
           <xs:attribute name="num" type="xs:positiveInteger">
             <xs:annotation>
               <xs:documentation>
