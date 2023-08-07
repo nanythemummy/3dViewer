@@ -237,13 +237,13 @@
 
   <xsl:template match="al[@encoding='unicode']">
     <p class="al">
-      <xsl:copy-of select="node()"/>
+      <xsl:apply-templates/>
     </p>
   </xsl:template>
 
   <xsl:template match="tr">
     <p class="tr" xml:lang="{@xml:lang}">
-      <xsl:copy-of select="node()"/>
+      <xsl:apply-templates/>
     </p>
   </xsl:template>
 
