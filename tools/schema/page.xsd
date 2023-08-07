@@ -59,7 +59,7 @@
   <xs:element name="description">
     <xs:annotation>
       <xs:documentation>
-        A description of the item on this page. Contains content blocks, which can contain html.
+        A description of the item on this page. Contains content blocks, which can contain text markup.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -67,7 +67,7 @@
         <xs:element name="contents" minOccurs="1" type="text-markup">
           <xs:annotation>
             <xs:documentation>
-            The contents of the description. It can contain html.
+              The contents of the description. It can contain text markup.
             </xs:documentation>
           </xs:annotation>
         </xs:element>
@@ -91,16 +91,21 @@
   <xs:element name="fn">
     <xs:annotation>
       <xs:documentation>
-        A footnote to accompany the description and texts. The "num" property
-        is the number of the footnote, and will be used as an ID to resolve
-        "fnref" references.
+        A footnote to accompany the description and texts.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
         <xs:extension base="inline">
           <xs:attributeGroup ref="attrs"/>
-          <xs:attribute name="num" type="xs:positiveInteger"/>
+          <xs:attribute name="num" type="xs:positiveInteger">
+            <xs:annotation>
+              <xs:documentation>
+                The number of this footnote (starting with 1). This will be used like an ID to resolve
+                "fnref" references, and is also the number that will be displayed for this footnote.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
