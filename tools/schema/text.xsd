@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+  <xs:include schemaLocation="egy.xsd"/>
 
   <xs:annotation>
     <xs:documentation>
@@ -8,7 +9,9 @@
       A minimal set of attributes and markup has been defined for now, based on
       https://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd .
 
-      One extension is provided: the fnref element, to be used in lieu of fn.
+      Two non-HTML extensions are provided:
+      - the fnref element, to be used for footnotes
+      - the al element, to be used for transliterations
     </xs:documentation>
   </xs:annotation>
 
@@ -101,6 +104,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
+      <xs:element ref="al"/>
       <xs:element ref="em"/>
       <xs:element ref="fnref"/>
       <xs:element ref="sup"/>
