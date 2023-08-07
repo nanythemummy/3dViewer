@@ -186,7 +186,7 @@
   </xsl:template>
 
   <xsl:template match="fnref">
-    <a id="fnref{@num}" href="#fn{@num}"><sup><xsl:value-of select="@num"/></sup></a>
+    <a id="fnref{@num}" href="#fn{@num}" class="footnote-ref"><sup><xsl:value-of select="@num"/></sup></a>
   </xsl:template>
 
   <xsl:template match="footnotes">
@@ -197,7 +197,7 @@
   </xsl:template>
 
   <xsl:template match="fn">
-    <li id = "fn{@num}">
+    <li id = "fn{@num}" class="footnote">
       <sup><xsl:value-of select="@num"/></sup><xsl:text> </xsl:text>
       <xsl:apply-templates/>
       <xsl:text> </xsl:text><a href="#fnref{@num}">&#8617;</a>
