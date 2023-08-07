@@ -181,18 +181,18 @@
   <xsl:template match="footnotes">
     <h2>Notes</h2>
     <ul>
-      <xs:apply-templates/>
+      <xsl:apply-templates/>
     </ul>
   </xsl:template>
 
-  <xs:template match="fn">
+  <xsl:template match="fn">
     <li id = "{@id}">
       <sup>
         <xsl:number format="1" level="single" from="footnotes" count="fn"/>
       </sup>
       <xsl:copy-of select="node()"/>
     </li>
-  </xs:template>
+  </xsl:template>
 
   <xsl:template match="texts">
     <h2>Texts</h2>
