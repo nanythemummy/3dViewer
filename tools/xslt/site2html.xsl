@@ -235,7 +235,13 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="al[@encoding='unicode']">
+  <xsl:template match="contents//al[@encoding='unicode']">
+    <span class="al">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="texts//al[@encoding='unicode']">
     <p class="al">
       <xsl:apply-templates/>
     </p>
