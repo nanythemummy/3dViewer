@@ -63,7 +63,6 @@ class Converter(saxutils.XMLGenerator):
         super(Converter, self).endElement(name)
         self.indentlevel -= 1
         if self.converting:
-            self._write('\n' + indent*self.indentlevel)
             converted = mdcToUnicode(self.text)
             self._write('<al encoding="unicode">{}</al>'.format(saxutils.escape(converted)))
             self.converting = False

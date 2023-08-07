@@ -1,51 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+  <xs:include schemaLocation="egy.xsd"/>
 
   <xs:annotation>
     <xs:documentation>
       HTML-like text markup elements that are suitable for use in the page description and texts.
       A minimal set of attributes and markup has been defined for now, based on
       https://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd .
+
+      Two non-HTML extensions are provided:
+      - the fnref element, to be used for footnotes
+      - the al element, to be used for transliterations
     </xs:documentation>
   </xs:annotation>
 
-  <xs:element name="a" type="anchor"/>
-  <xs:element name="p" type="inline-with-attrs"/>
-  <xs:element name="em" type="inline-with-attrs"/>
-  <xs:element name="sup" type="inline-with-attrs"/>
-  <xs:element name="span" type="inline-with-attrs"/>
+  <!-- HTML-like elements -->
+  <xs:element name="a">
+    <xs:complexType mixed="true">
+      <xs:group ref="inline-no-a" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="attrs"/>
+      <xs:attribute name="href" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="p" type="inline"/>
+  <xs:element name="div" type="text-markup"/>
+  <xs:element name="em" type="inline"/>
+  <xs:element name="sup" type="inline"/>
+  <xs:element name="span" type="inline"/>
+
+  <xs:element name="fnref">
+    <xs:annotation>
+      <xs:documentation>
+        A reference to a footnote defined in the `footnotes` section of the page. The only content
+        is the attribute "num" (described below).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="num" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>
+            The number (starting at 1) of the footnote to be referenced. This should correspond
+            to the "num" property of an "fn" element in the "footnotes" section. This attribute
+            will generate appropriate footnote links, and it will also be how the footnote is
+            displayed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
 
   <xs:complexType name="text-markup" mixed="true">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element ref="a"/>
-      <xs:element ref="p"/>
-      <xs:element ref="em"/>
-      <xs:element ref="sup"/>
-      <xs:element ref="span"/>
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="anchor" mixed="true">
-    <xs:group ref="inline-no-a" minOccurs="0" maxOccurs="unbounded"/>
-    <xs:attributeGroup ref="attrs"/>
-    <xs:attribute name="href" type="xs:anyURI"/>
-  </xs:complexType>
-
-  <xs:complexType name="inline-with-attrs" mixed="true">
-    <xs:group ref="inline" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:annotation>
+      <xs:documentation>
+        A type that allows mixed text markup with our approved set of block and inline markup elements.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:group ref="text-markup" minOccurs="0" maxOccurs="unbounded"/>
     <xs:attributeGroup ref="attrs"/>
   </xs:complexType>
 
   <xs:complexType name="inline" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        A type that allows mixed text with inline markup elements only.
+        Common markup attributes are included.
+      </xs:documentation>
+    </xs:annotation>
     <xs:group ref="inline" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:attributeGroup ref="attrs"/>
   </xs:complexType>
 
-  <xs:complexType name="inline-no-a" mixed="true">
-    <xs:group ref="inline-no-a" minOccurs="0" maxOccurs="unbounded"/>
-  </xs:complexType>
+  <xs:group name="text-markup">
+    <xs:annotation>
+      <xs:documentation>
+        The set of block and inline elements that are allowed in text markup
+        (e.g. within the "contents" element).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element ref="p"/>
+      <xs:element ref="div"/>
+      <xs:group ref="inline"/>
+    </xs:choice>
+  </xs:group>
 
   <xs:group name="inline">
+    <xs:annotation>
+      <xs:documentation>
+        The set of inline elements that are allowed in text markup
+        (e.g. within the "contents" element).
+      </xs:documentation>
+    </xs:annotation>
     <xs:choice>
       <xs:element ref="a"/>
       <xs:group ref="inline-no-a"/>
@@ -53,14 +99,27 @@
   </xs:group>
 
   <xs:group name="inline-no-a">
+    <xs:annotation>
+      <xs:documentation>
+        The set of inline elements that are allowed within an anchor
+        (nested anchors are not allowed).
+      </xs:documentation>
+    </xs:annotation>
     <xs:choice>
+      <xs:element ref="al"/>
       <xs:element ref="em"/>
-      <xs:element ref="sup"/>
+      <xs:element ref="fnref"/>
       <xs:element ref="span"/>
     </xs:choice>
   </xs:group>
 
   <xs:attributeGroup name="attrs">
+    <xs:annotation>
+      <xs:documentation>
+        The common set of optional HTML-like attributes that may annotate
+        text markup elements.
+      </xs:documentation>
+    </xs:annotation>
     <xs:attribute name="id" type="xs:ID"/>
     <xs:attribute name="class" type="xs:NMTOKENS"/>
     <xs:attribute name="style" type="xs:string"/>

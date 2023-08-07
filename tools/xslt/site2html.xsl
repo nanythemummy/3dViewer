@@ -16,6 +16,7 @@
   <xsl:output method="html" indent="yes" version="5.0"/>
   <xsl:param name="verbose" as="xs:boolean" required="no">false</xsl:param>
   <xsl:param name="destdir" as="xs:string" required="no"/>
+
   <xsl:template match="site">
     <html>
       <head>
@@ -127,7 +128,6 @@
               <xsl:apply-templates select="footnotes"/>
             </div>
           </div>
-
         </div>
         <script src="js/three.min.js"/>
         <script src="js/loaders/GLTFLoader.js"/>
@@ -151,96 +151,110 @@
       </j:array>
     </xsl:variable>
     <script>
-      const gModelName = <xsl:value-of select="xml-to-json($model-name)"/>
-;
-      const gModelLinks = <xsl:value-of select="xml-to-json($model-links)"/>
-;
+      const gModelName = <xsl:value-of select="xml-to-json($model-name)"/>;
+      const gModelLinks = <xsl:value-of select="xml-to-json($model-links)"/>;
       const gController = new ModelController(gModelName, gModelLinks);
       gController.run();
-  </script>
-</xsl:template>
+    </script>
+  </xsl:template>
 
-<xsl:template match="link" mode="codegen">
-  <j:map>
-    <j:string key="name">
-      <xsl:value-of select="@name"/>
-    </j:string>
-    <j:string key="ref">
-      <xsl:value-of select="@ref"/>
-    </j:string>
-  </j:map>
-</xsl:template>
+  <xsl:template match="link" mode="codegen">
+    <j:map>
+      <j:string key="name">
+        <xsl:value-of select="@name"/>
+      </j:string>
+      <j:string key="ref">
+        <xsl:value-of select="@ref"/>
+      </j:string>
+    </j:map>
+  </xsl:template>
 
-<xsl:template match="description" mode="codegen">
-  <h2> Description </h2>
-  <xsl:apply-templates/>
-</xsl:template>
-<xsl:template match="contents">
-  <xsl:copy-of select="node()" copy-namespaces="no"/>
-</xsl:template>
-<xsl:template match="footnotes">
-  <h2>Notes</h2>
-  <ul>
+  <xsl:template match="description" mode="codegen">
+    <h2>Description</h2>
     <xsl:apply-templates/>
-  </ul>
-</xsl:template>
-<xsl:template match="fn">
-  <li id = "{@id}">
-    <sup>
-      <xsl:number format="1" level="single" from="footnotes" count="fn"/>
-    </sup>
-    <xsl:copy-of select="node()"/>
-  </li>
-</xsl:template>
+  </xsl:template>
 
+  <xsl:template match="contents">
+    <xsl:apply-templates/>
+  </xsl:template>
 
+  <!-- Copy through certain HTML-like markup as-is -->
+  <xsl:template match="p|div|a|em|span">
+    <xsl:copy>
+      <xsl:apply-templates/>
+    </xsl:copy>
+  </xsl:template>
 
+  <xsl:template match="fnref">
+    <a id="fnref{@num}" href="#fn{@num}" class="footnote-ref"><sup><xsl:value-of select="@num"/></sup></a>
+  </xsl:template>
 
-<xsl:template match="texts">
-  <h2>Texts</h2>
-  <xsl:apply-templates/>
-</xsl:template>
+  <xsl:template match="footnotes">
+    <h2>Notes</h2>
+    <ul>
+      <xsl:apply-templates/>
+    </ul>
+  </xsl:template>
 
-<xsl:template match="text">
-  <div class="text" id="{@id}">
-    <xsl:if test="not(./frag)">
+  <xsl:template match="fn">
+    <li id = "fn{@num}" class="footnote">
+      <sup><xsl:value-of select="@num"/></sup><xsl:text> </xsl:text>
+      <xsl:apply-templates/>
+      <xsl:text> </xsl:text><a href="#fnref{@num}">&#8617;</a>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="texts">
+    <h2>Texts</h2>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="text">
+    <div class="text" id="{@id}">
+      <xsl:if test="not(./frag)">
+        <a class="model-link" data-text-id="{@id}" href="#">
+          <xsl:number format="1." level="multiple" from="texts" count="text|frag"/>
+        </a>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="frag">
+    <div class="text-fragment" id="{@id}">
       <a class="model-link" data-text-id="{@id}" href="#">
         <xsl:number format="1." level="multiple" from="texts" count="text|frag"/>
       </a>
-    </xsl:if>
-    <xsl:apply-templates/>
-  </div>
-</xsl:template>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
 
-<xsl:template match="frag">
-  <div class="text-fragment" id="{@id}">
-    <a class="model-link" data-text-id="{@id}" href="#">
-      <xsl:number format="1." level="multiple" from="texts" count="text|frag"/>
-    </a>
-    <xsl:apply-templates/>
-  </div>
-</xsl:template>
+  <xsl:template match="himg">
+    <div class="hi-container">
+      <img class="hi" src="{@dest}"/>
+    </div>
+  </xsl:template>
 
-<xsl:template match="himg">
-  <div class="hi-container">
-    <img class="hi" src="{@dest}"/>
-  </div>
-</xsl:template>
+  <xsl:template match="contents//al[@encoding='unicode']">
+    <span class="al">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
 
-<xsl:template match="al[@encoding='unicode']">
-  <p class="al">
-    <xsl:copy-of select="node()"/>
-  </p>
-</xsl:template>
+  <xsl:template match="texts//al[@encoding='unicode']">
+    <p class="al">
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
 
-<xsl:template match="tr">
-  <p class="tr" xml:lang="{@xml:lang}">
-    <xsl:copy-of select="node()"/>
-  </p>
-</xsl:template>
+  <xsl:template match="tr">
+    <p class="tr" xml:lang="{@xml:lang}">
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
 
-<!-- Not currently used in HTML generation -->
-<xsl:template match="desc"/>
-<xsl:template match="hi"/>
-<xsl:template match="al[@encoding='mdc']"/>
+  <!-- Not currently used in HTML generation -->
+  <xsl:template match="desc"/>
+  <xsl:template match="hi"/>
+  <xsl:template match="al[@encoding='mdc']"/>
 </xsl:stylesheet>
