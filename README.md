@@ -84,18 +84,18 @@ with any needed assets from the `assets` repo.
 When you're ready to build, your setup should look something like this:
 
 ```
-- <SOME_DIR>
-    - assets
-        - <coffin_name>/
-            - <coffin_name>.gltf
-            - texts/
-                - <coffin_name>.gly
-                - text1.svg
-                - text2.svg
-                - etc.
-        - etc.
+- <SOME_DIR> 
     - 3dViewer
         - this README
+        - assets
+          - <coffin_name>/
+              - <coffin_name>.gltf
+              - texts/
+                  - <coffin_name>.gly
+                  - text1.svg
+                  - text2.svg
+                  - etc.
+        - etc.
         - src/
             - main.js
             - site.xml
