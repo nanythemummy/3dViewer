@@ -2,7 +2,7 @@
 ## In Your Photogrammetry Software
 1. Export the model as an obj file. 
     * Textures should be jpgs, and we usually break our textures into 4 seperate files.
-## In Blender (Instruction use version 3.2.2)
+## In Blender (Instructions use version 3.2.2)
 1.	Use File->Import to import the desired OBJ file for the model.
 2.	Ensure that the model is centered on the world-space origin (0,0,0)
     * Left click object.
