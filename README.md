@@ -79,7 +79,7 @@ option to tell it where to find the assets.
 
 There are also a set of static "assets" inside this repo that are specifically for use by this
 website – CSS, web fonts, and Javascript. When you build the project, they will be installed along
-with any needed assets from the `assets` repo.
+with any needed assets from the `assets` directory. When you edit CSS or add other static assets, you should save the files in the "static" directory.
 
 When you're ready to build, your setup should look something like this:
 
@@ -156,7 +156,10 @@ Either way, for each text (or text fragment) you will specify:
 
 Use the existing pages as models for how to create these elements. If you want a reference, the
 full XML schema for our data is located in the `tools/schema/` directory.
+## Preparing the glTF File from an OBJ file
 
+  * For this, please consult the "Building_a_model.md" tutorial in this repo.
+  
 ## Tips
 
    * You can also run the build script directly instead of as an argument to `python`. To do so:
