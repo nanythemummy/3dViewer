@@ -158,7 +158,7 @@ Use the existing pages as models for how to create these elements. If you want a
 full XML schema for our data is located in the `tools/schema/` directory.
 ## Preparing the glTF File from an OBJ file
 
-  * For this, please consult the "Building_a_model.md" tutorial in this repo.
+  * For this, please consult the [Building_a_model.md](Building_a_model.md) tutorial in this repo.
   
 ## Tips
 
