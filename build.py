@@ -12,7 +12,7 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-import convertTransliteration as tlit
+import tools.build.convertTransliteration
 
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout, format='%(levelname)s: %(message)s')
@@ -134,7 +134,7 @@ def convertTransliteration(src, dest):
     log.debug('Tlit transform: %s -> %s', src, dest)
     with open(dest, 'w') as outfile:
         with open(src) as infile:
-            tlit.transform(infile, outfile)
+            tools.build.convertTransliteration.transform(infile, outfile)
 
 
 def buildSite(config):
