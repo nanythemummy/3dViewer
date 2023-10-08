@@ -57,7 +57,7 @@ def copyAssets(ctx):
 
     # Most of our assets can just be copied over wholesale from
     # the static directory.
-    log.info('Copying all static assets...')
+    log.info('Copying static assets...')
     staticdir = 'static'
     for item in os.listdir(staticdir):
         src = os.path.join(staticdir, item)
@@ -71,12 +71,12 @@ def copyAssets(ctx):
 
     #there may be several first party javascript files in the dist directory.
     #scoop those up and copy them over.
-    log.info('Copying javascript...')
+    log.info('Copying first-party Javascript sources...')
     listjs = [fl for fl in os.listdir('src') if os.path.splitext(fl)[1]=='.js']
     for item in listjs:
         shutil.copy(os.path.join('src', item), os.path.join(ctx.config.distdir, 'js', item))
     
-    log.info('Copying models...')
+    log.info('Copying model assets...')
     # Models could in theory be copied wholesale from our assets
     # repository, but I'll do a somewhat more streamlined path and
     # follow model definitions to figure out which models are
@@ -87,7 +87,7 @@ def copyAssets(ctx):
     for model in site.findall('.//model'):
         copyElementAsset(ctx, model)
 
-    log.info('Copying hieroglyphics...')
+    log.info('Copying hieroglyphic image assets...')
     imgdestdir = os.path.join(ctx.config.distdir, 'img')
     if not os.path.exists(imgdestdir):
         os.makedirs(imgdestdir)
@@ -97,7 +97,7 @@ def copyAssets(ctx):
 
 def convertTransliteration(src, dest):
     """Convert transliterations from MdC to Unicode."""
-    log.info('Processing transliterations...')
+    log.info('Converting transliterations from MdC to Unicode...')
     log.debug('Tlit transform: %s -> %s', src, dest)
     with open(dest, 'w') as outfile:
         with open(src) as infile:
@@ -140,6 +140,7 @@ def assembleSite(ctx):
     This is so that future steps have a fully-expanded site.xml to
     work with, and don't have to worry about pulling in the page XML.
     """
+    log.info('Processing XML includes in site XML...')
     log.debug('Assembling: %s', ctx.config.fullsitexml)
     # Transforming with identity.xsl has the effect of simply pulling in
     # XIncludes and nothing else.
