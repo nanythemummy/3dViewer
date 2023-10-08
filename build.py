@@ -4,7 +4,6 @@
 # defined in site.xml and included files, as well as
 # build rules defined here.
 
-import argparse
 import logging
 import os
 import shutil
@@ -12,10 +11,11 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
+import tools.build.config
 import tools.build.convertTransliteration
 
 
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout, format='%(levelname)s: %(message)s')
+logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(levelname)s: %(message)s')
 log = logging.getLogger(__name__)
 
 
@@ -167,67 +167,6 @@ def validateSiteSchema(config):
     xmlSchemaValidate(config, schema=schemafname, target=config.fullsitexml)
 
 
-class NoSuchTool(Exception):
-    """We were unable to locate a tool required by our build."""
-    pass
-
-
-def resolveToolLocation(config, locationkey, toolname):
-    """Locate a configurable tool that our build needs.
-
-    locationkey is the name of the config attribute with the tool we want.
-    toolname is the name of the tool, which we will use to attempt to
-    locate the tool ourselves if the location was not explicitly configured.
-    """
-    toolpath = getattr(config, locationkey)
-    if not toolpath or not os.path.exists(toolpath):
-        toolpath = shutil.which(toolname)
-        if not toolpath:
-            raise NoSuchTool()
-        setattr(config, locationkey, toolpath)
-
-
-def getConfig(args):
-    """Get the configuration for our tool.
-
-    Currently, only comamnd-line configuration is supported.
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--assetsdir', help='where model assets are stored', default='assets')
-    parser.add_argument('--distdir', help='where final build output is written', default='dist')
-    parser.add_argument('--builddir', help='where intermediate build output is written', default='build')
-    parser.add_argument('--sitexml', help='location of site XML definition', default='src/site.xml')
-    parser.add_argument('---xmlstarletpath', help='location of XML Starlet, used for XML Include/Schema processing')
-    parser.add_argument('--no-val', dest='validate', action='store_false', help='Skip XML validation step', default=True)
-    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='Verbose output')
-    config = parser.parse_args(args[1:])
-
-    # We're going to blow away the dist and build directories before writing to
-    # them, so we ought to be at least a little careful here!
-    if config.distdir == '/':
-        parser.error('Cannot set dist directory to root!')
-    if config.builddir == '/':
-        parser.error('Cannot set build directory to root!')
-
-    # Fill in defaults for tool locations if necessary.
-    try:
-        resolveToolLocation(config, 'xmlstarletpath', 'xmlstarlet')
-    except NoSuchTool:
-        parser.error('XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.')
-
-    # Some extra configuration defined here for convenience
-    config.fullsitexml = os.path.join(config.builddir, 'site.preprocessed.xml')
-    config.stylesheetdir = os.path.join('tools', 'xslt')
-    config.schemadir = os.path.join('tools', 'schema')
-
-    if config.verbose:
-        log.setLevel(logging.DEBUG)
-    else:
-        log.setLevel(logging.INFO)
-
-    return config
-
-
 def assembleSite(config):
     """Process XIncludes in site.xml, writing the results to dest.
 
@@ -321,7 +260,9 @@ def main(args):
     rootdir = os.path.dirname(args[0])
     if rootdir and rootdir != '.':
         os.chdir(rootdir)
-    config = getConfig(args)
+    config = tools.build.config.getConfig(args)
+    if config.verbose:
+        log.setLevel(logging.DEBUG)
     prepareBuildDir(config)
     preprocessSite(config)
     if config.validate:
