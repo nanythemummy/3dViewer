@@ -43,6 +43,22 @@ def loadSite(ctx):
     return site
 
 
+def getPages(ctx):
+    # Note: we're loading the non-preprocessed site XML here.
+    site = ET.parse(ctx.config.sitexml).getroot()
+    pages = [doc.attrib['href'] for doc in site.findall('.//{http://www.w3.org/2001/XInclude}include')]
+    log.debug("Get pages: %s", repr(pages))
+    return (page for page in pages)
+
+
+def getPagePaths(ctx, dirname):
+    return (os.path.join(dirname, page) for page in getPages(ctx))
+
+
+def getSitePages(ctx):
+    return (page for page in getPagePaths(ctx, ctx.config.sourcedir))
+
+
 def copyElementAsset(ctx, elem):
     """Copy a asset, represented by an XML element, to the output directory."""
     src = expandPath(ctx, elem.attrib['src'])
@@ -124,16 +140,6 @@ def buildSite(ctx):
     ctx.toolbox.transform(stylesheet=xslpath, src=tlitfname, dest=indexdest)
 
 
-def validateSiteSchema(ctx):
-    """Validate that our site XML matches our custom schema.
-
-    Assumes site.xml has been preprocessed.
-    """
-    log.info('Validating site XML against schema...')
-    schemafname = os.path.join(ctx.config.schemadir, 'site.xsd')
-    ctx.toolbox.validateSchema(schema=schemafname, target=ctx.config.fullsitexml)
-
-
 def assembleSite(ctx):
     """Process XIncludes in site.xml, writing the results to dest.
 
@@ -148,40 +154,31 @@ def assembleSite(ctx):
     ctx.toolbox.transform(stylesheet=xslpath, src=ctx.config.sitexml, dest=ctx.config.fullsitexml, includes=True)
 
 
-def extractIncludes(ctx, source):
-    """Preprocess the source XML to a text file containing just includes.
-
-    The source XML is assumed to be well-formed.
-    """
-    outputfname, _ = os.path.splitext(os.path.basename(source))
-    outputfname += '_includes.txt'
-    outputpath = os.path.join(ctx.config.builddir, outputfname)
-    xslpath = os.path.join(ctx.config.stylesheetdir, 'includes.xsl')
-    ctx.toolbox.transform(stylesheet=xslpath, src=source, dest=outputpath)
-    return outputpath
+def validateFullSiteXML(ctx):
+    fullsitexml = ctx.config.fullsitexml
+    if ctx.config.validate:
+        log.info("Validating site XML with processed includes...")
+        ctx.toolbox.validate(fullsitexml)
+        ctx.toolbox.validateSchema(schema=ctx.config.siteschema, target=fullsitexml)
 
 
-def validateXMLAndIncludes(ctx, source):
-    """Check that the source XML and its includes are well-formed."""
-    sourcedir = os.path.dirname(source)
-    ctx.toolbox.validate(source)
-    includespath = extractIncludes(ctx, source)
-    with open(includespath, 'r') as includes:
-        for include in includes:
-            include = include.strip()
-            if not include:
-                continue
-            include = os.path.join(sourcedir, include)
-            if not os.path.isfile(include):
-                raise RuntimeError('Unable to locate included file: {}'.format(include))
-            validateXMLAndIncludes(ctx, include)
+def preprocessPage(ctx, page):
+    log.info('Preprocessing page: %s', page)
+    if ctx.config.validate:
+        ctx.toolbox.validate(page)
+        ctx.toolbox.validateSchema(schema=ctx.config.pageschema, target=page)
 
 
 def preprocessSite(ctx):
     log.info('Preprocessing site XML...')
+    sitexml = ctx.config.sitexml
     if ctx.config.validate:
-        validateXMLAndIncludes(ctx, ctx.config.sitexml)
-    assembleSite(ctx)
+        ctx.toolbox.validate(sitexml)
+        # Note: we can't easily validate the source site.xml yet because it has
+        # XIncludes to be processed. Defer this to after we've assembled site.xml.
+
+    for page in getSitePages(ctx):
+        preprocessPage(ctx, page)
 
 
 def cleanDirectory(dirpath):
@@ -234,8 +231,8 @@ def main(args):
     ctx = Context(config=config, toolbox=toolbox)
     prepareBuildDir(ctx)
     preprocessSite(ctx)
-    if config.validate:
-        validateSiteSchema(ctx)
+    assembleSite(ctx)
+    validateFullSiteXML(ctx)
     prepareDistDir(ctx)
     buildSite(ctx)
     return 0
