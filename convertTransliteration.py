@@ -4,9 +4,8 @@ authoring) and adding their Unicode equivalents (convenient for web display).
 """
 
 import sys
-import xml.sax.handler
 from xml import sax
-from  xml.sax import saxutils
+from xml.sax import saxutils
 
 import cltk.alphabet.egy as tlit
 
