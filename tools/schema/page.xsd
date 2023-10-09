@@ -45,14 +45,6 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-
-      <xs:attribute ref="xml:base">
-        <xs:annotation>
-          <xs:documentation>
-            This attribute may be added during XInclude processing.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
     </xs:complexType>
   </xs:element>
 

@@ -26,10 +26,6 @@ class Config:
     toolsdir: str = 'tools'
 
     @property
-    def fullsitexml(self) -> str:
-        return os.path.join(self.builddir, 'site.preprocessed.xml')
-
-    @property
     def stylesheetdir(self) -> str:
         return os.path.join(self.toolsdir, 'xslt')
 

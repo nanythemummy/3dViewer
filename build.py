@@ -34,11 +34,8 @@ def expandPath(ctx, path):
 
 
 def getPages(ctx):
-    # Note: we're loading the non-preprocessed site XML here.
     site = ctx.cache.load(ctx.config.sitexml)
-    pages = [doc.attrib['href'] for doc in site.findall('.//{http://www.w3.org/2001/XInclude}include')]
-    log.debug("Get pages: %s", repr(pages))
-    return (page for page in pages)
+    return (doc.attrib['href'] for doc in site.findall('.//page'))
 
 
 def getPagePaths(ctx, dirname):
@@ -57,16 +54,10 @@ def copyElementAsset(ctx, elem):
     shutil.copy(src, dest)
 
 
-def copyAssets(ctx):
-    """Copy all assets to the output directory."""
-    site = ctx.cache.load(ctx.config.fullsitexml)
-
-    # Most of our assets can just be copied over wholesale from
-    # the static directory.
+def copyStaticDirectoryAssets(ctx):
     log.info('Copying static assets...')
-    staticdir = 'static'
-    for item in os.listdir(staticdir):
-        src = os.path.join(staticdir, item)
+    for item in os.listdir(ctx.config.staticdir):
+        src = os.path.join(ctx.config.staticdir, item)
         dest = os.path.join(ctx.config.distdir, item)
         if os.path.isdir(src):
             log.debug('Copying directory: %s -> %s', src, dest)
@@ -75,39 +66,95 @@ def copyAssets(ctx):
             log.debug('Copying: %s -> %s', src, dest)
             shutil.copy(src, dest)
 
-    #there may be several first party javascript files in the dist directory.
-    #scoop those up and copy them over.
+
+def copySourceDirectoryJavascript(ctx):
     log.info('Copying first-party Javascript sources...')
-    listjs = [fl for fl in os.listdir('src') if os.path.splitext(fl)[1]=='.js']
-    for item in listjs:
-        shutil.copy(os.path.join('src', item), os.path.join(ctx.config.distdir, 'js', item))
-    
-    log.info('Copying model assets...')
-    # Models could in theory be copied wholesale from our assets
-    # repository, but I'll do a somewhat more streamlined path and
-    # follow model definitions to figure out which models are
-    # actually needed.
-    modelsdestdir = os.path.join(ctx.config.distdir, 'models')
+    for entry in os.listdir(ctx.config.sourcedir):
+        if not os.path.splitext(entry)[0] == '.js':
+            continue
 
-    os.makedirs(modelsdestdir)
-    for model in site.findall('.//model'):
-        copyElementAsset(ctx, model)
+        src = os.path.join(ctx.config.sourcedir, entry)
+        dest = os.path.join(ctx.config.destdir, 'js', entry)
+        log.debug('Copying %s -> %s', src, dest)
+        shutil.copy(src, dest)
 
-    log.info('Copying hieroglyphic image assets...')
-    imgdestdir = os.path.join(ctx.config.distdir, 'img')
-    if not os.path.exists(imgdestdir):
-        os.makedirs(imgdestdir)
-    for himg in site.findall('.//himg'):
-        copyElementAsset(ctx, himg)
+
+def copyAssetsMatchingElements(ctx, page, elementname):
+    for elem in page.findall('.//' + elementname):
+        copyElementAsset(ctx, elem)
+
+
+def copyModelsReferencedFromPage(ctx, page):
+    log.info('Copying models for %s...', page.attrib['src'])
+    copyAssetsMatchingElements(ctx, page, 'model')
+
+
+def copyHieroglyphImagesReferencedFromPage(ctx, page):
+    log.info('Copying hieroglyphics for %s...', page.attrib['src'])
+    copyAssetsMatchingElements(ctx, page, 'himg')
+
+
+def copyAssets(ctx):
+    """Copy all assets to the output directory."""
+    # Most of our assets can just be copied over wholesale from
+    # the static directory.
+    copyStaticDirectoryAssets(ctx)
+
+    # There may be several first party javascript files in the dist directory.
+    # Scoop those up and copy them over.
+    copySourceDirectoryJavascript(ctx)
+
+    # Don't copy stuff from the assets directory wholesale.
+    # Just copy whatever is referenced from the pages.
+    os.makedirs(ctx.config.modelsdestdir, exist_ok=True)
+    os.makedirs(ctx.config.imgdestdir, exist_ok=True)
+    for pagepath in getPagePaths(ctx, ctx.config.sourcedir):
+        page = ctx.cache.load(pagepath)
+        copyModelsReferencedFromPage(ctx, page)
+        copyHieroglyphImagesReferencedFromPage(ctx, page)
 
 
 def convertTransliteration(src, dest):
     """Convert transliterations from MdC to Unicode."""
-    log.info('Converting transliterations from MdC to Unicode...')
-    log.debug('Tlit transform: %s -> %s', src, dest)
+    log.info("Converting transliterations: %s -> %s", src, dest)
     with open(dest, 'w') as outfile:
         with open(src) as infile:
             tools.build.convertTransliteration.transform(infile, outfile)
+
+
+def convertTransliterations(ctx):
+    log.info("Converting transliterations from MdC to Unicode...")
+    tlitfname = os.path.join(ctx.config.builddir, 'site.xml')
+    convertTransliteration(src=ctx.config.sitexml, dest=tlitfname)
+    for page in getPages(ctx):
+        srcpage = os.path.join(ctx.config.sourcedir, page)
+        destpage = os.path.join(ctx.config.builddir, page)
+        convertTransliteration(src=srcpage, dest=destpage)
+
+
+def getTransformParams(ctx):
+    # Paths must be converted to absolute paths because Saxon reckons paths relative to the stylesheet
+    srcdir = os.path.abspath(ctx.config.builddir)
+    destdir = os.path.abspath(ctx.config.distdir)
+    return {'srcdir': srcdir, 'destdir': destdir}
+
+
+def buildIndex(ctx):
+    log.info('Building index.html...')
+    src = os.path.join(ctx.config.builddir, 'site.xml')
+    dest = os.path.join(ctx.config.distdir, 'index.html')
+    xsl = os.path.join(ctx.config.stylesheetdir, 'site2html.xsl')
+    ctx.toolbox.transform(stylesheet=xsl, src=src, dest=dest, params=getTransformParams(ctx))
+
+
+def buildPages(ctx):
+    for page in getPages(ctx):
+        log.info('Building %s', page)
+        src = os.path.join(ctx.config.builddir, page)
+        page = ctx.toolbox.cache.load(src)
+        dest = os.path.join(ctx.config.distdir, page.attrib['dest'])
+        xsl = os.path.join(ctx.config.stylesheetdir, 'page2html.xsl')
+        ctx.toolbox.transform(stylesheet=xsl, src=src, dest=dest, params=getTransformParams(ctx))
 
 
 def buildSite(ctx):
@@ -120,36 +167,9 @@ def buildSite(ctx):
     We use XSLT as defined by site2html.xsl to do the transformation.
     """
     copyAssets(ctx)
-
-    tlitfname = os.path.join(ctx.config.builddir, 'site.transliterated.xml')
-    convertTransliteration(src=ctx.config.fullsitexml, dest=tlitfname)
-
-    log.info('Building site HTML...')
-    indexdest = os.path.join(ctx.config.distdir, 'index.html')
-    xslpath = os.path.join(ctx.config.stylesheetdir, 'site2html.xsl')
-    ctx.toolbox.transform(stylesheet=xslpath, src=tlitfname, dest=indexdest)
-
-
-def assembleSite(ctx):
-    """Process XIncludes in site.xml, writing the results to dest.
-
-    This is so that future steps have a fully-expanded site.xml to
-    work with, and don't have to worry about pulling in the page XML.
-    """
-    log.info('Processing XML includes in site XML...')
-    log.debug('Assembling: %s', ctx.config.fullsitexml)
-    # Transforming with identity.xsl has the effect of simply pulling in
-    # XIncludes and nothing else.
-    xslpath = os.path.join(ctx.config.stylesheetdir, 'identity.xsl')
-    ctx.toolbox.transform(stylesheet=xslpath, src=ctx.config.sitexml, dest=ctx.config.fullsitexml, includes=True)
-
-
-def validateFullSiteXML(ctx):
-    fullsitexml = ctx.config.fullsitexml
-    if ctx.config.validate:
-        log.info("Validating site XML with processed includes...")
-        ctx.toolbox.validate(fullsitexml)
-        ctx.toolbox.validateSchema(schema=ctx.config.siteschema, target=fullsitexml)
+    convertTransliterations(ctx)
+    buildIndex(ctx)
+    buildPages(ctx)
 
 
 def preprocessPage(ctx, page):
@@ -164,8 +184,7 @@ def preprocessSite(ctx):
     sitexml = ctx.config.sitexml
     if ctx.config.validate:
         ctx.toolbox.validate(sitexml)
-        # Note: we can't easily validate the source site.xml yet because it has
-        # XIncludes to be processed. Defer this to after we've assembled site.xml.
+        ctx.toolbox.validateSchema(schema=ctx.config.siteschema, target=sitexml)
 
     for page in getSitePages(ctx):
         preprocessPage(ctx, page)
@@ -222,8 +241,6 @@ def main(args):
     ctx = Context(config=config, cache=cache, toolbox=toolbox)
     prepareBuildDir(ctx)
     preprocessSite(ctx)
-    assembleSite(ctx)
-    validateFullSiteXML(ctx)
     prepareDistDir(ctx)
     buildSite(ctx)
     return 0
