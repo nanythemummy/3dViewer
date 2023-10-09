@@ -80,11 +80,11 @@ def copyStaticDirectoryAssets(ctx):
 def copySourceDirectoryJavascript(ctx):
     log.info('Copying first-party Javascript sources...')
     for entry in os.listdir(ctx.config.sourcedir):
-        if not os.path.splitext(entry)[0] == '.js':
+        if os.path.splitext(entry)[-1] != '.js':
             continue
 
         src = os.path.join(ctx.config.sourcedir, entry)
-        dest = os.path.join(ctx.config.destdir, 'js', entry)
+        dest = os.path.join(ctx.config.distdir, 'js', entry)
         log.debug('Copying %s -> %s', src, dest)
         shutil.copy(src, dest)
 
