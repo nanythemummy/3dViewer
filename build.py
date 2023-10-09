@@ -9,8 +9,8 @@ import logging
 import os
 import shutil
 import sys
-import xml.etree.ElementTree as ET
 
+import tools.build.cache
 import tools.build.config
 import tools.build.convertTransliteration
 import tools.build.xmltoolbox
@@ -23,6 +23,7 @@ log = logging.getLogger(__name__)
 @dataclass
 class Context:
     config: tools.build.config.Config
+    cache: tools.build.cache.XMLDocumentCache
     toolbox: tools.build.xmltoolbox.XMLToolbox
 
 
@@ -32,20 +33,9 @@ def expandPath(ctx, path):
     return os.path.abspath(path)
 
 
-def loadSite(ctx):
-    """Load the site's XML definition.
-
-    Assumes the site XML has been preprocessed.
-    """
-    log.debug('Loading site: %s', ctx.config.sitexml)
-    site = ET.parse(ctx.config.fullsitexml).getroot()
-    site.attrib['src'] = ctx.config.fullsitexml
-    return site
-
-
 def getPages(ctx):
     # Note: we're loading the non-preprocessed site XML here.
-    site = ET.parse(ctx.config.sitexml).getroot()
+    site = ctx.cache.load(ctx.config.sitexml)
     pages = [doc.attrib['href'] for doc in site.findall('.//{http://www.w3.org/2001/XInclude}include')]
     log.debug("Get pages: %s", repr(pages))
     return (page for page in pages)
@@ -69,7 +59,7 @@ def copyElementAsset(ctx, elem):
 
 def copyAssets(ctx):
     """Copy all assets to the output directory."""
-    site = loadSite(ctx)
+    site = ctx.cache.load(ctx.config.fullsitexml)
 
     # Most of our assets can just be copied over wholesale from
     # the static directory.
@@ -227,8 +217,9 @@ def main(args):
     config = tools.build.config.getConfig(args)
     if config.verbose:
         log.setLevel(logging.DEBUG)
+    cache = tools.build.cache.XMLDocumentCache()
     toolbox = tools.build.xmltoolbox.XMLToolbox(config)
-    ctx = Context(config=config, toolbox=toolbox)
+    ctx = Context(config=config, cache=cache, toolbox=toolbox)
     prepareBuildDir(ctx)
     preprocessSite(ctx)
     assembleSite(ctx)
