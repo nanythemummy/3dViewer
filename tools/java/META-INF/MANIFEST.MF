@@ -1,0 +1,2 @@
+Main-Class: edu.berkeley._3dcoffins.BuildSite
+Class-Path: saxon-he-12.3.jar lib/xmlresolver-5.2.0.jar

@@ -21,6 +21,16 @@ class XMLToolbox:
         self.xmlstarlet = config.xmlstarletpath
         self.buildsite = config.buildsitejarpath
 
+    def transformSite(self):
+        """Use a Java tool to transform all the site and page XML to HTML.
+
+        We're using our own tool to run all of the XSLT processing in one
+        program run, for much better performance than if we ran them through
+        the Saxon CLI one at a time.
+        """
+        cmd = [self.java, '-jar', self.buildsite]
+        subprocess.run(cmd, check=True)
+
     def transform(self, stylesheet, src, dest, includes=False):
         """Use XSLT to transform one input file to an output file.
 

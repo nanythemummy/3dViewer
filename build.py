@@ -139,24 +139,6 @@ def getTransformParams(ctx):
     return {'srcdir': srcdir, 'destdir': destdir}
 
 
-def buildIndex(ctx):
-    log.info('Building index.html...')
-    src = os.path.join(ctx.config.builddir, 'site.xml')
-    dest = os.path.join(ctx.config.distdir, 'index.html')
-    xsl = os.path.join(ctx.config.stylesheetdir, 'site2html.xsl')
-    ctx.toolbox.transform(stylesheet=xsl, src=src, dest=dest, params=getTransformParams(ctx))
-
-
-def buildPages(ctx):
-    for page in getPages(ctx):
-        log.info('Building %s', page)
-        src = os.path.join(ctx.config.builddir, page)
-        page = ctx.toolbox.cache.load(src)
-        dest = os.path.join(ctx.config.distdir, page.attrib['dest'])
-        xsl = os.path.join(ctx.config.stylesheetdir, 'page2html.xsl')
-        ctx.toolbox.transform(stylesheet=xsl, src=src, dest=dest, params=getTransformParams(ctx))
-
-
 def buildSite(ctx):
     """Build the entire site.
 
@@ -168,8 +150,7 @@ def buildSite(ctx):
     """
     copyAssets(ctx)
     convertTransliterations(ctx)
-    buildIndex(ctx)
-    buildPages(ctx)
+    ctx.toolbox.transformSite()
 
 
 def preprocessPage(ctx, page):
