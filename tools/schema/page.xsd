@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
   <xs:include schemaLocation="text.xsd"/>
   <xs:include schemaLocation="egy.xsd"/>
 
@@ -42,14 +42,6 @@
           <xs:documentation>
             Where the HTML for this page should be written. Specify a path
             relative to the build output directory.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-
-      <xs:attribute ref="xml:base">
-        <xs:annotation>
-          <xs:documentation>
-            This attribute may be added during XInclude processing.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>

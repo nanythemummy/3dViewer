@@ -36,14 +36,13 @@ You must have:
      (Standard Edition, aka SE) will do.
 * **XML Starlet**, a suite of tools for XML validation and hacking. Install via Homebrew:
   `brew install xmlstarlet`.
-* The Python Classical Languages Toolkit, which we will install below as part of setup.
 
 ## Setup
 
 ### Python Libraries
 
-You will need to install at least one Python library, the Classical Languages Toolkit (CLTK), to
-build the website. We recommend installing it in a Python "virtualenv" that will keep your project's
+Currently, we have no Python library dependencies, but we may need to add them later.
+Even if it's not immediately necessary, we still recommend creating a Python "virtualenv" that will keep your project's
 Python libraries separate from other projects so that they don't conflict.
 
 There are many ways to set up a virtualenv in Python, but here's how we do it. From the top of this
@@ -181,3 +180,8 @@ full XML schema for our data is located in the `tools/schema/` directory.
 
 We are experimenting with an alternate development setup that uses Docker. If you want to try it
 out, you can skip the Requirements and Setup above, and just see [DOCKER.md](DOCKER.md) for details.
+
+## buildSite
+
+As an advanced topic, we are now using a separate Java build tool to do XSLT processing. See
+[BUILD_JAR.md](BUILD_JAR.md) for details on how to update the tool.

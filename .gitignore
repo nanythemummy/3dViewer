@@ -5,17 +5,27 @@
 # extra commit chatter)
 *.code-workspace
 
+# PyCharm project clutter
+.idea/
+
+# Emacs droppings
+*~
+\#*
+
 launch.json
 
 # External assets repo
-/assets/
-assets
+assets/
 
 # Build output directories
 /build/
 /dist/
 
-# Python droppings
+# Common virtual environment locations
 /venv/
 /3dvenv/
-/__pycache__/
+
+# Python byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
