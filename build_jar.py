@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+"""
+build_jar.py builds the buildSite Java tool, which does all the XSLT processing
+for the site.
+
+buildSite comes in the form of an java-executable JAR file. The built JAR will be
+written to build/tools/buildSite-{VERSION}.jar. From there, it must be copied to
+the tools/ directory before it can be used by build.py.
+
+This is a separate operation from build.py because it is not anticipated that the
+JAR will need to be modified often. The buildSite JAR is checked into the repo, so
+running this is only necessary if that JAR needs to be updated.
+
+Subsidiary modules are in tools/build/jar.
+"""
+
 import glob
 import logging
 import os

@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 
-# build.py builds the 3dViewer site from site structure
-# defined in site.xml and included files, as well as
-# build rules defined here.
+"""
+build.py builds the 3dViewer site.
+
+It uses the site structure defined in site.xml and page XML files,
+as well as the build rules defined here. Inputs come from src/,
+static/, and a separate assets repo that has the 3D models and
+hieroglyphic images.
+
+We also have XSLT templates in tools/xslt that specify how the
+output HTML is to be generated.
+
+Subsidiary modules are in tools/build.
+"""
 
 from dataclasses import dataclass
 import logging
