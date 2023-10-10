@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:ann="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+>
+  <ann:documentation>
+    The schema for our site XML.
+  </ann:documentation>
+
+  <start>
+    <ref name="site"/>
+  </start>
+
+  <define name="site">
+    <element name="site">
+      <ann:documentation>
+        Defines the structure of the site. Currently just contains declarations
+        of all the model pages we want to generate.
+      </ann:documentation>
+      <oneOrMore><ref name="page"/></oneOrMore>
+    </element>
+  </define>
+
+  <define name="page">
+    <element name="page">
+      <ann:documentation>
+        Lists a page to be included in the site and its source. These
+        pages will appear in index.html in the order listed here.
+      </ann:documentation>
+      <attribute name="href">
+        <ann:documentation>
+          The location of the page XML that describes the page.
+        </ann:documentation>
+        <data type="anyURI"/>
+      </attribute>
+    </element>
+  </define>
+</grammar>
