@@ -202,7 +202,7 @@ def prepareDistDir(ctx):
     """Clean the output directory, or create it if it doesn't exist."""
     if not os.path.exists(ctx.config.distdir):
         log.info('Creating dist directory: %s', ctx.config.distdir)
-        os.makedirs(ctx.config.distdir)
+        os.makedirs(ctx.config.distdir, exist_ok=True)
         return
 
     log.info('Cleaning dist directory: %s', ctx.config.distdir)
@@ -213,7 +213,7 @@ def prepareBuildDir(ctx):
     """Clean the intermediate build directory, or create it if it doesn't exist."""
     if not os.path.exists(ctx.config.builddir):
         log.info('Creating build directory: %s', ctx.config.builddir)
-        os.makedirs(ctx.config.builddir)
+        os.makedirs(ctx.config.builddir, exist_ok=True)
         return
 
     log.info('Cleaning build directory: %s', ctx.config.builddir)
