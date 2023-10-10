@@ -183,9 +183,6 @@ def prepareBuildDir(ctx):
         os.makedirs(ctx.config.builddir, exist_ok=True)
         return
 
-    log.info('Cleaning build directory: %s', ctx.config.builddir)
-    cleanDirectory(ctx.config.builddir)
-
 
 def main(args):
     # Script is assumed to live in the root of the project
