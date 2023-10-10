@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:ann="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+>
+  <ann:documentation>
+    The schema for a page that describes a 3D coffin model.
+  </ann:documentation>
+
+  <include href="model.rng"/>
+  <include href="text.rng"/>
+
+  <start>
+    <ref name="page"/>
+  </start>
+
+  <define name="page">
+    <element name="page">
+      <ann:documentation>
+        Describes the content for a model page.
+      </ann:documentation>
+      <attribute name="dest">
+        <ann:documentation>
+          Where the HTML for this page should be written. Specify a path
+          relative to the build output directory.
+        </ann:documentation>
+        <data type="string"/>
+      </attribute>
+      <ref name="name"/>
+      <ref name="creator"/>
+      <ref name="model"/>
+      <ref name="description"/>
+      <optional><ref name="texts"/></optional>
+      <optional><ref name="footnotes"/></optional>
+    </element>
+  </define>
+
+  <define name="name">
+    <element name="name">
+      <ann:documentation>
+        The name of this model. This will be displayed prominently on the
+        page, and used in the page title as well.
+      </ann:documentation>
+      <text/>
+    </element>
+  </define>
+
+  <define name="creator">
+    <element name="creator">
+      <ann:documentation>
+        The person who translated the texts.
+      </ann:documentation>
+      <text/>
+    </element>
+  </define>
+</grammar>

@@ -62,6 +62,14 @@ class XMLToolbox:
         log.debug('Validating XML against schema %s: %s', schema, target)
         subprocess.run([self.xmlstarlet, 'val', '-q', '-e', '-s', schema, target], check=True)
 
+    def validateNGSchema(self, schema, target):
+        """Use a RelaxNG schema to validate an XML file.
+
+        We use XML Starlet for this.
+        """
+        log.debug('Validating XML against schema %s: %s', schema, target)
+        subprocess.run([self.xmlstarlet, 'val', '-q', '-e', '-r', schema, target], check=True)
+
     def validate(self, target):
         """Check an XML file for well-formedness.
 

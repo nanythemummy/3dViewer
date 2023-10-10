@@ -1,0 +1,62 @@
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:ann="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+>
+  <ann:documentation>
+    Elements that describe the mapping between a 3D model and its
+    annotations.
+  </ann:documentation>
+
+  <define name="model">
+    <element name="model">
+      <ann:documentation>
+        Describes a model we want to display.
+      </ann:documentation>
+      <attribute name="src">
+        <ann:documentation>
+          Where the 3D model source can be installed from. Specify a path
+          relative to the project root, or use ${assets}/... to specify a
+          path within the assets repo.
+        </ann:documentation>
+        <text/>
+      </attribute>
+      <attribute name="dest">
+        <ann:documentation>
+          Where the 3D model should be installed. Specify a path relative
+          to the build output directory.
+        </ann:documentation>
+        <text/>
+      </attribute>
+      <zeroOrMore>
+        <ref name="link"/>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="link">
+    <element name="link">
+      <ann:documentation>
+        Identifies a link on the model. Each link is a selectable hitbox
+        (object) on the model that refers to a description of the text and its
+        annotations elsewhere on the page.
+      </ann:documentation>
+      <attribute name="name">
+        <ann:documentation>
+          The name of the hitbox object in the model. (Note that Three.js
+          mangles names upon loading a GLTF file, per its own naming
+          restrictions, but you may specify either the mangled or unmangled
+          name here.)
+        </ann:documentation>
+        <text/>
+      </attribute>
+      <attribute name="ref">
+        <ann:documentation>
+          The text or fragment that this link refers to. May refer to the ID
+          of a text or frag element.
+        </ann:documentation>
+        <data type="IDREF"/>
+      </attribute>
+    </element>
+  </define>
+</grammar>

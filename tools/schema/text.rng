@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:ann="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+>
+  <ann:documenation>
+    Page elements that contain annotations for a 3D model; i.e. hieroglyphic texts
+    and descriptions.
+
+    Includes the subset of HTML-like text markup that we support for descriptions
+    and translations.
+  </ann:documenation>
+
+  <div ann:name="text containers">
+    <define name="description">
+      <element name="description">
+        <ann:documentation>
+          A description of the item on this page. Contains content blocks, which can contain text markup.
+        </ann:documentation>
+        <oneOrMore>
+          <element name="contents">
+            <ann:documentation>
+              The contents of the description. It can contain text markup.
+            </ann:documentation>
+            <ref name="text-markup"/>
+          </element>
+        </oneOrMore>
+      </element>
+    </define>
+
+    <define name="texts">
+      <element name="texts">
+        <ann:documentation>
+          Describes texts associated with the model.
+        </ann:documentation>
+        <oneOrMore><ref name="text"/></oneOrMore>
+      </element>
+    </define>
+
+    <define name="text">
+      <element name="text">
+        <ann:documentation>
+          Describes a single text associated with the model. It may be in one
+          location, or it may be spread across multiple locations on the model
+          (each represented by a frag sublement).
+        </ann:documentation>
+        <attribute name="id">
+          <ann:documentation>
+            The ID of the text. May be a target for links on the model.
+          </ann:documentation>
+          <data type="ID"/>
+        </attribute>
+        <element name="desc">
+          <ann:documentation>
+            A brief description of the text, e.g. the text location or source.
+          </ann:documentation>
+          <data type="string"/>
+        </element>
+        <choice>
+          <ref name="hieroglyphic-text-elements"/>
+          <oneOrMore>
+            <element name="frag">
+              <ann:documentation>
+                Describes a piece of text in one location on the model. It is
+                considered part of a larger, sequential, and cohesive collection of
+                text (e.g. it may be a column or row of an inscription).
+              </ann:documentation>
+              <attribute name="id"><data type="ID"/></attribute>
+              <ref name="hieroglyphic-text-elements"/>
+            </element>
+          </oneOrMore>
+        </choice>
+      </element>
+    </define>
+
+    <define name="footnotes">
+      <element name="footnotes">
+        <ann:documentation>
+          Footnotes to accompany the description and texts.
+        </ann:documentation>
+        <zeroOrMore>
+          <ref name="fn"/>
+        </zeroOrMore>
+      </element>
+    </define>
+
+    <define name="fn">
+      <element name="fn">
+        <ann:documentation>
+          A footnote to accompany the description and texts.
+        </ann:documentation>
+        <attribute name="num">
+          <ann:documentation>
+            The number of this footnote (starting with 1). This will be used like an ID to resolve
+            "fnref" references, and is also the number that will be displayed for this footnote.
+          </ann:documentation>
+          <data type="positiveInteger"/>
+        </attribute>
+        <ref name="text-markup"/>
+      </element>
+    </define>
+  </div>
+
+  <div ann:name="text markup classes">
+    <ann:documentation>
+      General sets of elements and classes that are useful for defining elements with text markup.
+    </ann:documentation>
+
+    <define name="text-markup">
+      <ann:documentation>
+        Mixed text markup with our approved set of block and inline markup elements,
+        along with common supported attributes.
+      </ann:documentation>
+      <ref name="text-attrs"/>
+      <mixed>
+        <zeroOrMore><ref name="p"/></zeroOrMore>
+        <zeroOrMore><ref name="div"/></zeroOrMore>
+        <zeroOrMore><ref name="inline-elem"/></zeroOrMore>
+      </mixed>
+    </define>
+
+    <define name="inline-content">
+      <ann:documentation>
+        Mixed inline markup that may appear in a block, along with common supported attributes.
+      </ann:documentation>
+      <ref name="text-attrs"/>
+      <mixed>
+        <zeroOrMore><ref name="inline-elem"/></zeroOrMore>
+      </mixed>
+    </define>
+
+    <define name="inline-elem">
+      <choice>
+        <ann:documentation>
+          One of a set of supported inline elements.
+        </ann:documentation>
+        <ref name="a"/>
+        <ref name="inline-elem-no-a"/>
+      </choice>
+    </define>
+
+    <define name="inline-elem-no-a">
+      <choice>
+        <ann:documentation>
+          One of a set of inline elements that are allowed within an anchor
+          (nested anchors are not allowed).
+        </ann:documentation>
+        <ref name="al"/>
+        <ref name="em"/>
+        <ref name="fnref"/>
+        <ref name="span"/>
+      </choice>
+    </define>
+
+    <define name="text-attrs">
+      <ann:documentation>
+        The common set of optional HTML-like attributes that may annotate
+        text markup elements.
+      </ann:documentation>
+      <optional><ref name="id-attr"/></optional>
+      <optional><ref name="class-attr"/></optional>
+      <optional><ref name="style-attr"/></optional>
+      <optional><ref name="lang-attr"/></optional>
+      <optional><ref name="dir-attr"/></optional>
+    </define>
+  </div>
+
+  <div ann:name="supported text markup elements">
+    <ann:documentation>
+      HTML-like text markup elements that are suitable for use in the page description and texts.
+      A minimal set of attributes and markup has been defined for now, based on
+      https://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd .
+
+      Two non-HTML extensions are provided. One is here:
+      - the fnref element, to be used for footnotes
+
+      And one is defined in "hieroglyphic text elements" below:
+      - the al element, to be used for transliterations
+    </ann:documentation>
+
+    <define name="p">
+      <element name="p"><ref name="inline-content"/></element>
+    </define>
+
+    <define name="div">
+      <element name="div"><ref name="text-markup"/></element>
+    </define>
+
+    <define name="em">
+      <element name="em"><ref name="inline-content"/></element>
+    </define>
+
+    <define name="sup">
+      <element name="sup"><ref name="inline-content"/></element>
+    </define>
+
+    <define name="span">
+      <element name="span"><ref name="inline-content"/></element>
+    </define>
+
+    <define name="a">
+      <element name="a">
+        <ref name="text-attrs"/>
+        <attribute name="href"><data type="anyURI"/></attribute>
+        <mixed>
+          <zeroOrMore><ref name="inline-elem-no-a"/></zeroOrMore>
+        </mixed>
+      </element>
+    </define>
+
+    <define name="fnref">
+      <element name="fnref">
+        <ann:documentation>
+          A reference to a footnote defined in the `footnotes` section of the page. The only content
+          is the attribute "num" (described below).
+        </ann:documentation>
+        <attribute name="num">
+          <ann:documentation>
+            The number (starting at 1) of the footnote to be referenced. This should correspond
+            to the "num" property of an "fn" element in the "footnotes" section. This attribute
+            will generate appropriate footnote links, and it will also be how the footnote is
+            displayed.
+          </ann:documentation>
+          <data type="positiveInteger"/>
+        </attribute>
+      </element>
+    </define>
+  </div>
+
+  <div ann:name="supported text markup attributes">
+    <define name="id-attr">
+      <attribute name="id"><data type="ID"/></attribute>
+    </define>
+
+    <define name="class-attr">
+      <attribute name="class"><data type="NMTOKENS"/></attribute>
+    </define>
+
+    <define name="style-attr">
+      <attribute name="style"><data type="string"/></attribute>
+    </define>
+
+    <define name="lang-attr">
+      <attribute name="lang" ns="http://www.w3.org/XML/1998/namespace">
+        <data type="language"/>
+      </attribute>
+    </define>
+
+    <define name="dir-attr">
+      <attribute name="dir">
+        <choice>
+          <value>ltr</value>
+          <value>rtl</value>
+        </choice>
+      </attribute>
+    </define>
+  </div>
+
+  <div ann:name="hieroglyphic text elements">
+    <ann:documentation>
+      Elements that describe a hieroglyphic text fragment.
+    </ann:documentation>
+
+    <define name="hieroglyphic-text-elements">
+      <group>
+        <ref name="himg"/>
+        <zeroOrMore><ref name="hi"/></zeroOrMore>
+        <zeroOrMore><ref name="al"/></zeroOrMore>
+        <zeroOrMore><ref name="tr"/></zeroOrMore>
+      </group>
+    </define>
+
+    <define name="himg">
+      <element name="himg">
+        <ann:documentation>
+          A picture of the rendered hieroglyphic text.
+        </ann:documentation>
+        <attribute name="src">
+          <ann:documentation>
+            Where the image can be installed from. Specify a path
+            relative to the project root, or use ${assets}/... to specify a
+            path within the assets repo.
+          </ann:documentation>
+          <text/>
+        </attribute>
+        <attribute name="dest">
+          <ann:documentation>
+            Where the image should be installed. Specify a path
+            relative to the build output directory.
+          </ann:documentation>
+          <text/>
+        </attribute>
+      </element>
+    </define>
+
+    <define name="hi">
+      <element name="hi">
+        <ann:documentation>
+          An encoding of hieroglyphic text. Nominally, this is the source that
+          the image is generated from.
+        </ann:documentation>
+        <attribute name="encoding">
+          <ann:documentation>
+            How the hieroglyphs are encoded, in case we want to support
+            multiple or alternative ways of generating hieroglyphs in the
+            future.
+
+            mdc-jsesh: JSesh-flavored Manual de Codage (MdC).
+          </ann:documentation>
+          <choice>
+            <value>mdc-jsesh</value>
+          </choice>
+        </attribute>
+        <text/>
+      </element>
+    </define>
+
+    <define name="al">
+      <element name="al">
+        <ann:documentation>
+          An encoding of the transliteration (alphabetic encoding) of
+          ancient Egyptian text.
+        </ann:documentation>
+        <attribute name="encoding">
+          <ann:documentation>
+            How this transliteration is encoded.
+
+            mdc: Manual de Codage (MdC).
+            unicode: a Unicode representation of ancient Egyptian transliteration,
+                including Unicode support for non-ASCII characters.
+          </ann:documentation>
+          <choice>
+            <value>mdc</value>
+            <value>unicode</value>
+          </choice>
+        </attribute>
+        <text/>
+      </element>
+    </define>
+
+    <define name="tr">
+      <element name="tr">
+        <ann:documentation>
+          A translation of the text. Use xml:lang to indicate the language the translation is in.
+        </ann:documentation>
+        <ref name="text-markup"/>
+      </element>
+    </define>
+  </div>
+</grammar>

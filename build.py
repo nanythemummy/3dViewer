@@ -167,7 +167,8 @@ def preprocessPage(ctx, page):
     log.info('Preprocessing page: %s', page)
     if ctx.config.validate:
         ctx.toolbox.validate(page)
-        ctx.toolbox.validateSchema(schema=ctx.config.pageschema, target=page)
+        # ctx.toolbox.validateSchema(schema=ctx.config.pageschema, target=page)
+        ctx.toolbox.validateNGSchema(schema=ctx.config.ngpageschema, target=page)
 
 
 def preprocessSite(ctx):
@@ -175,7 +176,8 @@ def preprocessSite(ctx):
     sitexml = ctx.config.sitexml
     if ctx.config.validate:
         ctx.toolbox.validate(sitexml)
-        ctx.toolbox.validateSchema(schema=ctx.config.siteschema, target=sitexml)
+        # ctx.toolbox.validateSchema(schema=ctx.config.siteschema, target=sitexml)
+        ctx.toolbox.validateNGSchema(schema=ctx.config.ngsiteschema, target=sitexml)
 
     for page in getSitePages(ctx):
         preprocessPage(ctx, page)
