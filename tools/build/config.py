@@ -38,8 +38,16 @@ class Config:
         return os.path.join(self.schemadir, 'site.xsd')
 
     @property
+    def ngsiteschema(self) -> str:
+        return os.path.join(self.schemadir, 'site.rng')
+
+    @property
     def pageschema(self) -> str:
         return os.path.join(self.schemadir, 'page.xsd')
+
+    @property
+    def ngpageschema(self) -> str:
+        return os.path.join(self.schemadir, 'page.rng')
 
     @property
     def modelsdestdir(self) -> str:
