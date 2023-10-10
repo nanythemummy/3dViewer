@@ -9,21 +9,19 @@ log = logging.getLogger(__name__)
 
 @dataclass
 class Config:
-    assetsdir: str
-    distdir: str
-    builddir: str
-    sitexml: str
-    xmlstarletpath: str
-    javapath: str
-    saxonjarpath: str
-    buildsitejarpath: str
-    validate: bool
-    verbose: bool
-
-    # The following fields are currently just constants.
+    validate: bool = True
+    verbose: bool = False
+    assetsdir: str = 'assets'
+    builddir: str = 'build'
+    distdir: str = 'dist'
     sourcedir: str = 'src'
     staticdir: str = 'static'
     toolsdir: str = 'tools'
+    sitexml: str = 'src/site.xml'
+    saxonjarpath: str = 'tools/saxon-he-12.3.jar'
+    buildsitejarpath: str = 'tools/buildSite-0.0.1-SNAPSHOT.jar'
+    xmlstarletpath: str = 'xmlstarlet'
+    javapath: str = 'java'
 
     @property
     def stylesheetdir(self) -> str:
