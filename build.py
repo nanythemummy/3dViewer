@@ -123,13 +123,6 @@ def convertTransliterations(ctx):
         convertTransliteration(src=srcpage, dest=destpage)
 
 
-def getTransformParams(ctx):
-    # Paths must be converted to absolute paths because Saxon reckons paths relative to the stylesheet
-    srcdir = os.path.abspath(ctx.config.builddir)
-    destdir = os.path.abspath(ctx.config.distdir)
-    return {'srcdir': srcdir, 'destdir': destdir}
-
-
 def buildSite(ctx):
     """Build the entire site.
 
