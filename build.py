@@ -116,8 +116,7 @@ def convertTransliteration(src, dest):
 
 def convertTransliterations(ctx):
     log.info("Converting transliterations from MdC to Unicode...")
-    tlitfname = os.path.join(ctx.config.builddir, 'site.xml')
-    convertTransliteration(src=ctx.config.sitexml, dest=tlitfname)
+    convertTransliteration(src=ctx.config.srcsitexml, dest=ctx.config.buildsitexml)
     for page in tools.build.site.getPages(ctx):
         srcpage = os.path.join(ctx.config.sourcedir, page)
         destpage = os.path.join(ctx.config.builddir, page)
@@ -154,10 +153,9 @@ def preprocessPage(ctx, page):
 
 def preprocessSite(ctx):
     log.info('Preprocessing site XML...')
-    sitexml = ctx.config.sitexml
     if ctx.config.validate:
-        ctx.toolbox.validate(sitexml)
-        ctx.toolbox.validateNGSchema(schema=ctx.config.ngsiteschema, target=sitexml)
+        ctx.toolbox.validate(ctx.config.srcsitexml)
+        ctx.toolbox.validateNGSchema(schema=ctx.config.ngsiteschema, target=ctx.config.srcsitexml)
 
     for page in tools.build.site.getSitePages(ctx):
         preprocessPage(ctx, page)

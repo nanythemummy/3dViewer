@@ -1,5 +1,4 @@
 import argparse
-from dataclasses import dataclass
 import logging
 import os
 import shutil
@@ -7,21 +6,32 @@ import shutil
 log = logging.getLogger(__name__)
 
 
-@dataclass
 class Config:
-    validate: bool = True
-    verbose: bool = False
-    assetsdir: str = 'assets'
-    builddir: str = 'build'
-    distdir: str = 'dist'
-    sourcedir: str = 'src'
-    staticdir: str = 'static'
-    toolsdir: str = 'tools'
-    sitexml: str = 'src/site.xml'
-    saxonjarpath: str = 'tools/saxon-he-12.3.jar'
-    buildsitejarpath: str = 'tools/buildSite-0.0.1-SNAPSHOT.jar'
-    xmlstarletpath: str = 'xmlstarlet'
-    javapath: str = 'java'
+    def __init__(
+            self,
+            assetsdir: str = 'assets',
+            builddir: str = 'build',
+            distdir: str = 'build',
+            sourcedir: str = 'src',
+            staticdir: str = 'static',
+            toolsdir: str = 'tools',
+            sitexml: str = 'site.xml',
+            xmlstarletpath: str = '',
+            javapath: str = '',
+            validate: bool = True,
+            verbose: bool = False,
+    ):
+        self.assetsdir = assetsdir
+        self.builddir = builddir
+        self.distdir = distdir
+        self.sourcedir = sourcedir
+        self.staticdir = staticdir
+        self.toolsdir = toolsdir
+        self.sitexml = sitexml
+        self.xmlstarletpath = xmlstarletpath
+        self.javapath = javapath
+        self.validate = validate
+        self.verbose = verbose
 
     @property
     def stylesheetdir(self) -> str:
@@ -30,6 +40,14 @@ class Config:
     @property
     def schemadir(self) -> str:
         return os.path.join(self.toolsdir, 'schema')
+
+    @property
+    def saxonjarpath(self) -> str:
+        return os.path.join(self.toolsdir, 'saxon-he-12.3.jar')
+
+    @property
+    def buildsitejarpath(self) -> str:
+        return os.path.join(self.toolsdir, 'buildSite-0.0.1-SNAPSHOT.jar')
 
     @property
     def siteschema(self) -> str:
@@ -44,8 +62,16 @@ class Config:
         return os.path.join(self.schemadir, 'page.xsd')
 
     @property
+    def srcsitexml(self) -> str:
+        return os.path.join(self.sourcedir, self.sitexml)
+
+    @property
     def ngpageschema(self) -> str:
         return os.path.join(self.schemadir, 'page.rng')
+
+    @property
+    def buildsitexml(self) -> str:
+        return os.path.join(self.builddir, self.sitexml)
 
     @property
     def modelsdestdir(self) -> str:
@@ -54,6 +80,10 @@ class Config:
     @property
     def imgdestdir(self) -> str:
         return os.path.join(self.distdir, 'img')
+
+    @property
+    def distsitexml(self) -> str:
+        return os.path.join(self.distdir, self.sitexml)
 
 
 class NoSuchTool(Exception):
@@ -85,15 +115,8 @@ def getConfig(args) -> Config:
     parser.add_argument('--assetsdir', help='where model assets are stored', default='assets')
     parser.add_argument('--distdir', help='where final build output is written', default='dist')
     parser.add_argument('--builddir', help='where intermediate build output is written', default='build')
-    parser.add_argument('--sitexml', help='location of site XML definition', default='src/site.xml')
     parser.add_argument('--xmlstarletpath', help='location of XML Starlet, used for XML Include/Schema processing')
     parser.add_argument('--javapath', help='Location of Java runtime command, used for XSLT')
-    parser.add_argument('--saxonjarpath', help='Location of Saxon JAR, used for XSLT', default='tools/saxon-he-12.3.jar')
-    parser.add_argument(
-        '--buildsitejarpath',
-        help='Location of 3dcoffins site-building JAR, used for XSLT',
-        default='tools/buildSite-0.0.1-SNAPSHOT.jar'
-    )
     parser.add_argument('--no-val', dest='validate', action='store_false', help='Skip XML validation step', default=True)
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='Verbose output')
 

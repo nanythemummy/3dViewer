@@ -5,7 +5,7 @@ log = logging.getLogger(__name__)
 
 
 def getPages(ctx):
-    site = ctx.cache.load(ctx.config.sitexml)
+    site = ctx.cache.load(ctx.config.srcsitexml)
     return (doc.attrib['href'] for doc in site.findall('.//page'))
 
 

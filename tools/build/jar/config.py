@@ -1,23 +1,42 @@
 import os.path
 from typing import List
 
+import tools.build.config
 
-class Config:
-    def __init__(self):
-        self.version = "0.0.1-SNAPSHOT"
-        self.build_dir = "build"
-        self.build_tools_dir: str = os.path.join(self.build_dir, "tools")
-        self.build_java_dir: str = os.path.join(self.build_tools_dir, "java")
-        self.tools_dir = "tools"
-        self.tools_java_dir: str = os.path.join(self.tools_dir, "java")
-        self.manifest_path: str = os.path.join("META-INF", "MANIFEST.MF")
-        self.manifest_src: str = os.path.join(self.tools_java_dir, self.manifest_path)
-        self.saxon_jar_filename = "saxon-he-12.3.jar"
-        self.saxon_src: str = os.path.join(self.tools_dir, self.saxon_jar_filename)
-        self.saxon_dest: str = os.path.join(self.build_tools_dir, self.saxon_jar_filename)
-        self.saxon_lib_src_dir: str = os.path.join(self.tools_dir, "lib")
-        self.saxon_lib_dest_dir: str = os.path.join(self.build_tools_dir, "lib")
-        self.package_path: str = os.path.join("edu", "berkeley", "_3dcoffins")
-        self.package_src_dir: str = os.path.join(self.tools_java_dir, self.package_path)
-        self.javac_classpath: List[str] = [self.tools_java_dir, self.saxon_src]
-        self.out_jar_filename: str = os.path.join(self.build_tools_dir, f"buildSite-{self.version}.jar")
+
+CURRENT_VERSION = '0.0.1-SNAPSHOT'
+
+
+class Config(tools.build.config.Config):
+    def __init__(self, **params):
+        super(Config, self).__init__(**params)
+        self.version = params.get('version', CURRENT_VERSION)
+        self.package_path = os.path.join('edu', 'berkeley', '_3dcoffins')
+
+    @property
+    def tools_java_dir(self) -> str:
+        return os.path.join(self.toolsdir, "java")
+
+    @property
+    def tools_manifest(self) -> str:
+        return os.path.join(self.toolsdir, 'java', 'META-INF', 'MANIFEST.MF')
+
+    @property
+    def tools_java_src(self) -> str:
+        return os.path.join(self.tools_java_dir, self.package_path)
+
+    @property
+    def build_tools_dir(self) -> str:
+        return os.path.join(self.builddir, "tools")
+
+    @property
+    def build_java_dir(self) -> str:
+        return os.path.join(self.builddir, "tools", "java")
+
+    @property
+    def javac_classpath(self) -> List[str]:
+        return [self.tools_java_dir, self.saxonjarpath]
+
+    @property
+    def build_buildsite_jar(self) -> str:
+        return os.path.join(self.build_tools_dir, f'buildSite-{self.version}.jar')
