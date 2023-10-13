@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<site
-    xmlns:xi="http://www.w3.org/2001/XInclude"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="schema/site.xsd" >
-  <xi:include href="iwefaa.xml" parse="xml"/>
-  <xi:include href="amenirdis.xml" parse="xml"/>
-  <xi:include href="amenirdis_outer.xml" parse="xml"/>
-  <xi:include href="psamtik-seneb.xml" parse="xml"/>
+<site>
+  <page href="iwefaa.xml"/>
+  <page href="amenirdis.xml"/>
+  <page href="amenirdis_outer.xml"/>
+  <page href="psamtik-seneb.xml"/>
+
 </site>

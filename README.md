@@ -36,14 +36,13 @@ You must have:
      (Standard Edition, aka SE) will do.
 * **XML Starlet**, a suite of tools for XML validation and hacking. Install via Homebrew:
   `brew install xmlstarlet`.
-* The Python Classical Languages Toolkit, which we will install below as part of setup.
 
 ## Setup
 
 ### Python Libraries
 
-You will need to install at least one Python library, the Classical Languages Toolkit (CLTK), to
-build the website. We recommend installing it in a Python "virtualenv" that will keep your project's
+Currently, we have no Python library dependencies, but we may need to add them later.
+Even if it's not immediately necessary, we still recommend creating a Python "virtualenv" that will keep your project's
 Python libraries separate from other projects so that they don't conflict.
 
 There are many ways to set up a virtualenv in Python, but here's how we do it. From the top of this
@@ -79,23 +78,23 @@ option to tell it where to find the assets.
 
 There are also a set of static "assets" inside this repo that are specifically for use by this
 website – CSS, web fonts, and Javascript. When you build the project, they will be installed along
-with any needed assets from the `assets` repo.
+with any needed assets from the `assets` directory. When you edit CSS or add other static assets, you should save the files in the "static" directory.
 
 When you're ready to build, your setup should look something like this:
 
 ```
-- <SOME_DIR>
-    - assets
-        - <coffin_name>/
-            - <coffin_name>.gltf
-            - texts/
-                - <coffin_name>.gly
-                - text1.svg
-                - text2.svg
-                - etc.
-        - etc.
+- <SOME_DIR> 
     - 3dViewer
         - this README
+        - assets
+          - <coffin_name>/
+              - <coffin_name>.gltf
+              - texts/
+                  - <coffin_name>.gly
+                  - text1.svg
+                  - text2.svg
+                  - etc.
+        - etc.
         - src/
             - main.js
             - site.xml
@@ -156,7 +155,10 @@ Either way, for each text (or text fragment) you will specify:
 
 Use the existing pages as models for how to create these elements. If you want a reference, the
 full XML schema for our data is located in the `tools/schema/` directory.
+## Preparing the glTF File from an OBJ file
 
+  * For this, please consult the [Building_a_model.md](Building_a_model.md) tutorial in this repo.
+  
 ## Tips
 
    * You can also run the build script directly instead of as an argument to `python`. To do so:
@@ -178,3 +180,8 @@ full XML schema for our data is located in the `tools/schema/` directory.
 
 We are experimenting with an alternate development setup that uses Docker. If you want to try it
 out, you can skip the Requirements and Setup above, and just see [DOCKER.md](DOCKER.md) for details.
+
+## buildSite
+
+As an advanced topic, we are now using a separate Java build tool to do XSLT processing. See
+[BUILD_JAR.md](BUILD_JAR.md) for details on how to update the tool.

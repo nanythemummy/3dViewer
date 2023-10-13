@@ -1,0 +1,43 @@
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:ann="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+>
+  <ann:documentation>
+    Schema definitions for arbitrary content in a document.
+
+    These may be useful for troubleshooting, as well as for prototyping
+    new content that we don't want to write validation for yet.
+  </ann:documentation>
+
+  <define name="any-element">
+    <element>
+      <ann:documentation>
+        An arbitrary element, with arbitrary attributes and internal content.
+      </ann:documentation>
+      <anyName/>
+      <ref name="any-attributes"/>
+      <ref name="any-content"/>
+    </element>
+  </define>
+
+  <define name="any-attributes">
+    <ann:documentation>
+      A set of arbitrary attributes.
+    </ann:documentation>
+    <zeroOrMore>
+      <attribute><anyName/></attribute>
+    </zeroOrMore>
+  </define>
+
+  <define name="any-content">
+    <ann:documentation>
+      A set of arbitrary child elements and text.
+    </ann:documentation>
+    <mixed>
+      <zeroOrMore>
+        <ref name="any-element"/>
+      </zeroOrMore>
+    </mixed>
+  </define>
+</grammar>
