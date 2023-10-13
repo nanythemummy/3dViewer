@@ -88,7 +88,17 @@ class Config:
 
 class NoSuchTool(Exception):
     """We were unable to locate a tool required by our build."""
-    pass
+    def __init__(self, toolname):
+        self.toolname = toolname
+
+    @property
+    def message(self) -> str:
+        if self.toolname == 'xmlstarlet':
+            return 'XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.'
+        elif self.toolname == 'java':
+            return 'Java not found. Install OpenJDK with Homebrew or specify the location of the Java runtime using --javapath.'
+        else:
+            return f'Required tool {e.toolname} not found.'
 
 
 def resolveToolLocation(config: Config, locationkey: str, toolname: str):
@@ -98,12 +108,17 @@ def resolveToolLocation(config: Config, locationkey: str, toolname: str):
     toolname is the name of the tool, which we will use to attempt to
     locate the tool ourselves if the location was not explicitly configured.
     """
-    toolpath = getattr(config, locationkey)
+    toolpath = getattr(config, locationkey, '')
     if not toolpath or not os.path.exists(toolpath):
         toolpath = shutil.which(toolname)
         if not toolpath:
             raise NoSuchTool()
         setattr(config, locationkey, toolpath)
+
+
+def resolveToolLocations(config: Config):
+    resolveToolLocation(config, 'xmlstarletpath', 'xmlstarlet')
+    resolveToolLocation(config, 'javapath', 'java')
 
 
 def getConfig(args) -> Config:
@@ -132,14 +147,9 @@ def getConfig(args) -> Config:
 
     # Fill in defaults for external tool locations if necessary.
     try:
-        resolveToolLocation(config, 'xmlstarletpath', 'xmlstarlet')
-    except NoSuchTool:
-        parser.error('XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.')
-
-    try:
-        resolveToolLocation(config, 'javapath', 'java')
-    except NoSuchTool:
-        parser.error('Java not found. Install OpenJDK with Homebrew or specify the location of the Java runtime using --javapath.')
+        resolveToolLocations(config)
+    except NoSuchTool as e:
+        parser.error(e.message)
 
     log.debug("config: %s", config)
     return config
