@@ -19,6 +19,9 @@ import net.sf.saxon.s9api.Xslt30Transformer;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 
+/**
+ * The main tool for building the site HTML.
+ */
 public class BuildSite {
     private Processor saxon;
     private XsltCompiler compiler;
@@ -30,18 +33,28 @@ public class BuildSite {
         this.transformers = new HashMap<>();
     }
 
-    public Source makeXmlSource(File path) {
+    /**
+     * Creates a Saxon API source for the given XML input path.
+     */
+    private Source makeXmlSource(File path) {
         return new StreamSource(path);
     }
 
-    public Destination makeHtmlSink(File path) {
+    /**
+     * Creates a Saxon API sink for the given HTML output path.
+     */
+    private Destination makeHtmlSink(File path) {
         Serializer dest = saxon.newSerializer(path);
         dest.setOutputProperty(Serializer.Property.METHOD, "html");
         dest.setOutputProperty(Serializer.Property.INDENT, "yes");
         return dest;
     }
 
-    public Map<String, String> makeParameters() {
+    /**
+     * Configure extra parameters to pass to the XSLT template
+     * (see <xsl:param> declarations in the XSLT templates).
+     */
+    private Map<String, String> makeParameters() {
         Map<String, String> map = new HashMap<>();
         File buildDir = new File("build");
         File distDir = new File("dist");
@@ -50,7 +63,13 @@ public class BuildSite {
         return map;
     }
 
-    public Xslt30Transformer makeTransformer(File stylesheetPath) throws SaxonApiException {
+    /**
+     * Create a Saxon API transformer that represents the given stylesheet.
+     *
+     * @throws SaxonApiException if we could not construct the transformer
+     *     (e.g. the stylesheet parsing fails).
+     */
+    private Xslt30Transformer makeTransformer(File stylesheetPath) throws SaxonApiException {
         Xslt30Transformer transformer = transformers.get(stylesheetPath);
         if (transformer != null) {
             return transformer;
@@ -58,18 +77,33 @@ public class BuildSite {
 
         XsltExecutable stylesheet = compiler.compile(new StreamSource(stylesheetPath));
         transformer = stylesheet.load30();
+
+        /*
+         * The Saxon API interface for parameters is a bit unwieldly,
+         * so I start with a simple String->String map, and
+         * do some magic to transform it into the clunkier
+         * QName -> <T extends XdmValue> map that is required by Saxon.
+         */
         Map<String, String> params = makeParameters();
         Map<QName, XdmValue> stylesheetParams = params.entrySet().stream()
             .map(e -> new AbstractMap.SimpleEntry<QName, XdmValue>(
                 new QName(e.getKey()), new XdmAtomicValue(e.getValue())
                 ))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
         transformer.setStylesheetParameters(stylesheetParams);
         transformers.put(stylesheetPath, transformer);
         return transformer;
     }
 
-    public void transform(File stylesheetPath, File srcPath, File destPath) throws SaxonApiException {
+    /**
+     * Create and execute a Saxon transformation pipeline that converts
+     * an XML source to an HTML destination, using the given stylesheet.
+     *
+     * @throws SaxonApiException if either the pipeline construction or
+     *    transformation fails.
+     */
+    private void transform(File stylesheetPath, File srcPath, File destPath) throws SaxonApiException {
         Source src = makeXmlSource(srcPath);
         Destination dest = makeHtmlSink(destPath);
         Xslt30Transformer transformer = makeTransformer(stylesheetPath);
@@ -86,6 +120,7 @@ public class BuildSite {
             System.exit(1);
         }
 
+        // Generate index.html
         BuildSite build = new BuildSite();
         Map<String, String> params = build.makeParameters();
         try {
@@ -95,6 +130,7 @@ public class BuildSite {
             System.exit(2);
         }
 
+        // Generate page HTML
         try {
             PageFactory pageFactory = new PageFactory(config);
             List<Page> pages = pageFactory.getSitePages();

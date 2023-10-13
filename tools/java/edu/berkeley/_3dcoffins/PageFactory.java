@@ -13,6 +13,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Loads Pages.
+ */
 class PageFactory {
     private Config config;
     private DocumentBuilder builder;
@@ -59,6 +62,14 @@ class PageFactory {
         return new Page(config, href, dest);
     }
 
+    /**
+     * Loads all the pages we need to build, and returns a list of them.
+     * It loads them from the build/ directory, so assumes we have
+     * already processed transliterations.
+     *
+     * @throws BuildException if any of the pages failed to load, or if
+     *   we were unable to configure the XML parser.
+     */
     public List<Page> getSitePages() throws BuildException {
         DocumentBuilder builder;
         Document siteDoc = loadSite();

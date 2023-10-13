@@ -11,6 +11,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Configuration for BuildSite.
+ */
 public class Config {
     public File sourcedir;
     public File builddir;
@@ -20,6 +23,11 @@ public class Config {
     public File site2html;
     public File page2html;
 
+    /**
+     * Find the one and only descendent element with the given name.
+     *
+     * @throws ConfigException if there isn't exactly one such element
+     */
     static Element getDocumentElementByTagName(Document node, String tagName) throws ConfigException {
         NodeList elems = node.getElementsByTagName(tagName);
         if (elems.getLength() == 0) {
@@ -30,6 +38,15 @@ public class Config {
         return (Element) elems.item(0);
     }
 
+    /**
+     * Find the one and only descendent element with the given name.
+     *
+     * Note: this is identical to getDocumentElementByTagName, but there
+     * is no common interface or base class that we can use to merge
+     * these functions together.
+     *
+     * @throws ConfigException if there isn't exactly one such element
+     */
     static Element getSubelementByTagName(Element node, String tagName) throws ConfigException {
         NodeList elems = node.getElementsByTagName(tagName);
         if (elems.getLength() == 0) {
@@ -40,11 +57,19 @@ public class Config {
         return (Element) elems.item(0);
     }
 
+    /**
+     * Find the one and only descendent element with the given name.
+     * Assume it is a simple text-valued element that represents a
+     * file path. Return the File corresponding to the path.
+     */
     static File getSubelementAsFile(Element node, String tagName) throws ConfigException {
         Element elem = Config.getSubelementByTagName(node, tagName);
         return new File(elem.getTextContent().trim());
     }
 
+    /**
+     * Load the config from an XML file.
+     */
     static Config loadFromFile(File fileName) throws ConfigException {
         DocumentBuilder builder;
         Document configDoc;
