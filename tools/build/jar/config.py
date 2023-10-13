@@ -24,7 +24,7 @@ def getConfig():
     doc = tools.build.config.loadConfigXml('build_config.xml')
     config = Config()
     config.loadSection(doc, 'site')
-    config.loadSection(doc, 'buildSiteJar')
+    config.loadSection(doc, 'buildJar')
 
     try:
         tools.build.config.resolveToolLocation(config, 'javacpath', 'javac')

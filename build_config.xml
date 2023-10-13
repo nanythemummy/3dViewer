@@ -16,9 +16,12 @@
     <distsitexml>dist/site.xml</distsitexml>
     <modelsdestdir>dist/models</modelsdestdir>
     <imgdestdir>dist/img</imgdestdir>
+    <distindexhtml>dist/index.html</distindexhtml>
+    <site2html>tools/xslt/site2html.xsl</site2html>
+    <page2html>tools/xslt/page2html.xsl</page2html>
   </site>
 
-  <buildSiteJar>
+  <buildJar>
     <package_path>edu/berkeley/_3dcoffins</package_path>
     <tools_java_dir>tools/java</tools_java_dir>
     <tools_manifest>tools/java/META-INF/MANIFEST.MF</tools_manifest>
@@ -27,5 +30,5 @@
     <build_java_dir>build/tools/java</build_java_dir>
     <javac_classpath>tools/java:tools/saxon-he-12.3.jar</javac_classpath>
     <build_buildsite_jar>build/tools/buildSite-0.0.1-SNAPSHOT.jar</build_buildsite_jar>
-  </buildSiteJar>
+  </buildJar>
 </buildConfig>

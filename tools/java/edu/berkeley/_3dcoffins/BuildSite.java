@@ -78,32 +78,35 @@ public class BuildSite {
     }
 
     static public void main(String[] args) {
-        BuildSite build = new BuildSite();
-        Map<String, String> params = build.makeParameters();
-        File siteToHtmlPath = new File("tools/xslt/site2html.xsl");
-        File site = new File("build/site.xml");
-        File index = new File("dist/index.html");
+        Config config = null;
         try {
-            build.transform(siteToHtmlPath, site, index);
-        } catch (SaxonApiException e) {
+            config = Config.loadFromFile(new File("build_config.xml"));
+        } catch (ConfigException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
+        BuildSite build = new BuildSite();
+        Map<String, String> params = build.makeParameters();
         try {
-            File pageToHtmlPath = new File("tools/xslt/page2html.xsl");
-            List<Page> pages = Page.getSitePages(site);
+            build.transform(config.site2html, config.buildsitexml, config.distindexhtml);
+        } catch (SaxonApiException e) {
+            e.printStackTrace();
+            System.exit(2);
+        }
+
+        try {
+            PageFactory pageFactory = new PageFactory(config);
+            List<Page> pages = pageFactory.getSitePages();
             for (Page page : pages) {
-                File src = new File("build/" + page.href);
-                File dest = new File("dist/" + page.dest);
-                build.transform(pageToHtmlPath, src, dest);
+                build.transform(config.page2html, page.getSource(), page.getDestination());
             }
         } catch (BuildException e) {
             e.printStackTrace();
-            System.exit(2);
+            System.exit(3);
         } catch (SaxonApiException e) {
             e.printStackTrace();
-            System.exit(3);
+            System.exit(4);
         }
     }
 }
