@@ -30,20 +30,20 @@ log = logging.getLogger(__name__)
 
 class Context:
     def __init__(self):
-        self.config: config.Config = config.Config()
+        self.config: config.Config = config.getConfig()
         self.toolbox: javatoolbox.JavaToolbox = javatoolbox.JavaToolbox(self.config)
 
 
 def compileSources(ctx: Context):
     for src in glob.iglob(os.path.join(ctx.config.tools_java_src, '*.java')):
         log.info(f"Compiling {src}")
-        ctx.toolbox.javac(src=src, dest_dir=ctx.config.build_java_dir)
+        ctx.toolbox.compile(src=src, dest_dir=ctx.config.build_java_dir)
 
 
 def createJar(ctx: Context):
     log.info(f"Creating {ctx.config.build_buildsite_jar}")
     out_path = os.path.abspath(ctx.config.build_buildsite_jar)
-    ctx.toolbox.jar(
+    ctx.toolbox.buildJar(
         manifest=ctx.config.tools_manifest,
         build_root=ctx.config.build_java_dir,
         package=ctx.config.package_path,

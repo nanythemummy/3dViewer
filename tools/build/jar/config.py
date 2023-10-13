@@ -1,5 +1,6 @@
 import os.path
 from typing import List
+import sys
 
 import tools.build.config
 
@@ -12,6 +13,8 @@ class Config(tools.build.config.Config):
         super(Config, self).__init__(**params)
         self.version = params.get('version', CURRENT_VERSION)
         self.package_path = os.path.join('edu', 'berkeley', '_3dcoffins')
+        self.javacpath = ''
+        self.jarcmdpath = ''
 
     @property
     def tools_java_dir(self) -> str:
@@ -40,3 +43,19 @@ class Config(tools.build.config.Config):
     @property
     def build_buildsite_jar(self) -> str:
         return os.path.join(self.build_tools_dir, f'buildSite-{self.version}.jar')
+
+
+def getConfig():
+    doc = tools.build.config.loadConfigXml('build_config.xml')
+    config = Config()
+    config.loadSection(doc, 'site')
+    config.loadSection(doc, 'buildSiteJar')
+
+    try:
+        tools.build.config.resolveToolLocation(config, 'javacpath', 'javac')
+        tools.build.config.resolveToolLocation(config, 'jarcmdpath', 'jar')
+    except tools.build.config.NoSuchTool as e:
+        print(e.message, file=sys.stderr)
+        sys.exit(1)
+
+    return config

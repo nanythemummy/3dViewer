@@ -95,7 +95,7 @@ class NoSuchTool(Exception):
     def message(self) -> str:
         if self.toolname == 'xmlstarlet':
             return 'XML Starlet not found. Install XML Starlet with Homebrew or specify the location of the executable using --xmlstarletpath.'
-        elif self.toolname == 'java':
+        elif self.toolname in ['java', 'javac', 'jar']:
             return 'Java not found. Install OpenJDK with Homebrew or specify the location of the Java runtime using --javapath.'
         else:
             return f'Required tool {e.toolname} not found.'
