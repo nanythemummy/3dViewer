@@ -6,7 +6,7 @@
     <builddir>build</builddir>
     <distdir>dist</distdir>
     <staticdir>static</staticdir>
-    <buildsitejarpath>tools/buildSite-0.0.1-SNAPSHOT.jar</buildsitejarpath>
+    <buildsitejarpath>tools/buildSite-0.0.2-SNAPSHOT.jar</buildsitejarpath>
     <saxonjarpath>tools/saxon-he-12.3.jar</saxonjarpath>
     <stylesheetdir>tools/xslt</stylesheetdir>
     <ngsiteschema>tools/schema/site.rng</ngsiteschema>
@@ -29,6 +29,6 @@
     <build_tools_dir>build/tools</build_tools_dir>
     <build_java_dir>build/tools/java</build_java_dir>
     <javac_classpath>tools/java:tools/saxon-he-12.3.jar</javac_classpath>
-    <build_buildsite_jar>build/tools/buildSite-0.0.1-SNAPSHOT.jar</build_buildsite_jar>
+    <build_buildsite_jar>build/tools/buildSite-0.0.2-SNAPSHOT.jar</build_buildsite_jar>
   </buildJar>
 </buildConfig>
