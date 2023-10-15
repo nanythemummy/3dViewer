@@ -30,7 +30,7 @@ You must have:
    * Via homebrew: `brew install python3`
    * Via the standard [Python 3 distribution for MacOS](https://www.python.org/downloads/)
 * A suitable **Java Development Kit (JDK)**, version 8 or later. Again, two ways to install:
-   * Via homebrew: `brew cask install java` (installs OpenJDK)
+   * Via homebrew: `brew install java` (installs OpenJDK)
    * Via the standard [Oracle JDK SE distribution for MacOS](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html).
      Oracle provides a number of professional options for downloads, but the free(est) edition
      (Standard Edition, aka SE) will do.
