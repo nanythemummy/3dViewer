@@ -6,7 +6,7 @@
     <link name="hitbox_text_1" ref="text1"/>
   </model>
   <description>
-    <contents>
+    <contents xml:lang="en">
       <p>
         This coffin is one of a pair which belonged to a woman named Amenirdis. This is her outer
         coffin, which takes the form of a four-posted shrine. This type of coffin is sometimes called a
@@ -25,7 +25,7 @@
   <texts>
     <text id="text1">
       <desc>center column lid</desc>
-      <himg src="${assets}/amenirdis_outer/amenirdis_outer_full.svg" dest="img/amenirdis_outer_full.svg"/>
+      <himg src="${assets}/amenirdis_outer/texts/amenirdis-outer-full.svg" dest="img/amenirdis-outer-full.svg"/>
       <al encoding="mdc">
         Htp di nsw.t n wsir-skr nb ST(y.t) di=f pr.t-xrw tA irp kA(.w) Apd(.w) snTr qbH mw irp x.t nb(.t) nfr(.t) N kA n Hsy(.t) Xnw n Imn imn-ir-di=s.t {t}&lt;sA&gt;.t Xry-Hb.t n s.t mAa.t iw=f-aA-w 
       </al>

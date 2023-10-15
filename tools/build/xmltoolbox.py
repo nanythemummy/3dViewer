@@ -12,8 +12,6 @@ class XMLToolbox:
 
     def __init__(self, config: Config):
         self.verbose = config.verbose
-        self.builddir = config.builddir
-        self.sourcedir = config.sourcedir
         self.stylesheetdir = config.stylesheetdir
         self.verbose = config.verbose
         self.java = config.javapath
