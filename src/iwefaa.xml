@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="iwefaa.html">
-  <name>Iwefaa</name>
+  <name>Iwefaa (PAHMA 6-19928)</name>
   <creator>Kea Johnston</creator>
   <model src="${assets}/iwefaa/iwefaa_viewer.gltf" dest="models/iwefaa.gltf">
     <link name="group_hitbox_text_1_hitbox_text_1_1" ref="text1col1"/>

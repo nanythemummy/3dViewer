@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="iwefaa_outer.html">
+  <name>Outer Coffin of Iwefaa (PAHMA 5-19912)</name>
+  <creator>Kea Johnston</creator>
+  <model src="${assets}/iwefaa_outer/iwefaa_outer.gltf" dest="models/iwefaa_outer.gltf">
+    <link name="text_1_col_1" ref="text1col1"/>
+    <link name="text_1_col_2" ref="text1col2"/>
+  </model>
+  <description>
+    <contents xml:lang="en">
+      <p>
+       
+      </p>
+    </contents>
+  </description>
+  <texts>
+    <text id = "text1">
+      <desc>
+            Central columns on lid, reading retrograde and containing Book of the dead spell 51/52.
+      </desc>
+      <frag id="text1col1">
+        <himg src="${assets}/iwefaa_outer/texts/text1col1.svg" dest="img/iwefaa_outer_text1col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi>
+        <al encoding="mdc"></al>
+        <tr xml:lang="en"></tr>
+      </frag>
+      <frag id="text1col2">
+        <himg src="${assets}/iwefaa_outer/texts/text1col2.svg" dest="img/iwefaa_outer_text1col2.svg"/>
+        <hi encoding="mdc-jsesh"></hi>
+        <al encoding="mdc"></al>
+        <tr xml:lang="en"></tr>
+      </frag>
+    </text>
+  </texts>
+  <footnotes>
+
+  </footnotes>
+</page>
