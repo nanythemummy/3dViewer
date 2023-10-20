@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<buildConfig>
+  <site>
+    <assetsdir>assets</assetsdir>
+    <sourcedir>src</sourcedir>
+    <builddir>build</builddir>
+    <distdir>dist</distdir>
+    <staticdir>static</staticdir>
+    <buildsitejarpath>tools/buildSite-0.0.2-SNAPSHOT.jar</buildsitejarpath>
+    <saxonjarpath>tools/saxon-he-12.3.jar</saxonjarpath>
+    <stylesheetdir>tools/xslt</stylesheetdir>
+    <ngsiteschema>tools/schema/site.rng</ngsiteschema>
+    <ngpageschema>tools/schema/page.rng</ngpageschema>
+    <srcsitexml>src/site.xml</srcsitexml>
+    <buildsitexml>build/site.xml</buildsitexml>
+    <distsitexml>dist/site.xml</distsitexml>
+    <modelsdestdir>dist/models</modelsdestdir>
+    <imgdestdir>dist/img</imgdestdir>
+    <distindexhtml>dist/index.html</distindexhtml>
+    <site2html>tools/xslt/site2html.xsl</site2html>
+    <page2html>tools/xslt/page2html.xsl</page2html>
+  </site>
+
+  <buildJar>
+    <package_path>edu/berkeley/_3dcoffins</package_path>
+    <tools_java_dir>tools/java</tools_java_dir>
+    <tools_manifest>tools/java/META-INF/MANIFEST.MF</tools_manifest>
+    <tools_java_src>tools/java/edu/berkeley/_3dcoffins</tools_java_src>
+    <build_tools_dir>build/tools</build_tools_dir>
+    <build_java_dir>build/tools/java</build_java_dir>
+    <javac_classpath>tools/java:tools/saxon-he-12.3.jar</javac_classpath>
+    <build_buildsite_jar>build/tools/buildSite-0.0.2-SNAPSHOT.jar</build_buildsite_jar>
+  </buildJar>
+</buildConfig>

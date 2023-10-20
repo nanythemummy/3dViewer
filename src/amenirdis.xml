@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="amenirdis.html">
-  <name>Amenirdis</name>
+  <name>Amenirdis (PAHMA 5-1404c)</name>
   <creator>Edlynn Andrus</creator>
   <model src="${assets}/amenirdis/amenirdis.gltf" dest="models/amenirdis.gltf">
     <link name="hitbox_text_1" ref="text1"/>
   </model>
   <description>
-    <contents>
+    <contents xml:lang="en">
       <p>
         This coffin is one of a pair which belonged to a woman named Amenirdis. This is her inner, anthropoid coffin,
         which was nested inside of her <a href="/coffins/pahma-5-1404ab">four-posted outer coffin</a> William Randolph

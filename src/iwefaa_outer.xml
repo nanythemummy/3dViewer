@@ -14,6 +14,7 @@
       on the mummy’s right and the second on the mummy’s left. The animal figures facing to the
       mummy’s left. The inscription is derived from a combination of Book of the Dead spells 51 and
       52.
+
       </p>
     </contents>
   </description>
@@ -28,13 +29,15 @@
         <hi encoding="mdc-jsesh"></hi> 
         <al encoding="mdc">Dd [mD.w] in wsir mn1 b&lt;w&gt;.t=i sp-sn n wnm=i n xd2.n=i Hr=f b&lt;w&gt;.t=i pw Hs</al>
         <tr xml:lang="en">Saying by the Osiris so-and-so: My Abomination! My Abomination! I shall not eat (it). I have not stepped on it. My abomination is feces.</tr>
+
       </frag>
       <frag id="text1col2">
         <himg src="${assets}/iwefaa_outer/texts/text1col2.svg" dest="img/iwefaa_outer_text1col2.svg"/>
         <hi encoding="mdc-jsesh"></hi>
+
         <al encoding="mdc">n wnm=i sw Htp-kA3 xr wsir mn i h&lt;nw&gt;.t nh.t {Iw=f-aA}4 1A.t-Hr{=i} t[…]</al>
-        <tr xml:lang="en">I shall not eat it, namely, dung. The Osiris so-and-so shall not fall. Oh, Mistress of the
-Sycamore, {Iwefaa}, Hathor5.</tr>
+        <tr xml:lang="en">I shall not eat it, namely, dung. The Osiris so-and-so shall not fall. Oh, Mistress of the Sycamore, {Iwefaa}, Hathor5.</tr>
+
       </frag>
     </text>
   </texts>

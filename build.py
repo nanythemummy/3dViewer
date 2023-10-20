@@ -14,7 +14,6 @@ output HTML is to be generated.
 Subsidiary modules are in tools/build.
 """
 
-from dataclasses import dataclass
 import logging
 import os
 import shutil
@@ -22,7 +21,10 @@ import sys
 
 import tools.build.cache
 import tools.build.config
+import tools.build.context
 import tools.build.convertTransliteration
+import tools.build.fileutil
+import tools.build.site
 import tools.build.xmltoolbox
 
 
@@ -30,30 +32,10 @@ logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(levelname)s
 log = logging.getLogger(__name__)
 
 
-@dataclass
-class Context:
-    config: tools.build.config.Config
-    cache: tools.build.cache.XMLDocumentCache
-    toolbox: tools.build.xmltoolbox.XMLToolbox
-
-
 def expandPath(ctx, path):
     """Expand any magic variables in source paths."""
     path = path.replace('${assets}', ctx.config.assetsdir)
     return os.path.abspath(path)
-
-
-def getPages(ctx):
-    site = ctx.cache.load(ctx.config.sitexml)
-    return (doc.attrib['href'] for doc in site.findall('.//page'))
-
-
-def getPagePaths(ctx, dirname):
-    return (os.path.join(dirname, page) for page in getPages(ctx))
-
-
-def getSitePages(ctx):
-    return (page for page in getPagePaths(ctx, ctx.config.sourcedir))
 
 
 def copyElementAsset(ctx, elem):
@@ -118,7 +100,7 @@ def copyAssets(ctx):
     # Just copy whatever is referenced from the pages.
     os.makedirs(ctx.config.modelsdestdir, exist_ok=True)
     os.makedirs(ctx.config.imgdestdir, exist_ok=True)
-    for pagepath in getPagePaths(ctx, ctx.config.sourcedir):
+    for pagepath in tools.build.site.getPagePaths(ctx, ctx.config.sourcedir):
         page = ctx.cache.load(pagepath)
         copyModelsReferencedFromPage(ctx, page)
         copyHieroglyphImagesReferencedFromPage(ctx, page)
@@ -134,19 +116,11 @@ def convertTransliteration(src, dest):
 
 def convertTransliterations(ctx):
     log.info("Converting transliterations from MdC to Unicode...")
-    tlitfname = os.path.join(ctx.config.builddir, 'site.xml')
-    convertTransliteration(src=ctx.config.sitexml, dest=tlitfname)
-    for page in getPages(ctx):
+    convertTransliteration(src=ctx.config.srcsitexml, dest=ctx.config.buildsitexml)
+    for page in tools.build.site.getPages(ctx):
         srcpage = os.path.join(ctx.config.sourcedir, page)
         destpage = os.path.join(ctx.config.builddir, page)
         convertTransliteration(src=srcpage, dest=destpage)
-
-
-def getTransformParams(ctx):
-    # Paths must be converted to absolute paths because Saxon reckons paths relative to the stylesheet
-    srcdir = os.path.abspath(ctx.config.builddir)
-    destdir = os.path.abspath(ctx.config.distdir)
-    return {'srcdir': srcdir, 'destdir': destdir}
 
 
 def buildSite(ctx):
@@ -167,57 +141,36 @@ def preprocessPage(ctx, page):
     log.info('Preprocessing page: %s', page)
     if ctx.config.validate:
         ctx.toolbox.validate(page)
-        # ctx.toolbox.validateSchema(schema=ctx.config.pageschema, target=page)
         ctx.toolbox.validateNGSchema(schema=ctx.config.ngpageschema, target=page)
 
 
 def preprocessSite(ctx):
     log.info('Preprocessing site XML...')
-    sitexml = ctx.config.sitexml
     if ctx.config.validate:
-        ctx.toolbox.validate(sitexml)
-        # ctx.toolbox.validateSchema(schema=ctx.config.siteschema, target=sitexml)
-        ctx.toolbox.validateNGSchema(schema=ctx.config.ngsiteschema, target=sitexml)
+        ctx.toolbox.validate(ctx.config.srcsitexml)
+        ctx.toolbox.validateNGSchema(schema=ctx.config.ngsiteschema, target=ctx.config.srcsitexml)
 
-    for page in getSitePages(ctx):
+    for page in tools.build.site.getSitePages(ctx):
         preprocessPage(ctx, page)
-
-
-def cleanDirectory(dirpath):
-    """Clean out the contents of a directory.
-
-    Note that we intentionally don't just use shutil.rmtree on dirpath and
-    recreate it -- development servers like Python's SimpleHTTPServer will not
-    switch to the new directory. Instead, this function just clears out its
-    contents.
-    """
-    for root, dirs, files in os.walk(dirpath):
-        for f in files:
-            os.unlink(os.path.join(root, f))
-        for d in dirs:
-            shutil.rmtree(os.path.join(root, d))
 
 
 def prepareDistDir(ctx):
     """Clean the output directory, or create it if it doesn't exist."""
     if not os.path.exists(ctx.config.distdir):
         log.info('Creating dist directory: %s', ctx.config.distdir)
-        os.makedirs(ctx.config.distdir)
+        os.makedirs(ctx.config.distdir, exist_ok=True)
         return
 
     log.info('Cleaning dist directory: %s', ctx.config.distdir)
-    cleanDirectory(ctx.config.distdir)
+    tools.build.fileutil.cleanDirectory(ctx.config.distdir)
 
 
 def prepareBuildDir(ctx):
     """Clean the intermediate build directory, or create it if it doesn't exist."""
     if not os.path.exists(ctx.config.builddir):
         log.info('Creating build directory: %s', ctx.config.builddir)
-        os.makedirs(ctx.config.builddir)
+        os.makedirs(ctx.config.builddir, exist_ok=True)
         return
-
-    log.info('Cleaning build directory: %s', ctx.config.builddir)
-    cleanDirectory(ctx.config.builddir)
 
 
 def main(args):
@@ -231,7 +184,7 @@ def main(args):
         log.setLevel(logging.DEBUG)
     cache = tools.build.cache.XMLDocumentCache()
     toolbox = tools.build.xmltoolbox.XMLToolbox(config)
-    ctx = Context(config=config, cache=cache, toolbox=toolbox)
+    ctx = tools.build.context.Context(config=config, cache=cache, toolbox=toolbox)
     prepareBuildDir(ctx)
     preprocessSite(ctx)
     prepareDistDir(ctx)

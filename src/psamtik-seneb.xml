@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="psamtik-seneb.html">
-  <name>CMA 71.2254 Psamtik-Seneb</name>
+  <name>Psamtik-Seneb (CMA 71.2254)</name>
   <creator>Matt Whealton</creator>
   <model src="${assets}/psamtik-seneb/psamtik-seneb.gltf" dest="models/psamtik-seneb.gltf">
     <link name="hitbox_text_1" ref="Text1"/>
@@ -12,7 +12,7 @@
     <link name="hitbox_text_4" ref="Text12"/>
   </model>
   <description>
-    <contents>
+    <contents xml:lang="en">
       <p>
         The sarcophagus of
         <a href="https://chrysler.emuseum.com/objects/11479/sarcophagus-of-psamtikseneb">Psamtik-Seneb (CMA

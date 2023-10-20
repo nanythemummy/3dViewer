@@ -1,23 +1,36 @@
 import os.path
-from typing import List
+import sys
+
+import tools.build.config
 
 
-class Config:
-    def __init__(self):
-        self.version = "0.0.1-SNAPSHOT"
-        self.build_dir = "build"
-        self.build_tools_dir: str = os.path.join(self.build_dir, "tools")
-        self.build_java_dir: str = os.path.join(self.build_tools_dir, "java")
-        self.tools_dir = "tools"
-        self.tools_java_dir: str = os.path.join(self.tools_dir, "java")
-        self.manifest_path: str = os.path.join("META-INF", "MANIFEST.MF")
-        self.manifest_src: str = os.path.join(self.tools_java_dir, self.manifest_path)
-        self.saxon_jar_filename = "saxon-he-12.3.jar"
-        self.saxon_src: str = os.path.join(self.tools_dir, self.saxon_jar_filename)
-        self.saxon_dest: str = os.path.join(self.build_tools_dir, self.saxon_jar_filename)
-        self.saxon_lib_src_dir: str = os.path.join(self.tools_dir, "lib")
-        self.saxon_lib_dest_dir: str = os.path.join(self.build_tools_dir, "lib")
-        self.package_path: str = os.path.join("edu", "berkeley", "_3dcoffins")
-        self.package_src_dir: str = os.path.join(self.tools_java_dir, self.package_path)
-        self.javac_classpath: List[str] = [self.tools_java_dir, self.saxon_src]
-        self.out_jar_filename: str = os.path.join(self.build_tools_dir, f"buildSite-{self.version}.jar")
+CURRENT_VERSION = '0.0.1-SNAPSHOT'
+
+
+class Config(tools.build.config.Config):
+    package_path: str
+    tools_java_dir: str
+    tools_manifest: str
+    tools_java_src: str
+    build_tools_dir: str
+    build_java_dir: str
+    javac_classpath: str
+    build_buildsite_jar: str
+    javacpath: str
+    jarcmdpath: str
+
+
+def getConfig():
+    doc = tools.build.config.loadConfigXml('build_config.xml')
+    config = Config()
+    config.loadSection(doc, 'site')
+    config.loadSection(doc, 'buildJar')
+
+    try:
+        tools.build.config.resolveToolLocation(config, 'javacpath', 'javac')
+        tools.build.config.resolveToolLocation(config, 'jarcmdpath', 'jar')
+    except tools.build.config.NoSuchTool as e:
+        print(e.message, file=sys.stderr)
+        sys.exit(1)
+
+    return config
