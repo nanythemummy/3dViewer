@@ -14,7 +14,6 @@
       on the mummy’s right and the second on the mummy’s left. The animal figures facing to the
       mummy’s left. The inscription is derived from a combination of Book of the Dead spells 51 and
       52.
-
       </p>
     </contents>
   </description>
@@ -27,7 +26,7 @@
         <himg src="${assets}/iwefaa_outer/texts/text1col1.svg" dest="img/iwefaa_outer_text1col1.svg"/>
         <!-- Assume we are not doing hi element anymore -->
         <hi encoding="mdc-jsesh"></hi> 
-        <al encoding="mdc">Dd [mD.w] in wsir mn1 b&lt;w&gt;.t=i sp-sn n wnm=i n xd2.n=i Hr=f b&lt;w&gt;.t=i pw Hs</al>
+        <al encoding="mdc">Dd [mD.w] in wsir mn<fnref num="1"/> b&lt;w&gt;.t=i sp-sn n wnm=i n xd<fnref num="2"/>.n=i Hr=f b&lt;w&gt;.t=i pw Hs</al>
         <tr xml:lang="en">Saying by the Osiris so-and-so: My Abomination! My Abomination! I shall not eat (it). I have not stepped on it. My abomination is feces.</tr>
 
       </frag>
@@ -35,16 +34,15 @@
         <himg src="${assets}/iwefaa_outer/texts/text1col2.svg" dest="img/iwefaa_outer_text1col2.svg"/>
         <hi encoding="mdc-jsesh"></hi>
 
-        <al encoding="mdc">n wnm=i sw Htp-kA3 xr wsir mn i h&lt;nw&gt;.t nh.t {Iw=f-aA}4 1A.t-Hr{=i} t[…]</al>
-        <tr xml:lang="en">I shall not eat it, namely, dung. The Osiris so-and-so shall not fall. Oh, Mistress of the Sycamore, {Iwefaa}, Hathor5.</tr>
+        <al encoding="mdc">n wnm=i sw Htp-kA<fnref num="3"/> xr wsir mn i h&lt;nw&gt;.t nh.t {Iw=f-aA}<fnref num="4"/> 1A.t-Hr{=i} t[…]</al>
+        <tr xml:lang="en">I shall not eat it, namely, dung. The Osiris so-and-so shall not fall. Oh, Mistress of the Sycamore, {Iwefaa}, Hathor.<fnref num="5"/></tr>
 
       </frag>
     </text>
   </texts>
   <footnotes>
-    <!--  to be linked in the content becaues only <p> can nest <fnref num="4"/>
     <fn num="1">The scribe on this coffin does not differentiate between Gardiner A1 and Gardiner A2</fn>
-    <fn num="2">CHere, the glyph Gardiner D5 should have perhaps been used be instead of Gardiner U1.</fn>
+    <fn num="2">Here, the glyph Gardiner D5 should have perhaps been used be instead of Gardiner U1.</fn>
     <fn num="3">Htp-kA, Wb 3, 195.1</fn>
     <fn num="4">The phrase Iw=f-aA is here taken to be the name of the deceased, inserted into the middle of the spell.
       The spelling with the bookroll determinative is odd, but is paralleled by the spelling of the name of the
@@ -53,6 +51,5 @@
     <fn num="5">The spell after the word nh.t is a bit garbled. The last two signs seem to be determinatives for bread, but
       they are partially worn away, and the most that can be said about them is that they are probably long, flat
       signs.</fn>
-    -->
   </footnotes>
 </page>

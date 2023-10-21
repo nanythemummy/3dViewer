@@ -27,7 +27,7 @@
       <desc>center column lid</desc>
       <himg src="${assets}/amenirdis_outer/texts/amenirdis-outer-full.svg" dest="img/amenirdis-outer-full.svg"/>
       <al encoding="mdc">
-        Htp di nsw.t n wsir-skr nb ST(y.t) di=f pr.t-xrw tA irp kA(.w) Apd(.w) snTr qbH mw irp x.t nb(.t) nfr(.t) N kA n Hsy(.t) Xnw n Imn imn-ir-di=s.t {t}&lt;sA&gt;.t Xry-Hb.t n s.t mAa.t iw=f-aA-w 
+        Htp di nsw.t n wsir-skr nb ST(y.t)<fnref num="1"/> di=f pr.t-xrw tA irp kA(.w) Apd(.w) snTr qbH mw irp x.t nb(.t) nfr(.t) N kA n Hsy(.t) Xnw n Imn imn-ir-di=s.t {t}&lt;sA&gt;.t Xry-Hb.t n s.t mAa.t iw=f-aA-w<fnref num="2"/>
       </al>
       <tr xml:lang="en">
         Royal offerings of Osiris-Sokar, lord of the Shetit-shrine that he might give a voice offering of
@@ -38,10 +38,8 @@
     </text>
   </texts>
   <footnotes>
-    <!--  to be linked in the content becaues only <p> can nest <fnref num="4"/>
-    <fn num="1">Ranke, Hermann, Die Ägyptische Personennamen, 3 vols (Glückstadt: J. J. Augustin, 1935), I, p 14, n 3.</fn>
-    <fn num="2">Christian Leitz, Lexikon der ägyptischen Götter und Götterbezeichnungen, Orientalia Lovaniensia Analecta (OLA),
+    <fn num="1">Christian Leitz, Lexikon der ägyptischen Götter und Götterbezeichnungen, Orientalia Lovaniensia Analecta (OLA),
     112 (Leuven: Peeters, 2002), III, p. 755.</fn>
-    -->
+    <fn num="2">Ranke, Hermann, Die Ägyptische Personennamen, 3 vols (Glückstadt: J. J. Augustin, 1935), I, p 14, n 3.</fn>
   </footnotes>
 </page>
