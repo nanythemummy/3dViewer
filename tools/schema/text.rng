@@ -335,7 +335,7 @@
             <value>unicode</value>
           </choice>
         </attribute>
-        <text/>
+        <ref name="text-markup"/>
       </element>
     </define>
 
