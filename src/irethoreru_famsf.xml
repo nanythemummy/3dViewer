@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="irethoreru_famsf.html">
+  <name>Irethoreru at FAMSF</name>
+  <creator>Kea Johnston</creator>
+  <model src="${assets}/irethoreru_famsf/irethoreru_famsf.gltf" dest="models/irethoreru_famsf.gltf">
+    <link name="text_1_col_1" ref="text1col1"/>
+    <link name="text_1_col_2" ref="text1col2"/>
+    <link name="text_1_col_3" ref="text1col3"/>
+    <link name="text_1_col_4" ref="text1col4"/>
+    <link name="text_1_col_5" ref="text1col5"/>
+    <link name="text_1_col_6" ref="text1col6"/>
+    <link name="text_1_col_7" ref="text1col7"/>
+    <link name="text_1_col_8" ref="text1col8"/>
+    <link name="text_1_col_9" ref="text1col9"/>
+
+  </model>
+  <description>
+    <contents xml:lang="en">
+      <p>
+      placeholder
+
+      </p>
+    </contents>
+  </description>
+  <texts>
+    <text id = "text1">
+      <desc>
+            Central columns on lid, reading retrograde and containing Book of the dead spell 51/52.
+      </desc>
+      <frag id="text1col1">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col1.svg" dest="img/irethoreru_famsf_text1col1.svg"/>
+        <!-- Assume we are not doing hi element anymore -->
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        Dd mdw in wsir ir-Hr-irw sA n hr-ir-sn ms n nb(.t) pr t(A)-di-wsir mAa(.t) [xrw]  
+        i.nD Hr=Tn nb.w tA Sw(i.w) &lt;i&gt;sf.t wnn.(y)w a[n]x r nHH Hn.ty D.t  
+        wbA=Tn wi r tA &lt;t&gt;w=i Ax.k..
+        </al>
+        <tr xml:lang="en">
+        Recitation by the Osiris Irethoriru, son of Herirsen, whom the lady of the house Tadiusir bore, justified. 
+        Hail to you, lords of right who are free from chaos, who are continuously existing, alive, for cyclical time, lasting forever.  
+        May you reveal me to the land, for I am an Akh…
+        </tr>
+
+      </frag>
+      <frag id="text1col2">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col2.svg" dest="img/irethoreru_famsf_text1col2.svg"/>
+        <al encoding="mdc">
+        ...wy sxm.{nb}&lt;k&gt;wi m HkA=T(n) ip{t}.kw m [ip.t]=Tn  
+        tnHm=Tn wi m Ad(w) im(y) iw n mAa.tyw di{t}=T{S}&lt;n&gt;n=i r=i {i}&lt;m&gt;t.t…
+        </al>
+        <tr xml:lang="en">
+        …in your form! I am powerful with your magic, and I am counted among your number! 
+        May you rescue me from the crocodile who is in the Island of the Righteous. May you give me my mouth that I may take speak…
+        </tr>
+      </frag>
+      <frag id="text1col3">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col3.svg" dest="img/irethoreru_famsf_text1col3.svg"/>
+        <al encoding="mdc">
+        ...=i im=f im(i) di=tw n=i Aw.t-a n-m-bAH=Tn Hr-nt.t tw=i r{T}x.kwi {r}=Tn ir-&lt;r&gt;x.kwi  
+        rn n nTr pf aA di=Tn DfA.w r fn.t=f n-k-A-w rn=f iw=f w…
+        </al>
+        <tr xml:lang="en">
+        ...with it. Let offerings be given to me in your presence, because I know you, and I know  
+        the name of that great god to whose nose you give provisions. Nekau is his name. He…
+        </tr>
+      </frag>
+      <frag id="text1col4">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col4.svg" dest="img/irethoreru_famsf_text1col4.svg"/>
+        <al encoding="mdc">
+        ...&lt;bA&gt;{fw} Ax.t iAb.t n.t p.t iw=f {iw=f} wbA{=f} r Ax.t imn.t n.t p.t  
+        rwi=i r rwi {iT}=f wDA.t=i wDA.t=f TAs pXr n dr=Tw wi Hr ms[q.t]  
+        n sxm sbi.w im=i {iw=}...
+        </al>
+        <tr xml:lang="en">
+        …opens up the eastern horizon of the sky, and he opens up the western horizon of the sky.  
+        I expel as he expels. My flourishing is his flourishing (and vice-versa). I will not be subdued in the Msqt-Heavens!  
+        Wrongdoers will have no power over me.
+        </tr>
+      </frag>
+      <frag id="text1col5">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col5.svg" dest="img/irethoreru_famsf_text1col5.svg"/>
+        <al encoding="mdc">
+        ...{=i} n Sn=tn &lt;w&gt;i Hr sbA.w=Tn n xtm=[T]&lt;n&gt; aA.wy=&lt;t&gt;n Hr=i  
+        t=i m p Hn&lt;q&gt;.t=i m dp i smA a.wy=&lt;i&gt; m Hw.t-nTr rti=f n=i itm zmnx n=f n=i pr im {rx.t}
+        </al>
+        <tr xml:lang="en">
+        You will not hold me back from your gateways. You will not seal your doors to me.  
+        My bread is in Pe and my beer is in Dep. O, join my arms in the temple! He has given Atum to me. He has established a house for me there.
+        </tr>
+      </frag>
+      <frag id="text1col6">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col6.svg" dest="img/irethoreru_famsf_text1col6.svg"/>
+        <al encoding="mdc">
+        &lt;iti&gt; bty im=f n rx tnw nb.w ir n=i Hb(.w) im=f (i)n ip(w) sA=i n D(.t)=i  
+        di=T n=i prt-xrw t {t} &lt;Hnq.t&gt; irp kA.w Apd.w xt nb nfr wab bnr anx nTr im wnn=i mn.{T}&lt;k&gt;wi
+        </al>
+        <tr xml:lang="en">
+        Emmer and barley are in it of an unknowable amount. Festivals are done for me in it by this, my own son.  
+        May you grant to me an invocation offering: bread, beer, wine meat, fowl, and every good and sweet thing on which a god lives. I exist established…
+        </tr>
+      </frag>
+      <frag id="text1col7">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col7.svg" dest="img/irethoreru_famsf_text1col7.svg"/>
+        <al encoding="mdc">
+        n D.t m xpr.w nb.w mr=i xnti=i m sx.t (i)Arw xnti=i m sx.t Htp.w in&lt;k&gt; {i}p&lt;w&gt; rw.ty  
+        imAx{t}(w) n wsir ir(.t)-{n}-Hr-{n}-i&lt;r&gt;w psS mw.t&lt;=k&gt; nw.t Hr=k m rn=s
+        </al>
+        <tr xml:lang="en">
+        …forever in all the forms I wish. May I sail up to the Field of Reeds. May I sail up to the Field of Offerings. It is I, Ruty!  
+        The venerated Osiris Irethoriru: (Your) mother Nut spreads over you in her name of…
+        </tr>
+      </frag>
+      <frag id="text1col8">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col8.svg" dest="img/irethoreru_famsf_text1col8.svg"/>
+        <al encoding="mdc">
+        m Apr.t di=&lt;z&gt; wnn=k m nTr m xf.t r=f &lt;m r&gt;n=s m nTr tw wr m msw.(t)=s &lt;H&gt;tp gb  
+        mr=s.t tw xw-n=f tw di DHwty tm (i)r(y.t)=f pr=k aq=k ra-nb nHH Htp Hr…
+        </al>
+        <tr xml:lang="en">
+        …”Aperet-pet”. She causes that you become a god without an enemy against you in her name of “God(dess)" You are the eldest of her children. Geb is satisfied.  
+        She loves you, and He protected you. Thoth causes what is against him to not exist. May you come out, and may you go in every day, for cyclical eternity, with..
+        </tr>
+      </frag>
+      <frag id="text1col9">
+        <himg src="${assets}/irethoreru_famsf/texts/text1col9.svg" dest="img/irethoreru_famsf_text1col9.svg"/>
+        <al encoding="mdc">
+        ...=k n SnA=kHr aA.wy n.w dwA.t &lt;aq&gt;=k m qar ra-nb imAx n wsir ir.t-Hr-i&lt;r&gt;w sA H&lt;r-ir&gt;=zn {f} ms &lt;n nb.t&gt; pr  
+        &lt;tA&gt;-di-wsir mAa-xrw m nb mAa.t rx wsx.t n mAa.ty
+        </al>
+        <tr xml:lang="en">
+        …your face content. You shall not be turned away from the doors of the Duat! May you (enter) the shrine every day.  Revered one of Osiris, Irethoriru, son of Herirsen, who the lady of the house  
+        Tadiusir bore, justified, as a lord of truth who knows how to come out from the hall of two truths.
+        </tr>
+      </frag>
+    </text>
+  </texts>
+  <footnotes>
+    <!--  to be linked in the content becaues only <p> can nest <fnref num="4"/>
+    <fn num="1">The scribe on this coffin does not differentiate between Gardiner A1 and Gardiner A2</fn>
+    <fn num="2">CHere, the glyph Gardiner D5 should have perhaps been used be instead of Gardiner U1.</fn>
+    <fn num="3">Htp-kA, Wb 3, 195.1</fn>
+    <fn num="4">The phrase Iw=f-aA is here taken to be the name of the deceased, inserted into the middle of the spell.
+      The spelling with the bookroll determinative is odd, but is paralleled by the spelling of the name of the
+      name of the deceased in the offering formula on the sides of the proposed inner coffin of this individual,
+      PAHMA 6-19928</fn>
+    <fn num="5">The spell after the word nh.t is a bit garbled. The last two signs seem to be determinatives for bread, but
+      they are partially worn away, and the most that can be said about them is that they are probably long, flat
+      signs.</fn>
+    -->
+  </footnotes>
+</page>
