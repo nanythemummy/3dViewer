@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="tadinanefer.html">
+  <name>The Coffin of Tadinanefer(tem), RC-2816</name>
+  <creator>Kea Johnston</creator>
+  <model src="${assets}/tadinanefer/tadinanefer.gltf" dest="models/tadinanefer.gltf">
+    <link name="text_1_col_1" ref="text1col1"/>
+    <link name="text_1_col_2" ref="text1col2"/>
+    <link name="text_1_col_3" ref="text1col3"/>
+    <link name="text_1_col_4" ref="text1col4"/>
+    <link name="text_1_col_5" ref="text1col5"/>
+  </model>
+  <description>
+    <contents xml:lang="en">
+    <p>
+    The coffin of Tadinanefer was purchased on the art market by 
+    the Rosicrucian Egyptian Museum in 1985, and remains at the museum in San Jose California today.<fnref num="1"/>
+    Like most pieces acquired on the art market at the time, its collection history is uncertain, as is how and where it was found.
+    We are lucky that it has some very unusual features which it shares with a group of provenienced coffins
+    allowing us to draw some fairly certain conclusions as to where it originated and the time period in which it was made. 
+    Anubis, for example is one of the companions in the solar barque. The scene of the deceased as Osiris on a funerary bier features the usual canopic 
+    jars beneath the bier—except the jars are drawn as four heart-glyphs instead of the usual jars with animal heads.
+    The bier itself features the spots of a cow, even though it has the head and tail of a lion. 
+    A goddess with a net-patterned dress decorates the entire back of the coffin. 
+    These are all iconographic features characteristic of coffins produced at el-Hibeh in Middle Egypt. 
+    In her study on coffins from el-Hibeh, Beatrix Gessler-Löhr outlines the unique iconographical features of some coffins from the site, and dates this specific coffin to the Saite or First Persian Period.<fnref num="2"/> 
+    Tadinanefer’s coffin also has a very close parallel in the coffin of Ireteru in Krakow, which features an inscription in similar handwriting.<fnref num="3"/>
+    </p>
+    <p>
+    The names on the coffin are a little bit difficult to translate because of the way the glyphs are stacked together, 
+    and because the filiation of the deceased is expressed as it would be in Demotic instead of Middle Egyptian (as is customary for texts on coffins).
+    In fact, there is a final glyph on the name of the owner that we are still trying to figure out, so the rendering of her name as Tadinanefer is provisional. 
+    It is most likeley a lotus flower, hinting that her name may be Tadinanefertem.<fnref num="4"/> Her father’s name is likely Pakhered.<fnref num="5"/> 
+    Her mother is Irtueru, which is a common name for men and women during the Saite period and later. 
+    None of them have any titles.
+    </p>
+    </contents>
+  </description>
+  <texts>
+    <text id = "text1">
+      <desc>
+            Only inscription on the lid, running over the top of the foot.
+      </desc>
+      <frag id="text1col1">
+        <himg src="${assets}/tadinanefer/texts/text1col1.svg" dest="img/tadinanefertext1col1.svg"/>
+        <!-- Assume we are not doing hi element anymore -->
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">{Htp} di nsw.t n wsir xn.ty imnt.t<fnref num="6"/> nTr aA nb Abd di=f</al>
+        <tr xml:lang="en">Royal offerings of Osiris, foremost of the West, the Great God, Lord of Abydos, that he might give...</tr>
+
+      </frag>
+      <frag id="text1col2">
+        <himg src="${assets}/tadinanefer/texts/text1col2.svg" dest="img/tadinanefertext1col2.svg"/>
+        <hi encoding="mdc-jsesh"></hi>
+        <al encoding="mdc">pr.t-xrw t {qH}&lt;Hnq&gt;.t irp irt.t<fnref num="7"/> kA.w Apd.w<fnref num="8"/> snTr qbH mw Htp.w ix.t<fnref num="9"/> nb nfr(.t) [wab(.t)]</al>
+        <tr xml:lang="en">...a voice offering of bread and beer, wine and milk, beef and poultry, incense and cool water, offerings, everything good and pure...</tr>
+
+      </frag>
+      <frag id="text1col3">
+        <himg src="${assets}/tadinanefer/texts/text1col3.svg" dest="img/tadinanefertext1col3.svg"/>
+        <!-- Assume we are not doing hi element anymore -->
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">ix.t nb nfr(.t) bnr(.t)<fnref num="10"/> n wsir tA-di-nA-nfr tA-n.t pA-Xrd</al>
+        <tr xml:lang="en">...and everything good and delicious for the Osiris of Tadinanefer, daughter of Pakhered.</tr>
+      </frag>
+      <frag id="text1col4">
+        <himg src="${assets}/tadinanefer/texts/text1col4.svg" dest="img/tadinanefertext1col4.svg"/>
+        <!-- Assume we are not doing hi element anymore -->
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">mw.t=s ir.t=w-r=w sAH XA.t=s r dwA.t (a)py bA=s r Hry.t</al>
+        <tr xml:lang="en">Her mother is Irtueru. May her corpse reach the Duat, and may her Ba fly upwards!</tr>
+      </frag>
+      <frag id="text1col5">
+        <himg src="${assets}/tadinanefer/texts/text1col5.svg" dest="img/tadinanefertext1col5.svg"/>
+        <!-- Assume we are not doing hi element anymore -->
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">di(w) n=s pa.wt n p Hnq.t n dpp ir(w) n wsir xn.ty [imnt.t]</al>
+        <tr xml:lang="en"> The bread of Pe is given to her, and the beer of Dep--as is done for Osiris, foremost of the West.</tr>
+      </frag>
+    </text>
+  </texts>
+  <footnotes>
+    <fn num="1">The coffin has been previously published on the museum's website:<a href="https://egyptianmuseum.org">The Rosicrucian Egyptian Museum</a> and in Schwappach-Schirriff, Lisa. Treasures of the Rosicrucian Egyptian Museum: A Catalogue. Grand Lodge of the English Language Jurisdiction, AMORC Inc., 2003. p29.</fn>
+    <fn num="2">Gessler-Löhr, Beatrix. “Eine Gruppe Spätzeitlicher Mumiensärge aus El-Hibeh.” Burial and Mortuary Practices in Late Period and Graeco-Roman Egypt, edited by Katalin A. Kóthay, Museum of Fine Arts, Budapest, 2017, pp. 195–241. For the dating of this piece, see p 230.</fn>
+    <fn num="3">Babraj, Krzysztof, and Hanna Szymańska. The Gods of Ancient Egypt. Muzeum Archeologiczne w Krakowie, 2000. P 118-119</fn>
+    <fn num="4">According to LGG IV:41, the god's name can be spelled nA-nfr-tm in Demotic. The name Tadinefertem is attested in Ranke PN I:374. </fn>
+    <fn num="5"> PN 110, #18 (Pa-en-khered), but also see the Demotisches Namenbuch, p 212 for the name PA-Xrti, which is probably closer. </fn>
+    <fn num="6"> This spelling is not known from elsewhere, though imnt.t can be spelled with the mountain glyph (N25) and two t (X1) loaves. It is spelled this way on the coffin of Ireteru in Krakow mentioned above in note 3.
+    mentioned above. This coffin also gives a hint to how to interpret the standard sign, since it spells imnt.t with a falcon on a standard. Perhaps the spelling is similar here, but the falcon is omitted. </fn>
+    <fn num="7">The substitution of the land glyph (N16) for the loaf (X1) is discussed in Fairman, Herbert. ‘An Introduction to the Study of Ptolemaic Signs and Their Values’. Bulletin de l’insitut Français d’Archéologie Orientale, vol. 43, 1943, pp. 78.</fn>
+    <fn num="8">The glyph G54 is usually snD, and is not attested elsewhere for Apd.w, which probably should be read here based on the context. However, it's possible the sign is doing double
+    duty for Apd.w and snTr, the next word in the list. For this glyph as snTr and snt, see: Daumas, François. Valeurs phonétiques des signes hiéroglyphiques d’époque gréco-romaine. Université de Montpellier, 1988. </fn>
+    <fn num="9"> This is a possible spelling for ix.t, an archaizing form of the more usual "x.t" See WB I, p 124.</fn>
+    <fn num="10">The spelling of bnr.t is unusually abbreviated. However, it is sometimes spelled with an i (M17). Lesko, Leonard H., and Barbara S. Lesko, editors. A Dictionary of Late Egyptian. B.C. Scribe Publications, 1982. Vol I, p 156.</fn>
+  </footnotes>
+</page>
