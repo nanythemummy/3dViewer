@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="irethoreru_famsf.html">
+  <name>Yasmin</name>
+  <creator>Kea Johnston</creator>
+  <model src="${assets}/yasmin/yasmin.gltf" dest="models/yasmin.gltf">
+    <link name="text_1_col_1" ref="text1col1"/>
+    <link name="text_1_col_2" ref="text1col2"/>
+    <link name="text_1_col_3" ref="text1col3"/>
+    <link name="text_1_col_4" ref="text1col4"/>
+    <link name="text_1_col_5" ref="text1col5"/>
+    <link name="text_1_col_6" ref="text1col6"/>
+    <link name="text_2" ref="text2"/>
+    <link name="text_3" ref="text3"/>
+    <link name="text_4" ref="text4"/>
+    <link name="text_5" ref="text5"/>
+    <link name="text_6" ref="text6"/>
+    <link name="text_7" ref="text7"/>
+    <link name="text_8" ref="text8"/>
+
+  </model>
+  <description>
+    <contents xml:lang="en">
+      <p>
+        This coffin belonged to a woman who was buried near the city of Akhmim in the Ptolemaic period. Her coffin, as well as her mummy and cartonnage mummy-trappings were purchased on the antiquities market by George Reisner, for the growing Egyptian collection of Phoebe Hearst. 
+      </p>
+    </contents>
+  </description>
+  <texts>
+    <text id = "text1">
+      <desc>
+        Panel on Lower Legs,  Columns read from viewer right to left.
+      </desc>
+      <frag id="text1col1">
+        <himg src="${assets}/yasmin/texts/text_1_col_1.svg" dest="img/yasmin_text1col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+          Dd md.w (i)n wsir xnty {imn.tyw} tA.wy n x.t   
+        </al>
+        <tr xml:lang="en">
+          Recitation by Osiris, foremost (of the westerners): The two lands are ready for the measuring-stick, the White Crown...   
+        </tr>
+      </frag>
+      <frag id="text1col2">
+        <himg src="${assets}/yasmin/texts/text_1_col_2.svg" dest="img/yasmin_text1col2.svg"/>
+        <al encoding="mdc">
+          n tw.t iAt n wsir-wnn-nfr   
+        </al>
+        <tr xml:lang="en">
+          ...is ready for the statue. The standard is ready for Osiris-Wenennefer.   
+        </tr>
+      </frag>
+      <frag id="text1col3">
+        <himg src="${assets}/yasmin/texts/text_1_col_3.svg" dest="img/yasmin_text1col3.svg"/>
+        <al encoding="mdc">
+          ink pw Xrd sp-fd i ib     
+        </al>
+        <tr xml:lang="en">
+          I am a child! (x4) Oh, kid...   
+        </tr>
+      </frag>
+      <frag id="text1col4">
+        <himg src="${assets}/yasmin/texts/text_1_col_4.svg" dest="img/yasmin_text1col4.svg"/>
+        <al encoding="mdc">
+          wr iw Dd=k n min apr  
+        </al>
+        <tr xml:lang="en">
+          ...of the Great One, you said today: "Equip...   
+        </tr>
+      </frag>
+      <frag id="text1col5">
+        <himg src="${assets}/yasmin/texts/text_1_col_5.svg" dest="img/yasmin_text1col5.svg"/>
+        <al encoding="mdc">
+          nm.t m rx{r}.n(=k) i(i)=k r=s m   
+        </al>
+        <tr xml:lang="en">
+          ...the slaughter-house with what you have learned when you arrive to it as...   
+        </tr>
+      </frag>
+      <frag id="text1col6">
+        <himg src="${assets}/yasmin/texts/text_1_col_6.svg" dest="img/yasmin_text1col6.svg"/>
+        <al encoding="mdc">
+          is(f) wr ink ra smn n Hs.(wt) D.t   
+        </al>
+        <tr xml:lang="en">
+          ...The Marrow of the Great One. I am Re, established of praise, forever!   
+        </tr>
+      </frag>
+    </text>
+    <text id="text2">
+      <desc>Bottom of Feet</desc>
+      <himg src="${assets}/yasmin/texts/text_2.svg" dest="img/yasmin_text2.svg"/>
+      <al encoding="mdc">
+          nb.t-Hw.t   
+      </al>
+      <tr xml:lang="en">
+        Nepthys   
+      </tr>
+    </text>
+    <text id="text3">
+      <desc>Bottom of Feet</desc>
+      <himg src="${assets}/yasmin/texts/text_3.svg" dest="img/yasmin_text3.svg"/>
+      <al encoding="mdc">
+        As.t-wr.t   
+      </al>
+      <tr xml:lang="en">
+        Isis-the-Great   
+      </tr>
+    </text>
+    <text id="text4">
+      <desc>Viewer-left side of pedestal</desc>
+      <himg src="${assets}/yasmin/texts/text_4.svg" dest="img/yasmin_text4.svg"/>
+      <al encoding="mdc">
+        inp   
+      </al>
+      <tr xml:lang="en">
+        Anubis   
+      </tr>
+    </text>
+    <text id="text5">
+      <desc>Top of foot</desc>
+      <himg src="${assets}/yasmin/texts/text_5.svg" dest="img/yasmin_text5.svg"/>
+      <al encoding="mdc">
+        inp   
+      </al>
+      <tr xml:lang="en">
+        Anubis   
+      </tr>
+    </text>
+    <text id="text6">
+      <desc>Top of Head</desc>
+      <himg src="${assets}/yasmin/texts/text_6.svg" dest="img/yasmin_text6.svg"/>
+      <al encoding="mdc">
+        Hw.t-Hr imn.t   
+      </al>
+      <tr xml:lang="en">
+        Hathor of the West   
+      </tr>
+    </text>
+    <text id="text7">
+      <desc>Long vertical inscription on edge of basin, viewer lef</desc>
+      <himg src="${assets}/yasmin/texts/text_7.svg" dest="img/yasmin_text7.svg"/>
+      <al encoding="mdc">
+        Dd md.w (i)n wsir xnty-imnty.w nTr aA nb AbDw ptH-zqr{k}-wsir nTr aA Hry-ib qrs As.t-wr.t mw.t nTr nb.t-Hw.t sn.t nTr   
+      </al>
+      <tr xml:lang="en">
+        Recitation by Osiris, foremost of the westerners, the great god, lord of Abydos, and Ptah-Sokar-Osiris,    
+        the great god, one who is in the tomb, and Isis the Great, mother of the god, and Nepthys, sister of the God   
+        and Imsety, Hapy, and Duamutef: "Forever".   
+      </tr>
+    </text>
+    <text id="text8">
+      <desc>Long vertical inscription on the edge of basin, viewer right.</desc>
+      <himg src="${assets}/yasmin/texts/text_8.svg" dest="img/yasmin_text8.svg"/>
+      <al encoding="mdc">
+        Dd md.w (i)n wsir xnty-imnty.w nTr aA nb AbDw ptH-zqr{k}-wsir nTr aA Hry-ib qrs As.t-wr.t mw.t nTr nb.t-Hw.t sn.t nTr   
+      </al>
+      <tr xml:lang="en">
+        Recitation by Osiris foremost of the Westerners, great god, lord of Abydos, and Ptah-Sokar-Osiris,    
+        great god, one who is in the tomb, and Isis the Great, mother of the god, and Nepthys, sisters of the god,   
+        and Anubis, lord of the two holy lands, and Anubis who oversees the Divine Pavillion: "Making protection for Osiris Forever".   
+      </tr>
+    </text> 
+  </texts>
+</page>
