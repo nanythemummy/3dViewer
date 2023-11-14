@@ -1,7 +1,8 @@
 # Instructions For Adding a New Model to 3D Viewer
 ## In Your Photogrammetry Software
 1. Export the model as an obj file. 
-    * Textures should be jpgs, and we usually break our textures into 4 seperate files.
+    * Textures should be jpgs, and we usually break our textures into 2-4 seperate files.
+    * Try to keep the size down--think about people who have to pay for data by the megabyte. Both texture and the number of polygons can eat up disk space. A          model should maybe be 30 MB or less, so if yours is too big, try decimating the model (fewer polygons), making the textures smaller, or making fewer             textures.
 ## In Blender (Instructions use version 3.2.2)
 1.	Use File->Import to import the desired OBJ file for the model.
 2.	Ensure that the model is centered on the world-space origin (0,0,0)

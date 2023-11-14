@@ -12,40 +12,42 @@
     <link name="text_1_col_7" ref="text1col7"/>
     <link name="text_1_col_8" ref="text1col8"/>
     <link name="text_1_col_9" ref="text1col9"/>
-
   </model>
   <description>
     <contents xml:lang="en">
-      <p><!--  where to put footnotes in this section-->
-        The coffin of Irethoreru was donated to the (now) de Young Museum in San Francisco in 1917 by local businessman Jeremiah Lynch, who acquired it on a trip to Egypt in 1889. Five years prior to Lynch's visit, the cemeteries of the site of Akhmim (from which Irethoreru's coffin must have originated) were discovered by Egyptologist Gaston Maspero. The site's rich cemeteries were systematically plundered by official and unofficial excavations throughout the 1880s, and antiquities from the site flooded the art market to be subsequently snapped up by European and American tycoons like Lynch.
-
-        Through most of the 20th century, the coffin and remains of Irethoreru were on long-term loan to the Haggin Museum in Stockton, CA. During this time, Dr. Patricia Podzorski undertook the first translation of the coffin.[1] The loan ended in 2009, and the Haggin Museum threw a good-bye party for Irethoreru, who had been a part of the community for a generation.[2] Studies of Irethoreru's remains and coffin undertaken by Dr Renée Dreyfus and Dr Jonathan Elias since his return to the Fine Arts Museum of San Francisco have revealed much more about who Irethoreru was in life.
-
-        An examination of Irethoreru's skeleton shows that he was at least 25 years old, but probably closer to 45.[3]  In life, he was a stolist priest of Min at Akhmim. This was a common title given to priests who had the duty of clothing the statues of ithyphallic gods. Additionally, Irethoreru was a priest of Osiris Sokar and also held the title of "fkty" or "bald" priest in the "House of the Sister". The location of this institution is unknown, which is not particularly surprising given the paucity of remains which can be definitively associated with the Akhmim temples. Irethoreru's coffin can be stylistically dated between the Saite Period (Dynasty 26) and the early Ptolemaic period, giving us a timeframe for when he lived: ~600-300 BCE.[4] The layout of the decoration on the coffin is very rare, and the closest parallel stylistically is the coffin of Minirdis at the Field Museum in Chicago.[5]
-
-        Irethoreru's father, a man named Ankhwenennefer, held the same titles as Irethoreru. Dr. Jonathan Elias proposes that Irethoreru was the son of the same Ankhwenennefer whose coffins and remains are now in the Washington State Historical Society in Tacoma and that his great uncle was the same Irethoreru whose coffin is now in the British Museum as (EA20745).[6] However, the owner of the coffins in Tacoma seems to have been much more highly ranked than Irethoreru's father. The relationship between Irethoreru's father Ankhwenennefer and the Ankhwenennefer in Tacoma remains unknown.
-
-        Irethoreru's mother, Tadikhonsuiiti, has a long and interesting titulary which has proven enigmatic in all translations. One of her titles is "shemayt" (šmꜣy.t) priestess of Min. This title is mentioned in Theban temple reliefs depicting the festival of Min-Amun and dating to the 19th dynasty and the Ptolemaic period. In the later reliefs, the title is the name of a goddess. In the earlier reliefs, the role of the Shemayt priestess was performed by the queen, who used a combination of dance and chant in a ritual for the purpose of rejuvenating and re-empowering the king.[7] Irethoreru's mother was neither a queen nor a goddess, and the extent to which the Min-Festival rituals at Akhmim resembled those at Thebes is unknown, especially since it seems unlikely that the king would have appeared at the Akhmim temple to participate in them. Tadikhonsuiiti's other title, Pure Priestess of the Creator of the Ennead, is otherwise unknown. It is our hope that further study of religious life in the Egyptian provinces and further excavations at Akhmim will reveal more about the roles of Irethoreru and his parents in their community.
+       <p>
+        This cedar-wood coffin belonging to a man named Irethoriru was once brilliantly painted, 
+        but only traces of its color remain: some blue-green stripes can still be seen behind the right ear 
+        and some white cement might have been used to set glass inlays into the central inscription. 
+        The coffin is stylistically similar to those made in the 30th dynasty and the early Ptolemaic period, 
+        so Irethoriru probably lived during this time. The coffin gives the names of his mother and father,
+        but we know little else about him at this point, other than that he was wealthy enough to afford a coffin made
+        from imported wood.
       </p>
+      <p>
+        The texts consist of a version of Book of the Dead Spell 72, 
+        followed by a "Nut Spell" derived from Pyramid Text 368.
+      </p>
+      <p>
+        The coffin of Irethoriru was gifted to the Fine Arts Museums of San Francisco by Diane B. Wilsley
+        in honor of Alfred S. Wilsley.</p>     
     </contents>
   </description>
   <texts>
     <text id = "text1">
-      <desc>
-            Central columns on lid, reading retrograde and containing Book of the dead spell 51/52.
-      </desc>
+      <desc>9 Columns of text on the front of the coffin lid, stretching from the chest to the ankles.</desc>
       <frag id="text1col1">
         <himg src="${assets}/irethoreru_famsf/texts/text1col1.svg" dest="img/irethoreru_famsf_text1col1.svg"/>
         <!-- Assume we are not doing hi element anymore -->
         <hi encoding="mdc-jsesh"></hi> 
         <al encoding="mdc">
-        Dd mdw in wsir ir-Hr-irw sA n hr-ir-sn ms n nb(.t) pr t(A)-di-wsir mAa(.t) [xrw]  
-        i.nD Hr=Tn nb.w tA Sw(i.w) &lt;i&gt;sf.t wnn.(y)w a[n]x r nHH Hn.ty D.t  
+        Dd mdw in wsir ir-Hr-irw sA n hr-ir-sn <fnref num="1"/> ms n nb(.t) pr t(A)-di-wsir mAa(.t) [xrw]  
+        i.nD Hr=Tn nb.w tA Sw(i.w) &lt;i&gt;sf.t wnn.(y)w a[n]x r nHH Hn.ty<fnref num="2"/> D.t  
         wbA=Tn wi r tA &lt;t&gt;w=i Ax.k..
         </al>
         <tr xml:lang="en">
         Recitation by the Osiris Irethoriru, son of Herirsen, whom the lady of the house Tadiusir bore, justified. 
-        Hail to you, lords of right who are free from chaos, who are continuously existing, alive, for cyclical time, lasting forever.  
+        Hail to you, lords of right <fnref num="3"/> who are free from chaos, who are continuously existing, alive, for cyclical time, lasting forever.  
         May you reveal me to the land, for I am an Akh…
         </tr>
 
@@ -54,7 +56,7 @@
         <himg src="${assets}/irethoreru_famsf/texts/text1col2.svg" dest="img/irethoreru_famsf_text1col2.svg"/>
         <al encoding="mdc">
         ...wy sxm.{nb}&lt;k&gt;wi m HkA=T(n) ip{t}.kw m [ip.t]=Tn  
-        tnHm=Tn wi m Ad(w) im(y) iw n mAa.tyw di{t}=T{S}&lt;n&gt;n=i r=i {i}&lt;m&gt;t.t…
+        tnHm=Tn wi m Ad(w) im(y) iw n mAa.tyw di{t}=T{S}<fnref num="4"/>&lt;n&gt;n=i r=i {i}&lt;m&gt;t.t…
         </al>
         <tr xml:lang="en">
         …in your form! I am powerful with your magic, and I am counted among your number! 
@@ -65,7 +67,7 @@
         <himg src="${assets}/irethoreru_famsf/texts/text1col3.svg" dest="img/irethoreru_famsf_text1col3.svg"/>
         <al encoding="mdc">
         ...=i im=f im(i) di=tw n=i Aw.t-a n-m-bAH=Tn Hr-nt.t tw=i r{T}x.kwi {r}=Tn ir-&lt;r&gt;x.kwi  
-        rn n nTr pf aA di=Tn DfA.w r fn.t=f n-k-A-w rn=f iw=f w…
+        rn n nTr pf aA di=Tn DfA.w r fn.t=f n-k-A-w <fnref num="5"/> rn=f iw=f w…
         </al>
         <tr xml:lang="en">
         ...with it. Let offerings be given to me in your presence, because I know you, and I know  
@@ -88,11 +90,11 @@
       <frag id="text1col5">
         <himg src="${assets}/irethoreru_famsf/texts/text1col5.svg" dest="img/irethoreru_famsf_text1col5.svg"/>
         <al encoding="mdc">
-        ...{=i} n Sn=tn &lt;w&gt;i Hr sbA.w=Tn n xtm=[T]&lt;n&gt; aA.wy=&lt;t&gt;n Hr=i  
+        ...{=i} n Sn=tn &lt;w&gt;i Hr sbA.w=Tn n xtm=[Tn]<fnref num="6"/> aA.wy n Hr=i  
         t=i m p Hn&lt;q&gt;.t=i m dp i smA a.wy=&lt;i&gt; m Hw.t-nTr rti=f n=i itm zmnx n=f n=i pr im {rx.t}
         </al>
         <tr xml:lang="en">
-        You will not hold me back from your gateways. You will not seal your doors to me.  
+        You will not hold me back from your gateways. You will not seal the doors to me.  
         My bread is in Pe and my beer is in Dep. O, join my arms in the temple! He has given Atum to me. He has established a house for me there.
         </tr>
       </frag>
@@ -103,7 +105,7 @@
         di=T n=i prt-xrw t {t} &lt;Hnq.t&gt; irp kA.w Apd.w xt nb nfr wab bnr anx nTr im wnn=i mn.{T}&lt;k&gt;wi
         </al>
         <tr xml:lang="en">
-        Emmer and barley are in it of an unknowable amount. Festivals are done for me in it by this, my own son.  
+        Emmer and barley are in it of an unknowable amount. Festivals are done for me in it by this,<fnref num="7"/> my own son.  
         May you grant to me an invocation offering: bread, beer, wine meat, fowl, and every good and sweet thing on which a god lives. I exist established…
         </tr>
       </frag>
@@ -115,7 +117,7 @@
         </al>
         <tr xml:lang="en">
         …forever in all the forms I wish. May I sail up to the Field of Reeds. May I sail up to the Field of Offerings. It is I, Ruty!  
-        The venerated Osiris Irethoriru: (Your) mother Nut spreads over you in her name of…
+        <fnref num="8"/>The venerated Osiris Irethoriru: (Your) mother Nut spreads over you in her name of…
         </tr>
       </frag>
       <frag id="text1col8">
@@ -143,17 +145,30 @@
     </text>
   </texts>
   <footnotes>
-    <!--  to be linked in the content becaues only <p> can nest <fnref num="4"/>
-    <fn num="1">The scribe on this coffin does not differentiate between Gardiner A1 and Gardiner A2</fn>
-    <fn num="2">CHere, the glyph Gardiner D5 should have perhaps been used be instead of Gardiner U1.</fn>
-    <fn num="3">Htp-kA, Wb 3, 195.1</fn>
-    <fn num="4">The phrase Iw=f-aA is here taken to be the name of the deceased, inserted into the middle of the spell.
-      The spelling with the bookroll determinative is odd, but is paralleled by the spelling of the name of the
-      name of the deceased in the offering formula on the sides of the proposed inner coffin of this individual,
-      PAHMA 6-19928</fn>
-    <fn num="5">The spell after the word nh.t is a bit garbled. The last two signs seem to be determinatives for bread, but
-      they are partially worn away, and the most that can be said about them is that they are probably long, flat
-      signs.</fn>
-    -->
+    <fn num="1">This name should be treated as provisional, since there are no close paralels in Ranke PN
+     and is spelled differently in the two places it occurs--the second being on line 9. 
+    </fn>
+    <fn num="2">
+    WB III 106.7 for this spelling of xn.ty
+    </fn>
+    <fn num="3">
+    According to LGG III p 810, these are underworld beings who appear in other contexts.
+    </fn>
+    <fn num="4">
+    This may be a somewhat scrambled second person plural pronoun in which the carver slipped while making the plural strokes.
+    </fn>
+    <fn num="5">
+    The name here is usually "Tkm." See 18th dynasty version in P. Nu and Ptolemaic version in P. Turin 1791. 
+    Nekau is not otherwise known.
+    </fn>
+    <fn num="6">
+    There is a pretty clear modern repair to the coffin lid here where a crack has been filled in, obscuring the  glyphs here.
+    </fn>
+    <fn num="7">
+    Here, "pw" ("This") is expected, and the "ip" could be a version of the archaic "ipw"--"these."
+    </fn>
+    <fn num="8"> Here ends Spell 72, in the same location as the 18th Dynasty version. 
+    The spell which follows is a Nut spell derived from PT 368 and common on coffins from the Saite period forward. 
+    </fn>
   </footnotes>
 </page>
