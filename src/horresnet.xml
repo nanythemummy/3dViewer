@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="horresnet.html">
+  <name>Horresnet (Staatliche Museum zur Aegyptischen Kunst, Munich)</name>
+  <creator>Kea Johnston</creator>
+  <model src="${assets}/horresnet/horresnet_new.gltf" dest="models/horresnet_new.gltf">
+    <link name="TextB" ref="TextB"/>
+    <link name="TextCCol1" ref="textCcol1"/>
+    <link name="TextCCol2" ref="textCcol2"/>
+    <link name="TextCCol3" ref="textCcol3"/>
+    <link name="TextDCol1" ref="textDcol1"/>
+    <link name="TextDCol2" ref="textDcol2"/>
+    <link name="TextDCol3" ref="textDcol3"/>
+    <link name="TextDCol4" ref="textDcol4"/>
+  </model>
+  <description>
+    <contents xml:lang="en">
+      <p>
+       This coffin belonged to a man named Horresnet, who served as a stolist priest of Min, Horus and Isis of Akhmim during his lifetime. His father, who held the same titles, was named Nesmin. His mother, who is also named, was a sistrum player of Min of Akhmim. Her name was Tasheritmehyt.
+      </p>
+    </contents>
+  </description>
+  <texts>
+    <text id="TextB">
+      <desc>Book of the Dead 33B, Accross the Breast of coffin.</desc>
+      <himg src="${assets}/horresnet/texts/textB.svg" dest="img/horresnetB.svg"/>
+      <al encoding="mdc">
+          Dd md.w in wsir Hr-rsn.t sA n(y)-s(w)-mnw ms(.t) nb(.t) pr iHy.t mnw [tA-Sri.t]-mHy.t Dd=f ib
+          n mw.t(=i) sp-sn HAty n xpr(=i) m aHa r=i (m) mtr m xsf r=i m DADA.t m ir{.t} r=i m nTr.w m 
+          rqi r=i m-bAH iry mHA.t
+      </al>
+      <tr xml:lang="en">
+        Recitation by the Osiris of Horresnet, son of Nesmin, who the lady of the house and sistrum-player of Min Tasheritmehyt bore. He says:
+        Oh, my heart of my mother, my heart of my mother, my Haty-heart of my manifestation! Do not stand against me in testimony!
+        Do not oppose me in the tribunal. Do not act against me with the gods. Do not defy me before the keeper of the scales! 
+      </tr>
+    </text>
+    <text id="textC">
+      <desc>Lamentation of Isis, lower abdomen.</desc>
+      <frag id="textCcol1">
+        <himg src="${assets}/horresnet/texts/textCcol1.svg" dest="img/horresnetC1.svg"/>
+        <al encoding="mdc">Dd md.w in As.t [Dd=z] mi ii n pr=k sp-sn iwn mi</al>
+        <tr xml:lang="en">Recitation by Isis. [She says:] Come to your home, come to your home, Oh Pillar! Come... </tr>
+      </frag>
+      <frag id="textCcol2">
+        <himg src="${assets}/horresnet/texts/textCcol2.svg" dest="img/horresnetC2.svg"/>
+        <al encoding="mdc">ii n pr=k nn xfty.w=k ihy{.t} nfr mi ii n</al>
+        <tr xml:lang="en">...to your home! There are no enemies of yours, oh beautiful sistrum-player. Come...</tr>
+      </frag>
+      <frag id="textCcol3">
+        <himg src="${assets}/horresnet/texts/textCcol3.svg" dest="img/horresnetC3.svg"/>
+        <al encoding="mdc">mAA.t(w)=k ink sn(.t) mr(.t)=k nn Ab.t(w)=k r=i i </al>
+        <tr xml:lang="en">so that you might be seen! I am your beloved sister, and you will not be parted from me! Oh!</tr>
+      </frag>
+    </text>
+    <text id="textD">
+      <desc>Lamentation of Nephthys, lower abdomen.</desc>
+      <frag id="textDcol1">
+        <himg src="${assets}/horresnet/texts/textDcol1.svg" dest="img/horresnetD1.svg"/>
+        <al encoding="mdc">Dd md.w in nb.t-Hw.t Dd=z [wn]n(=i) m sAH=k</al>
+        <tr xml:lang="en">Recitation by Nephthys. She says: [I exist] as your protection... </tr>
+      </frag>
+      <frag id="textDcol2">
+        <himg src="${assets}/horresnet/texts/textDcol2.svg" dest="img/horresnetD2.svg"/>
+        <al encoding="mdc">wsir xn.ty imnt.t r&lt;di&gt;.n(=i) TAw r fnt(=k) n mHy.t</al>
+        <tr xml:lang="en">...oh, Osiris, foremost of the west! I have given breath to your nostrils from the North Wind...</tr>
+      </frag>
+      <frag id="textDcol3">
+        <himg src="${assets}/horresnet/texts/textDcol3.svg" dest="img/horresnetD3.svg"/>
+        <al encoding="mdc">pr m itm ink sn(.t) mr(.t)=k nn </al>
+        <tr xml:lang="en">...which comes forth from Atum. I am your beloved sister, and...</tr>
+      </frag>
+      <frag id="textDcol4">
+        <himg src="${assets}/horresnet/texts/textDcol4.svg" dest="img/horresnetD4.svg"/>
+        <al encoding="mdc">Ab.t(w)=k r=i</al>
+        <tr xml:lang="en">...you will not be parted from me.</tr>
+      </frag>
+    </text>
+  </texts>
+</page>

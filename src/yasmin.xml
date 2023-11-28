@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page dest="yasmin.html">
-  <name>Yasmin</name>
+  <name>Anonymous Woman (PAHMA 6-19927)</name>
   <creator>Kea Johnston</creator>
   <model src="${assets}/yasmin/yasmin.gltf" dest="models/yasmin.gltf">
     <link name="text_1_col_1" ref="text1col1"/>
@@ -16,6 +16,7 @@
     <link name="text_6" ref="text6"/>
     <link name="text_7" ref="text7"/>
     <link name="text_8" ref="text8"/>
+    <link name="text_9" ref="text9"/>
 
   </model>
   <description>
@@ -158,6 +159,16 @@
         Recitation by Osiris foremost of the Westerners, great god, lord of Abydos, and Ptah-Sokar-Osiris,    
         great god, one who is in the tomb, and Isis the Great, mother of the god, and Nepthys, sisters of the god,   
         and Anubis, lord of the two holy lands, and Anubis who oversees the Divine Pavillion: "Making protection for Osiris Forever".   
+      </tr>
+    </text> 
+        <text id="text9">
+      <desc>Above image of goddess Nut, on her head.</desc>
+      <himg src="${assets}/yasmin/texts/text_9.svg" dest="img/yasmin_text9.svg"/>
+      <al encoding="mdc">
+       nw.t
+      </al>
+      <tr xml:lang="en">
+        Nut
       </tr>
     </text> 
   </texts>
