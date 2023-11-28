@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest=".html">
+  <name></name>
+  <creator></creator>
+  <model src="${assets}/?/?gltf" dest="models/?.gltf">
+    <link name="text_1_col_1" ref="text1col1"/>
+    <link name="text_1_col_2" ref="text1col2"/>
+    <link name="text_2" ref="text2"/>
+    <link name="text_3" ref="text3"/>
+
+  </model>
+  <description>
+    <contents xml:lang="en">
+      <p>
+      </p>
+    </contents>
+  </description>
+  <texts>
+    <text id = "text1">
+      <desc>?</desc>
+      <frag id="text1col1">
+        <himg src="${assets}/?/texts/text_1_col_1.svg" dest="img/?.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        ?
+        </al>
+        <tr xml:lang="en">
+        ?
+        </tr>
+      </frag>
+      <frag id="text1col2">
+        <himg src="${assets}/?/texts/text_1_col_2.svg" dest="img/?.svg"/>
+        <al encoding="mdc">
+        ?   
+        </al>
+        <tr xml:lang="en">
+        ?  
+        </tr>
+      </frag>
+    </text>
+    <text id="text2">
+      <desc>?</desc>
+      <himg src="${assets}/?/texts/text_2.svg" dest="img/?.svg"/>
+      <al encoding="mdc">
+      ?
+      </al>
+      <tr xml:lang="en">
+      ?
+      </tr>
+    </text>
+    <text id="text3">
+      <desc>?</desc>
+      <himg src="${assets}/?/texts/text_3.svg" dest="img/?.svg"/>
+      <al encoding="mdc">
+      ?
+      </al>
+      <tr xml:lang="en">
+      ?
+      </tr>
+    </text>
+  </texts>
+  <footnotes>
+    <fn num="1">?</fn>
+  </footnotes>
+</page>

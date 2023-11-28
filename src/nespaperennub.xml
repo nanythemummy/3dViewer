@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page dest="Nespaperennub.html">
+  <name>Nespaperennub</name>
+  <creator>Kea Johnston</creator>
+  <model src="${assets}/Nespaperennub/cartonnage2023.gltf" dest="models/Nespaperennub.gltf">
+    <link name="text1" ref="text1"/>
+    <link name="text2col1" ref="text2col1"/>
+    <link name="text2col2" ref="text2col2"/>
+    <link name="text3col1" ref="text3col1"/>
+    <link name="text3col2" ref="text3col2"/>
+    <link name="text3col3" ref="text3col3"/>
+    <link name="text3col4" ref="text3col4"/>
+    <link name="text3col5" ref="text3col5"/>
+    <link name="text4col1" ref="text4col1"/>
+    <link name="text4col2" ref="text4col2"/>
+    <link name="text4col3" ref="text4col3"/>
+    <link name="text4col4" ref="text4col4"/>
+    <link name="text4col5" ref="text4col5"/>
+    <link name="text4col6" ref="text4col6"/>
+    <link name="text4col7" ref="text4col7"/>
+    <link name="text4col8" ref="text4col8"/>
+    <link name="text4col9" ref="text4col9"/>
+    <link name="text4col10" ref="text4col10"/>
+    <link name="text4col11" ref="text4col11"/>
+    <link name="text4col12" ref="text4col12"/>
+    <link name="text4col13" ref="text4col13"/>
+    <link name="text5" ref="text5"/>
+    <link name="text6" ref="text6"/>
+    <link name="text7" ref="text7"/>
+    <link name="text8" ref="text8"/>
+    <link name="text9" ref="text9"/>
+    <link name="text10col1" ref="text10col1"/>
+    <link name="text10col2" ref="text10col2"/>
+    <link name="text10col3" ref="text10col3"/>
+    <link name="text11" ref="text11"/>
+    <link name="text12col1" ref="text12col1"/>
+    <link name="text12col2" ref="text12col2"/>
+    <link name="text12col3" ref="text12col3"/>
+    <link name="text13col1" ref="text13col1"/>
+    <link name="text13col2" ref="text13col2"/>
+    <link name="text13col3" ref="text13col3"/>
+    <link name="text13col4" ref="text13col4"/>
+    <link name="text13col5" ref="text13col5"/>
+    <link name="text13col6" ref="text13col6"/>
+    <link name="text14col1" ref="text14col1"/>
+    <link name="text14col2" ref="text14col2"/>
+    <link name="text14col3" ref="text14col3"/>
+    <link name="text14col4" ref="text14col4"/>
+
+
+  </model>
+  <description>
+    <contents xml:lang="en">
+      <p>
+      This cartonnage (a mummy-envelope made of linen, gum, and plaster) was the innermost coffin in the nesting set of a man named Nes-pa-per-en-nub. We can tell that Nespaperennub lived in Thebes during the 22nd dynasty by the style of his coffin and his titles which are painted on it<fnref num="1"/>. Nespaperennub's coffins (and his mummy) were purchased by Adolf Sutro in Egypt in the early 1880s and were displayed at the Sutro Baths for over half a century. Happily, they were transferred to San Francisco State University before the Baths burnt to the ground in 1966.
+      We will be posting more information about Nespaperennub and his coffins in the near future as we continue to research this piece. However a discussion of the iconography of this cartonnage was published by A. L. Becker-Collona, whose influence was integral to the transfer of the pieces to SFSU, where they remain today as part of the Global Museum's Collection.
+      </p>
+    </contents>
+  </description>
+  <texts>
+    <text id = "text1">
+      <desc>?</desc>
+        <himg src="${assets}/Nespaperennub/texts/text1.svg" dest="img/Nespaperennub_text1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        mAa.t
+        </al>
+        <tr xml:lang="en">
+        Maat
+        </tr>
+    </text>
+    <text id="text2">
+      <desc>?</desc>
+      <frag id="text2col1">
+        <himg src="${assets}/Nespaperennub/texts/text2col1.svg" dest="img/Nespaperennub_text2col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        pr m Ax.t
+        </al>
+        <tr xml:lang="en">
+        The one who comes forth from the Horizon
+        </tr>
+      </frag>
+      <frag id="text2col2">
+        <himg src="${assets}/Nespaperennub/texts/text2col2.svg" dest="img/Nespaperennub_text2col2.svg"/>
+        <al encoding="mdc">
+        wsir mry.ty
+        </al>
+        <tr xml:lang="en">
+        Osiris, the beloved.
+        </tr>
+      </frag>
+    </text>
+    <text id="text3">
+      <desc>?</desc>
+      <frag id="text3col1">
+        <himg src="${assets}/Nespaperennub/texts/text3col1.svg" dest="img/Nespaperennub_text3col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        di.{t}=s
+        </al>
+        <tr xml:lang="en">
+        May she give
+        </tr>
+      </frag>
+      <frag id="text3col2">
+        <himg src="${assets}/Nespaperennub/texts/text3col2.svg" dest="img/Nespaperennub_text3col2.svg"/>
+        <al encoding="mdc">
+        sA anx Dd nb{.t} snb{y} nb{.t}
+        </al>
+        <tr xml:lang="en">
+        all protection, life, stability, dominion, health, and a
+        </tr>
+      </frag>
+      <frag id="text3col3">
+        <himg src="${assets}/Nespaperennub/texts/text3col3.svg" dest="img/Nespaperennub_text3col3.svg"/>
+        <al encoding="mdc">
+        aHa
+        </al>
+        <tr xml:lang="en">
+        good lifetime
+        </tr>
+      </frag>
+      <frag id="text3col4">
+        <himg src="${assets}/Nespaperennub/texts/text3col4.svg" dest="img/Nespaperennub_text3col4.svg"/>
+        <al encoding="mdc">
+        nfr n iry-aA n pr imn
+        </al>
+        <tr xml:lang="en">
+        to the gatekeeper of the Temple of Amun,  
+        </tr>
+      </frag>
+      <frag id="text3col5">
+        <himg src="${assets}/Nespaperennub/texts/text3col5.svg" dest="img/Nespaperennub_text3col5.svg"/>
+        <al encoding="mdc">
+        N(y)-s(w)-[pA-pr-n-nbw]   
+        </al>
+        <tr xml:lang="en">
+        Nes(paperennub)…  
+        </tr>
+      </frag>
+    </text>
+    <text id="text4">
+      <desc>?</desc>
+      <frag id="text4col1">
+        <himg src="${assets}/Nespaperennub/texts/text4col1.svg" dest="img/Nespaperennub_text4col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        Htp di nsw.t gb
+        </al>
+        <tr xml:lang="en">
+        Royal offerings of Geb,
+        </tr>
+      </frag>
+      <frag id="text4col2">
+        <himg src="${assets}/Nespaperennub/texts/text4col2.svg" dest="img/Nespaperennub_text4col2.svg"/>
+        <al encoding="mdc">
+        psD.t aA.t nD(s).t   
+        </al>
+        <tr xml:lang="en">
+        the Elder and Younger Enneads,
+        </tr>
+      </frag>
+      <frag id="text4col3">
+        <himg src="${assets}/Nespaperennub/texts/text4col3.svg" dest="img/Nespaperennub_text4col3.svg"/>
+        <al encoding="mdc">
+        itr.ty  
+        </al>
+        <tr xml:lang="en">
+        and the Two Shrines,  
+        </tr>
+      </frag>
+      <frag id="text4col4">
+        <himg src="${assets}/Nespaperennub/texts/text4col4.svg" dest="img/Nespaperennub_text4col4.svg"/>
+        <al encoding="mdc">
+        Sma.w mH.w  
+        </al>
+        <tr xml:lang="en">
+        of  Upper and Lower Egypt. 
+        </tr>
+      </frag>
+      <frag id="text4col5">
+        <himg src="${assets}/Nespaperennub/texts/text4col5.svg" dest="img/Nespaperennub_text4col5.svg"/>
+        <al encoding="mdc">
+        di{.t}=f anx s&lt;nb&gt;  
+        </al>
+        <tr xml:lang="en">
+        May they (sic) give life and health  
+        </tr>
+      </frag>
+      <frag id="text4col6">
+        <himg src="${assets}/Nespaperennub/texts/text4col6.svg" dest="img/Nespaperennub_text4col6.svg"/>
+        <al encoding="mdc">
+        n iry-aA n pr imn   
+        </al>
+        <tr xml:lang="en">
+        to the gatekeeper of the Temple of Amun  
+        </tr>
+      </frag>
+      <frag id="text4col7">
+        <himg src="${assets}/Nespaperennub/texts/text4col7.svg" dest="img/Nespaperennub_text4col7.svg"/>
+        <al encoding="mdc">
+        N(y)-s(w)-pA-pr-n-   
+        </al>
+        <tr xml:lang="en">
+        Nespaperennub  
+        </tr>
+      </frag>
+      <frag id="text4col8">
+        <himg src="${assets}/Nespaperennub/texts/text4col8.svg" dest="img/Nespaperennub_text4col8.svg"/>
+        <al encoding="mdc">
+        -nbw   
+        </al>
+        <tr xml:lang="en">
+        ?  
+        </tr>
+      </frag>
+      <frag id="text4col9">
+        <himg src="${assets}/Nespaperennub/texts/text4col9.svg" dest="img/Nespaperennub_text4col9.svg"/>
+        <al encoding="mdc">
+        sA n   
+        </al>
+        <tr xml:lang="en">
+        son of 
+        </tr>
+      </frag>
+      <frag id="text4col10">
+        <himg src="${assets}/Nespaperennub/texts/text4col10.svg" dest="img/Nespaperennub_text4col10.svg"/>
+        <al encoding="mdc">
+        iry-   
+        </al>
+        <tr xml:lang="en">
+        ?  
+        </tr>
+      </frag>
+      <frag id="text4col11">
+        <himg src="${assets}/Nespaperennub/texts/text4col11.svg" dest="img/Nespaperennub_text4col11.svg"/>
+        <al encoding="mdc">
+        bA-iw   
+        </al>
+        <tr xml:lang="en">
+        Irybaiw,  
+        </tr>
+      </frag>
+      <frag id="text4col12">
+        <himg src="${assets}/Nespaperennub/texts/text4col12.svg" dest="img/Nespaperennub_text4col12.svg"/>
+        <al encoding="mdc">
+        mAa-xrw   
+        </al>
+        <tr xml:lang="en">
+        Justified  
+        </tr>
+      </frag>
+      <frag id="text4col13">
+        <himg src="${assets}/Nespaperennub/texts/text4col13.svg" dest="img/Nespaperennub_text4col13.svg"/>
+        <al encoding="mdc">
+        iAw.t aA.t smsw.t nfr.t Xr(y.t) nDm-ib   
+        </al>
+        <tr xml:lang="en">
+        (…and) a long and good old age, full of joy.  
+        </tr>
+      </frag>
+    </text>    
+    <text id="text5">
+      <desc>?</desc>
+      <himg src="${assets}/Nespaperennub/texts/text5.svg" dest="img/Nespaperennub_text5.svg"/>
+      <al encoding="mdc">
+      imst
+      </al>
+      <tr xml:lang="en">
+      Imsety
+      </tr>
+    </text>    
+    <text id="text6">
+      <desc>?</desc>
+      <himg src="${assets}/Nespaperennub/texts/text6.svg" dest="img/Nespaperennub_text6.svg"/>
+      <al encoding="mdc">
+      Hapy
+      </al>
+      <tr xml:lang="en">
+      Hapy
+      </tr>
+    </text>    
+    <text id="text7">
+      <desc>?</desc>
+      <himg src="${assets}/Nespaperennub/texts/text7.svg" dest="img/Nespaperennub_text7.svg"/>
+      <al encoding="mdc">
+      dwA-mw.t=f
+      </al>
+      <tr xml:lang="en">
+      Duamutef
+      </tr>
+    </text>    
+    <text id="text8">
+      <desc>?</desc>
+      <himg src="${assets}/Nespaperennub/texts/text8.svg" dest="img/Nespaperennub_text8.svg"/>
+      <al encoding="mdc">
+      qbH-sn.w=f
+      </al>
+      <tr xml:lang="en">
+      Qebehsenuef
+      </tr>
+    </text>    
+    <text id="text9">
+      <desc>?</desc>
+      <himg src="${assets}/Nespaperennub/texts/text9.svg" dest="img/Nespaperennub_text9.svg"/>
+      <al encoding="mdc">
+      ra-Hr-Ax.ty Hry{.t} nTr.w
+      </al>
+      <tr xml:lang="en">
+      Re-Harakhty, who is above the Gods.
+      </tr>
+    </text>    
+    <text id="text10">
+      <desc>?</desc>
+      <frag id="text10col1">
+        <himg src="${assets}/Nespaperennub/texts/text10col1.svg" dest="img/Nespaperennub_text10col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        wADi.t nb(.t) p ir{.t}=s
+        </al>
+        <tr xml:lang="en">
+        Wadjet, lady of Pe: May she make
+        </tr>
+      </frag>
+      <frag id="text10col2">
+        <himg src="${assets}/Nespaperennub/texts/text10col2.svg" dest="img/Nespaperennub_text10col2.svg"/>
+        <al encoding="mdc">
+        sA wsir   
+        </al>
+        <tr xml:lang="en">
+        protection for Osiris  
+        </tr>
+      </frag>
+      <frag id="text10col3">
+        <himg src="${assets}/Nespaperennub/texts/text10col3.svg" dest="img/Nespaperennub_text10col3.svg"/>
+        <al encoding="mdc">
+        wnn-nfr   
+        </al>
+        <tr xml:lang="en">
+        -Wenennefer  
+        </tr>
+      </frag>
+    </text>    
+    <text id="text11">
+      <desc>?</desc>
+      <himg src="${assets}/Nespaperennub/texts/text11.svg" dest="img/Nespaperennub_text11.svg"/>
+      <al encoding="mdc">
+      wsir-skr{ty} nb{.t} Sty.t
+      </al>
+      <tr xml:lang="en">
+      Osiris-sokar, lord of the Shetyt Shrine.
+      </tr>
+    </text>    
+    <text id="text12">
+      <desc>?</desc>
+      <frag id="text12col1">
+        <himg src="${assets}/Nespaperennub/texts/text12col1.svg" dest="img/Nespaperennub_text12col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        Dd md.w in nxb.t
+        </al>
+        <tr xml:lang="en">
+        Recitation by Nekhbet
+        </tr>
+      </frag>
+      <frag id="text12col2">
+        <himg src="${assets}/Nespaperennub/texts/text12col2.svg" dest="img/Nespaperennub_text12col2.svg"/>
+        <al encoding="mdc">
+        nb(.t) p.t HD.t   
+        </al>
+        <tr xml:lang="en">
+        the lady of the sky, the White One of  
+        </tr>
+      </frag>
+      <frag id="text12col3">
+        <himg src="${assets}/Nespaperennub/texts/text12col3.svg" dest="img/Nespaperennub_text12col3.svg"/>
+        <al encoding="mdc">
+        Nxn   
+        </al>
+        <tr xml:lang="en">
+        …Nekhen  
+        </tr>
+      </frag>
+    </text>    
+    <text id="text13">
+      <desc>?</desc>
+      <frag id="text13col1">
+        <himg src="${assets}/Nespaperennub/texts/text13col1.svg" dest="img/Nespaperennub_text13col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        iHA
+        </al>
+        <tr xml:lang="en">
+        Oh,
+        </tr>
+      </frag>
+      <frag id="text13col2">
+        <himg src="${assets}/Nespaperennub/texts/text13col2.svg" dest="img/Nespaperennub_text13col2.svg"/>
+        <al encoding="mdc">
+        Wsir   
+        </al>
+        <tr xml:lang="en">
+        Osiris  
+        </tr>
+      </frag>
+      <frag id="text13col3">
+        <himg src="${assets}/Nespaperennub/texts/text13col3.svg" dest="img/Nespaperennub_text13col3.svg"/>
+        <al encoding="mdc">
+        m-n=k qbH.w   
+        </al>
+        <tr xml:lang="en">
+        take to yourself these  
+        </tr>
+      </frag>
+      <frag id="text13col4">
+        <himg src="${assets}/Nespaperennub/texts/text13col4.svg" dest="img/Nespaperennub_text13col4.svg"/>
+        <al encoding="mdc">
+        ?   
+        </al>
+        <tr xml:lang="en">
+        libations of  
+        </tr>
+      </frag>
+      <frag id="text13col5">
+        <himg src="${assets}/Nespaperennub/texts/text13col5.svg" dest="img/Nespaperennub_text13col5.svg"/>
+        <al encoding="mdc">
+        mw tA   
+        </al>
+        <tr xml:lang="en">
+        water of the land  
+        </tr>
+      </frag>
+      <frag id="text13col6">
+        <himg src="${assets}/Nespaperennub/texts/text13col6.svg" dest="img/Nespaperennub_text13col6.svg"/>
+        <al encoding="mdc">
+        imnt.t   
+        </al>
+        <tr xml:lang="en">
+        of the West!  
+        </tr>
+      </frag>
+    </text>    
+    <text id="text14">
+      <desc>?</desc>
+      <frag id="text14col1">
+        <himg src="${assets}/Nespaperennub/texts/text14col1.svg" dest="img/Nespaperennub_text14col1.svg"/>
+        <hi encoding="mdc-jsesh"></hi> 
+        <al encoding="mdc">
+        […t]
+        </al>
+        <tr xml:lang="en">
+        ?
+        </tr>
+      </frag>
+      <frag id="text14col2">
+        <himg src="${assets}/Nespaperennub/texts/text14col2.svg" dest="img/Nespaperennub_text14col2.svg"/>
+        <al encoding="mdc">
+        wsir xn.ty imnt.t   
+        </al>
+        <tr xml:lang="en">
+        Osiris, foremost of the West  
+        </tr>
+      </frag>
+      <frag id="text14col3">
+        <himg src="${assets}/Nespaperennub/texts/text14col3.svg" dest="img/Nespaperennub_text14col3.svg"/>
+        <al encoding="mdc">
+        m-n=k tp=k   
+        </al>
+        <tr xml:lang="en">
+        Take your head to yourself,  
+        </tr>
+      </frag>
+      <frag id="text14col4">
+        <himg src="${assets}/Nespaperennub/texts/text14col4.svg" dest="img/Nespaperennub_text14col4.svg"/>
+        <al encoding="mdc">
+        […n=k]   
+        </al>
+        <tr xml:lang="en">
+        ?  
+        </tr>
+      </frag>
+    </text>
+  </texts>
+  <footnotes>
+    <fn num="1">This is contra Becker-Colonna, 1976. These types of cartonnages were not made prior to the first few reigns of Dynasty 22.</fn>
+  </footnotes>
+</page>
