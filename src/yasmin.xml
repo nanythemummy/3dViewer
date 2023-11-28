@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<page dest="irethoreru_famsf.html">
+<page dest="yasmin.html">
   <name>Anonymous Woman (PAHMA 6-19927)</name>
   <creator>Kea Johnston</creator>
   <model src="${assets}/yasmin/yasmin.gltf" dest="models/yasmin.gltf">
