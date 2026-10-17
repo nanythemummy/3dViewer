@@ -155,6 +155,32 @@ Either way, for each text (or text fragment) you will specify:
 
 Use the existing pages as models for how to create these elements. If you want a reference, the
 full XML schema for our data is located in the `tools/schema/` directory.
+
+### Surface regions (instead of hitboxes)
+
+Instead of naming a hitbox object, a `link` can describe the clickable area directly, as one or
+more `region` elements. A region is an outline drawn on the model's surface, listed as points in
+the model's own coordinates:
+
+```xml
+<link ref="text1">
+  <region depth="0.03">
+    <pt>0.12 0.84 -0.03</pt>
+    <pt>0.19 0.86 -0.03</pt>
+    <pt>0.21 0.71 -0.02</pt>
+    <pt>0.15 0.63 -0.02</pt>
+  </region>
+</link>
+```
+
+To find the points, open the page in your browser with the developer console showing, and hold
+Alt+Shift (Option+Shift on a Mac) while clicking around the outline of the text. Each click prints
+a `<pt>` line you can paste into the XML. List at least three points, in order around the outline
+(clockwise or counterclockwise both work).
+
+`depth` is how far the surface may curve away from the outline's corners and still count as part of
+the region; if a region misses part of a curved text, increase it. See
+[plans/ANNOTATION_PLAN.md](plans/ANNOTATION_PLAN.md) for how regions work.
 ## Preparing the glTF File from an OBJ file
 
   * For this, please consult the [Building_a_model.md](Building_a_model.md) tutorial in this repo.

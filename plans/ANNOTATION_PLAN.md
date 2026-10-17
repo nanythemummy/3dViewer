@@ -89,16 +89,31 @@ Each stage should be usable on its own before we start the next one.
 
 Goal: prove the approach on one real coffin.
 
-* [ ] Add region elements to the schema (`tools/schema/model.rng`).
-* [ ] Pass regions through to the page in `tools/xslt/page2html.xsl`.
-* [ ] In `src/main.js`, add the click test (above) alongside or instead of hitbox lookup.
-* [ ] Add the highlight shader to the coffin material.
+* [x] Add region elements to the schema (`tools/schema/model.rng`).
+* [x] Pass regions through to the page in `tools/xslt/page2html.xsl`.
+* [x] In `src/main.js`, add the click test (above) alongside or instead of hitbox lookup.
+* [x] Add the highlight shader to the coffin material.
 * [ ] Write region XML by hand for one coffin (`amenirdis` for a quick test, or the coffin with the
   most curved/irregular inscriptions for a harder one).
-* [ ] Fix the existing bug in `intersectObject` (`src/main.js`): `intersects.length > 1` should
+* [x] Fix the existing bug in `intersectObject` (`src/main.js`): `intersects.length > 1` should
   be `> 0`, otherwise a click that hits exactly one object is ignored.
 
 Done when: that coffin works without hitboxes, including at odd angles and near edges.
+
+Notes from implementation:
+
+* `normal` and `depth` are optional. The normal is computed from the outline's points, and turned
+  to face the same way as the model's surface under them, so points may be listed clockwise or
+  counterclockwise. Depth defaults to the larger of half the outline's smaller dimension and 1.25×
+  the farthest outline point's distance from the plane; set it explicitly if the surface bulges
+  further between the points.
+* Alt+Shift+click in the viewer logs the clicked point as a `<pt>` line in the browser console,
+  for writing regions by hand until Stage 2.
+* `centerModel` now moves the model as a whole, so region coordinates match the GLTF file.
+* Hitboxes in a model that no XML link refers to are hidden, so they don't block clicks.
+* Up to 4 regions per link can be highlighted at once.
+* The highlight is drawn as an outline (`REGION_OUTLINE_WIDTH`, a fraction of the model's size)
+  rather than a fill, so the inscription stays readable while selected.
 
 ### Stage 2: Annotate mode
 

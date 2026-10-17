@@ -2,8 +2,19 @@
 <page dest="amenirdis.html">
   <name>Amenirdis (PAHMA 5-1404c)</name>
   <creator>Edlynn Andrus</creator>
-  <model src="${assets}/amenirdis/amenirdis.gltf" dest="models/amenirdis.gltf">
-    <link name="hitbox_text_1" ref="text1"/>
+  <model src="${assets}/amenirdis/amenirdis.glb" dest="models/amenirdis.glb"> 
+    <link ref="text1">
+      <region>
+        <pt>-0.277623 0.220881 -0.0202729</pt>
+        <pt>-0.276439 0.221461 0.0346671</pt>
+        <pt>-0.650745 0.191536 0.0318802</pt>
+        <pt>-0.718317 0.27784 0.0296959</pt>
+        <pt>-0.748268 0.276296 0.0309852</pt>
+        <pt>-0.750206 0.278845 -0.023028</pt>
+        <pt>-0.713758 0.275873 -0.0214663</pt>
+        <pt>-0.653437 0.195564 -0.0211149</pt>
+      </region>
+    </link>
   </model>
   <description>
     <contents xml:lang="en">
