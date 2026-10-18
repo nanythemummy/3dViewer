@@ -2,8 +2,17 @@
 <page dest="amenirdis_outer.html">
   <name>Outer Coffin of Amenirdis (PAHMA 5-1404 a,b)</name>
   <creator>Kea Johnston</creator>
-  <model src="${assets}/amenirdis_outer/amenirdis_outer.gltf" dest="models/amenirdis_outer.gltf">
-    <link name="hitbox_text_1" ref="text1"/>
+  <model src="${assets}/amenirdis_outer/amenirdis_outer.glb" dest="models/amenirdis_outer.glb">
+      <link ref="text1">
+        <region normal="0.00522982 0.999696 -0.0240743" depth="0.0100225">
+          <pt>-0.705659 0.442 0.0407419</pt>
+          <pt>-0.709909 0.441329 -0.0491605</pt>
+          <pt>0.0424789 0.432022 -0.0373987</pt>
+          <pt>0.774843 0.432906 -0.032527</pt>
+          <pt>0.773704 0.436084 0.0485025</pt>
+          <pt>-0.0751448 0.434462 0.0386287</pt>
+        </region>
+      </link>
   </model>
   <description>
     <contents xml:lang="en">
