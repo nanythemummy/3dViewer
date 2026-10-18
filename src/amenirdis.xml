@@ -4,15 +4,15 @@
   <creator>Edlynn Andrus</creator>
   <model src="${assets}/amenirdis/amenirdis.glb" dest="models/amenirdis.glb"> 
     <link ref="text1">
-      <region>
-        <pt>-0.277623 0.220881 -0.0202729</pt>
-        <pt>-0.276439 0.221461 0.0346671</pt>
-        <pt>-0.650745 0.191536 0.0318802</pt>
-        <pt>-0.718317 0.27784 0.0296959</pt>
-        <pt>-0.748268 0.276296 0.0309852</pt>
-        <pt>-0.750206 0.278845 -0.023028</pt>
-        <pt>-0.713758 0.275873 -0.0214663</pt>
-        <pt>-0.653437 0.195564 -0.0211149</pt>
+      <region normal="0.117858 0.992787 0.021988" depth="0.0689468">
+        <pt>-0.279273 0.220737 0.0364891</pt>
+        <pt>-0.652332 0.192434 0.0322537</pt>
+        <pt>-0.715153 0.274873 0.0313396</pt>
+        <pt>-0.751586 0.278768 0.0286741</pt>
+        <pt>-0.748304 0.276933 -0.024001</pt>
+        <pt>-0.713285 0.27631 -0.0250698</pt>
+        <pt>-0.651297 0.194111 -0.0193766</pt>
+        <pt>-0.275388 0.221316 -0.0207489</pt>
       </region>
     </link>
   </model>
@@ -20,7 +20,7 @@
     <contents xml:lang="en">
       <p>
         This coffin is one of a pair which belonged to a woman named Amenirdis. This is her inner, anthropoid coffin,
-        which was nested inside of her <a href="/coffins/pahma-5-1404ab">four-posted outer coffin</a> William Randolph
+        which was nested inside of her <a href="/coffins/pahma-5-1404ab">four-posted outer coffin</a>. William Randolph
         Hearst brought both of Amenirdis' coffins back from Egypt in February of 1903. Amenirdis' mummy is not in the
         museum's collection and her ultimate fate is a mystery. We suspect because of her name, titles, and the style
         of her coffins that Amenirdis lived in the area of Thebes during the 25th or 26th dynasty. Amenirdis' name is
