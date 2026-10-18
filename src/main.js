@@ -184,6 +184,7 @@ ModelViewer.prototype.intersectObject = function intersectObject(mouseDownEvent)
 function fixupModelLink(link) {
   return {
     name: link.name ? THREE.PropertyBinding.sanitizeNodeName(link.name) : null,
+    xmlName: link.name || null, // the name as written in the page XML
     ref: link.ref,
     regions: (link.regions || []).map((def) => new SurfaceRegion(def)),
   };
@@ -229,6 +230,7 @@ function pointInPolygon(p, outline) {
 // the outline, and facing roughly the same way as the plane belongs to the
 // region. All coordinates are in the model's own coordinate system.
 function SurfaceRegion(def) {
+  this.def = def; // the region as written in the page XML
   const points = def.points.map((p) => new THREE.Vector3().fromArray(p));
   if (points.length < 3) {
     console.warn('Region outline needs at least three points: ', def);
@@ -350,16 +352,24 @@ function surfaceNormalAt(hit, model) {
   return normal.transformDirection(new THREE.Matrix4().getInverse(model.matrixWorld));
 }
 
-// The most regions a single link can highlight at once, and the size of the
-// image each region's outline is drawn into for highlighting.
-const MAX_HIGHLIGHT_REGIONS = 4;
+// The most regions that can be highlighted at once, and the size of the image
+// each region's outline is drawn into for highlighting.
+const MAX_HIGHLIGHT_REGIONS = 6;
 const REGION_MASK_SIZE = 512;
 const REGION_MASK_PAD = 2;
-const REGION_HIGHLIGHT_COLOR = 0xffff00;
-const REGION_HIGHLIGHT_STRENGTH = 0.9;
 // The width of a highlighted region's outline, as a fraction of the size of
 // the model (the diagonal of its bounding box).
 const REGION_OUTLINE_WIDTH = 0.003;
+
+// The ways a region can be highlighted, from most to least important: when
+// there are more regions to highlight than MAX_HIGHLIGHT_REGIONS, the less
+// important ones are left out. strength is how much the outline's color
+// covers the model's own.
+const REGION_HIGHLIGHT_STYLES = {
+  selected: { color: 0xffff00, strength: 0.9 },
+  draft: { color: 0x00e5ff, strength: 0.9 }, // a region being drawn in annotate mode
+  hover: { color: 0xffffff, strength: 0.6 },
+};
 
 const REGION_VERTEX_DECLS = `
 uniform mat4 uWorldToRegion;
@@ -378,23 +388,22 @@ const REGION_FRAGMENT_DECLS = `
 #define REGION_MASK_SIZE ${REGION_MASK_SIZE.toFixed(1)}
 #define REGION_MASK_PAD ${REGION_MASK_PAD.toFixed(1)}
 #define REGION_MIN_FACING ${REGION_MIN_FACING.toFixed(6)}
-#define REGION_HIGHLIGHT_STRENGTH ${REGION_HIGHLIGHT_STRENGTH.toFixed(6)}
 uniform int uRegionCount;
 uniform sampler2D uRegionMask;
 uniform vec4 uRegionU[MAX_HIGHLIGHT_REGIONS];
 uniform vec4 uRegionV[MAX_HIGHLIGHT_REGIONS];
 uniform vec4 uRegionN[MAX_HIGHLIGHT_REGIONS];
 uniform float uRegionDepth[MAX_HIGHLIGHT_REGIONS];
-uniform vec3 uRegionColor;
+uniform vec4 uRegionStyle[MAX_HIGHLIGHT_REGIONS];
 varying vec3 vRegionPos;
 varying vec3 vRegionNormal;
 
-// regionMask returns how strongly this fragment is on the outline of one of
-// the highlighted regions, from 0.0 (off it) to 1.0 (on it). It mirrors the
-// depth and facing tests of SurfaceRegion.distanceTo, and looks the outline
-// up in the mask image.
-float regionMask() {
-  float mask = 0.0;
+// regionHighlight returns the color of the highlighted region outline this
+// fragment is on, and in alpha how strongly to apply it (0.0 if it isn't on
+// one). It mirrors the depth and facing tests of SurfaceRegion.distanceTo, and
+// looks the outline up in the mask image.
+vec4 regionHighlight() {
+  vec4 highlight = vec4(0.0);
   vec4 p = vec4(vRegionPos, 1.0);
   vec3 n = vRegionNormal;
   bool checkFacing = dot(n, n) > 0.0;
@@ -417,23 +426,31 @@ float regionMask() {
     }
     vec2 tile = (REGION_MASK_PAD + st * (REGION_MASK_SIZE - 2.0 * REGION_MASK_PAD)) / REGION_MASK_SIZE;
     tile.x = (tile.x + float(i)) / float(MAX_HIGHLIGHT_REGIONS);
-    mask = max(mask, texture2D(uRegionMask, tile).r);
+    float strength = texture2D(uRegionMask, tile).r * uRegionStyle[i].a;
+    if (strength > highlight.a) {
+      highlight = vec4(uRegionStyle[i].rgb, strength);
+    }
   }
-  return mask;
+  return highlight;
 }
 `;
 
 const REGION_FRAGMENT_MAIN = `
 #include <map_fragment>
-diffuseColor.rgb = mix(diffuseColor.rgb, uRegionColor, REGION_HIGHLIGHT_STRENGTH * regionMask());
+vec4 regionHighlightColor = regionHighlight();
+diffuseColor.rgb = mix(diffuseColor.rgb, regionHighlightColor.rgb, regionHighlightColor.a);
 `;
 
 // RegionHighlighter highlights surface regions by drawing their outlines on
 // the model's own surface. Each highlighted region's outline is drawn into its
 // own tile of a mask image, which the model's material shader uses to decide
-// which pixels to tint.
+// which pixels to tint. Regions are highlighted in layers, one per style in
+// REGION_HIGHLIGHT_STYLES, so that e.g. a hovered region can be outlined at the
+// same time as the selected one.
 function RegionHighlighter() {
-  this.lineWidth = null; // outline width in model units, set from the model's size
+  this.model = null; // the model the regions belong to
+  this.lineWidth = 0; // outline width in model units, set from the model's size
+  this.layers = {}; // the regions to highlight in each style
   this.canvas = document.createElement('canvas');
   this.canvas.width = REGION_MASK_SIZE * MAX_HIGHLIGHT_REGIONS;
   this.canvas.height = REGION_MASK_SIZE;
@@ -451,9 +468,16 @@ function RegionHighlighter() {
     uRegionV: { value: vectors() },
     uRegionN: { value: vectors() },
     uRegionDepth: { value: new Array(MAX_HIGHLIGHT_REGIONS).fill(0) },
-    uRegionColor: { value: new THREE.Color(REGION_HIGHLIGHT_COLOR) },
+    uRegionStyle: { value: vectors() },
   };
 }
+
+// RegionHighlighter.setModel sets the model whose regions we will highlight.
+RegionHighlighter.prototype.setModel = function setModel(model) {
+  this.model = model;
+  const modelSize = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3()).length();
+  this.lineWidth = modelSize * REGION_OUTLINE_WIDTH;
+};
 
 // RegionHighlighter.attach adds region highlighting to the given material.
 RegionHighlighter.prototype.attach = function attach(material) {
@@ -467,17 +491,25 @@ RegionHighlighter.prototype.attach = function attach(material) {
   material.needsUpdate = true;
 };
 
-// RegionHighlighter.show highlights the given regions, which belong to the
-// given model.
-RegionHighlighter.prototype.show = function show(regions, model) {
-  if (regions.length > MAX_HIGHLIGHT_REGIONS) {
-    console.warn(`Only the first ${MAX_HIGHLIGHT_REGIONS} regions of a link can be highlighted.`);
+// RegionHighlighter.setLayer highlights the given regions in the given style
+// (a key of REGION_HIGHLIGHT_STYLES), replacing any regions previously
+// highlighted in that style. Pass an empty array to remove them.
+RegionHighlighter.prototype.setLayer = function setLayer(style, regions) {
+  this.layers[style] = regions;
+  this.redraw();
+};
+
+// RegionHighlighter.redraw updates the mask image and the shader's uniforms
+// to show the regions in all of our layers.
+RegionHighlighter.prototype.redraw = function redraw() {
+  const entries = [];
+  Object.keys(REGION_HIGHLIGHT_STYLES).forEach((style) => {
+    (this.layers[style] || []).forEach((region) => { entries.push({ region, style }); });
+  });
+  if (entries.length > MAX_HIGHLIGHT_REGIONS) {
+    console.warn(`Only ${MAX_HIGHLIGHT_REGIONS} regions can be highlighted at once.`);
   }
-  const count = Math.min(regions.length, MAX_HIGHLIGHT_REGIONS);
-  if (this.lineWidth === null) {
-    const modelSize = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3()).length();
-    this.lineWidth = modelSize * REGION_OUTLINE_WIDTH;
-  }
+  const count = Math.min(entries.length, MAX_HIGHLIGHT_REGIONS);
   const ctx = this.canvas.getContext('2d');
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   ctx.strokeStyle = '#fff';
@@ -485,7 +517,7 @@ RegionHighlighter.prototype.show = function show(regions, model) {
   const inner = REGION_MASK_SIZE - 2 * REGION_MASK_PAD;
 
   for (let i = 0; i < count; i += 1) {
-    const region = regions[i];
+    const { region } = entries[i];
     // Leave room around the outline for the line's thickness.
     const box = region.bounds.clone().expandByScalar(this.lineWidth);
     const { min } = box;
@@ -524,16 +556,16 @@ RegionHighlighter.prototype.show = function show(regions, model) {
       -origin.dot(region.normal),
     );
     this.uniforms.uRegionDepth.value[i] = region.depth;
+    const style = REGION_HIGHLIGHT_STYLES[entries[i].style];
+    const color = new THREE.Color(style.color);
+    this.uniforms.uRegionStyle.value[i].set(color.r, color.g, color.b, style.strength);
   }
 
   this.texture.needsUpdate = true;
-  this.uniforms.uWorldToRegion.value.getInverse(model.matrixWorld);
+  if (this.model) {
+    this.uniforms.uWorldToRegion.value.getInverse(this.model.matrixWorld);
+  }
   this.uniforms.uRegionCount.value = count;
-};
-
-// RegionHighlighter.clear removes any highlight.
-RegionHighlighter.prototype.clear = function clear() {
-  this.uniforms.uRegionCount.value = 0;
 };
 
 // ModelLinkSelector manages regions on the model that link to other resources,
@@ -544,7 +576,9 @@ function ModelLinkSelector(modelLinks) {
   this.modelLinks = modelLinks.map(fixupModelLink);
   this.highlighter = new RegionHighlighter();
   this.model = null; // the model the links belong to
+  this.surfaceMeshes = []; // the meshes of the model's surface, as opposed to hitboxes
   this.selection = null; // the currently-selected link
+  this.hovered = null; // the link under the mouse, if any
   this.selectedDiv = null; // the currently-selected annotation
 }
 
@@ -555,7 +589,7 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
     if (this.selection.obj) {
       this.selection.obj.material.opacity = 0.0;
     }
-    this.highlighter.clear();
+    this.highlighter.setLayer('selected', []);
     this.selection = null;
   }
   if (this.selectedDiv) {
@@ -568,19 +602,36 @@ ModelLinkSelector.prototype.clearSelection = function clearSelection() {
 // are highlighted by adjusting their transparency, and surface regions by
 // tinting the model's surface.
 ModelLinkSelector.prototype.select = function select(link) {
+  this.hover(null);
   this.clearSelection();
   this.selection = link;
   if (link.obj) {
     link.obj.material.opacity = 0.20;
   }
-  if (link.regions.length > 0) {
-    this.highlighter.show(link.regions, this.model);
-  }
+  this.highlighter.setLayer('selected', link.regions);
   this.selectedDiv = document.getElementById(link.ref);
   if (this.selectedDiv) {
     this.selectedDiv.classList.add('selected');
     this.selectedDiv.scrollIntoView();
   }
+};
+
+// ModelLinkSelector.hover lightly highlights the given link, which is under
+// the mouse, to show what clicking would select. Pass null when the mouse
+// isn't over a link. The selected link isn't highlighted again.
+ModelLinkSelector.prototype.hover = function hover(link) {
+  const target = link === this.selection ? null : link;
+  if (target === this.hovered) {
+    return;
+  }
+  if (this.hovered && this.hovered.obj && this.hovered !== this.selection) {
+    this.hovered.obj.material.opacity = 0.0;
+  }
+  this.hovered = target;
+  if (target && target.obj) {
+    target.obj.material.opacity = 0.10;
+  }
+  this.highlighter.setLayer('hover', target ? target.regions : []);
 };
 
 // ModelLinkSelector.initLinks makes transparent and hides all of the hitboxes
@@ -590,8 +641,9 @@ ModelLinkSelector.prototype.select = function select(link) {
 // model gets ready to highlight surface regions.
 ModelLinkSelector.prototype.initLinks = function initLinks(modelScene) {
   this.model = modelScene;
+  this.highlighter.setModel(modelScene);
   const foundLinks = {};
-  const surfaceMeshes = [];
+  const surfaceMeshes = this.surfaceMeshes;
   modelScene.traverse((child) => {
     let isLinked = false;
     for (let i = 0; i < this.modelLinks.length; i += 1) {
@@ -695,10 +747,17 @@ function ModelController(modelName, modelLinks) {
   this.viewer = new ModelViewer();
   this.selector = new ModelLinkSelector(modelLinks);
   this.viewer.domElement.addEventListener('click', (e) => { this.onViewerClick(e); }, false);
+  this.viewer.domElement.addEventListener('mousemove', (e) => { this.onViewerMouseMove(e); }, false);
+  this.viewer.domElement.addEventListener('mouseleave', () => { this.onViewerMouseLeave(); }, false);
+  this.hoverTimer = null;
   this.model = null;
+  this.annotator = null; // see annotate.js
   this.loadModel(modelName).then((modelScene) => {
     this.model = modelScene;
     this.selector.initLinks(modelScene);
+    if (typeof Annotator !== 'undefined' && Annotator.isRequested()) {
+      this.annotator = new Annotator(this);
+    }
   }).catch((error) => {
     console.error('Error loading model: ', error);
   });
@@ -777,14 +836,31 @@ ModelController.prototype.moveCameraToObject = function moveCamera(selection){
 
 }
 
+// Regions facing within this angle of straight up or down count as being on
+// the top or bottom of the model (see moveCameraToRegion).
+const CAMERA_NEAR_VERTICAL = Math.cos(Math.PI / 9); // 20 degrees
+
 // ModelController.moveCameraToRegion orbits the camera so that it looks
 // straight at the given surface region, keeping its distance from the center
 // of orbit.
+//
+// Looking straight down (or up) at a region is where the orbit controls lose
+// track of which way up the view should be: the view's rotation then depends
+// on tiny tilts in the region's normal, and can come out sideways or upside
+// down. So for regions on the top or bottom of the model, we keep the
+// camera's current compass direction, which keeps the model the same way
+// round on screen, and only change its height.
 ModelController.prototype.moveCameraToRegion = function moveCameraToRegion(region) {
+  const { camera, controls } = this.viewer;
   const normal = region.normal.clone().transformDirection(this.model.matrixWorld);
-  const distance = this.viewer.camera.position.distanceTo(this.viewer.controls.target);
-  this.viewer.camera.position.copy(this.viewer.controls.target).addScaledVector(normal, distance);
-  this.viewer.controls.update();
+  const offset = camera.position.clone().sub(controls.target);
+  const direction = new THREE.Spherical().setFromVector3(normal);
+  if (Math.abs(normal.y) > CAMERA_NEAR_VERTICAL) {
+    direction.theta = new THREE.Spherical().setFromVector3(offset).theta;
+  }
+  direction.radius = offset.length();
+  camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(direction));
+  controls.update();
 };
 
 // ModelController.logSurfacePoint prints the point where a click hit the
@@ -811,6 +887,10 @@ ModelController.prototype.onViewerClick = function onViewerClick(e) {
       this.logSurfacePoint(intersectedObject);
       return;
     }
+    if (this.annotator) {
+      this.annotator.addPoint(intersectedObject);
+      return;
+    }
     this.selector.clearSelection();
     const found = this.selector.findLinkByHit(intersectedObject);
     if (found) {
@@ -822,6 +902,30 @@ ModelController.prototype.onViewerClick = function onViewerClick(e) {
       }
     }
   }
+};
+
+// How long the mouse must rest before we look for a link under it. Finding
+// one means checking every triangle of the model, so we don't do it on every
+// little movement.
+const HOVER_DELAY_MS = 60;
+
+// ModelController.onViewerMouseMove lightly highlights the link under the
+// mouse, once the mouse comes to rest. Nothing is highlighted while dragging.
+ModelController.prototype.onViewerMouseMove = function onViewerMouseMove(e) {
+  clearTimeout(this.hoverTimer);
+  if (!this.model || e.buttons) {
+    this.selector.hover(null);
+    return;
+  }
+  this.hoverTimer = setTimeout(() => {
+    const found = this.selector.findLinkByHit(this.viewer.intersectObject(e));
+    this.selector.hover(found ? found.link : null);
+  }, HOVER_DELAY_MS);
+};
+
+ModelController.prototype.onViewerMouseLeave = function onViewerMouseLeave() {
+  clearTimeout(this.hoverTimer);
+  this.selector.hover(null);
 };
 
 ModelController.prototype.onTextLinkClick = function onTextLinkClick(e) {

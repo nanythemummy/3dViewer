@@ -173,10 +173,22 @@ the model's own coordinates:
 </link>
 ```
 
-To find the points, open the page in your browser with the developer console showing, and hold
-Alt+Shift (Option+Shift on a Mac) while clicking around the outline of the text. Each click prints
-a `<pt>` line you can paste into the XML. List at least three points, in order around the outline
-(clockwise or counterclockwise both work).
+The easiest way to make a region is annotate mode. Build the site, serve it, and open the page with
+`?annotate` at the end of its address (e.g. `http://localhost:8080/amenirdis.html?annotate`). A
+panel appears over the model:
+
+1. Choose the text the region is for.
+2. Hold Option (Alt) and click around the outline of the inscription. Points can go clockwise or
+   counterclockwise. A cyan outline previews the region once there are three points. If the panel
+   is in the way, click its title to fold it away.
+3. Click **Finish**. The tool works out which way the region faces and how deep it must be by
+   probing the model's surface, warns you if it overlaps another text's region, and shows the XML
+   to paste into the page's `<model>` element. The new region works in the viewer right away (click
+   the text's number to see it), until you reload the page.
+
+You can also write regions by hand: hold Option+Shift (Alt+Shift) while clicking the model, and each
+click prints a `<pt>` line in the browser's developer console. List at least three points, in order
+around the outline (clockwise or counterclockwise both work).
 
 `depth` is how far the surface may curve away from the outline's corners and still count as part of
 the region; if a region misses part of a curved text, increase it. See

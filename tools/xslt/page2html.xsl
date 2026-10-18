@@ -84,6 +84,7 @@
         <script src="js/loaders/GLTFLoader.js"/>
         <script src="js/controls/OrbitControls.js"/>
         <script src = "js/main.js"/>
+        <script src = "js/annotate.js"/>
         <script src = "js/page.js" />
         <xsl:apply-templates select="model" mode="codegen"/>
       </body>

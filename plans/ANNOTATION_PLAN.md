@@ -119,14 +119,23 @@ Notes from implementation:
 
 Goal: author regions without Blender.
 
-* [ ] Add an "annotate" mode to the viewer.
-* [ ] Click points around an inscription; the tool fits a plane, flattens the outline and measures
+* [x] Add an "annotate" mode to the viewer.
+* [x] Click points around an inscription; the tool fits a plane, flattens the outline and measures
   the depth.
-* [ ] Show the resulting `<region>` XML for the annotator to copy into the page file.
-* [ ] Warn when a new region overlaps an existing one.
-* [ ] Add a hover highlight.
+* [x] Show the resulting `<region>` XML for the annotator to copy into the page file.
+* [x] Warn when a new region overlaps an existing one.
+* [x] Add a hover highlight.
 
 Done when: someone who doesn't use Blender can annotate a coffin by clicking and pasting.
+
+Notes from implementation:
+
+* Annotate mode is turned on by adding `?annotate` to a page's URL; the code is in `src/annotate.js`.
+* Finish probes the surface on a 16×16 grid inside the outline to measure depth, and writes the
+  normal and depth explicitly into the XML.
+* The hover highlight is a fainter white outline, shown when the mouse rests over a region (not
+  while dragging). The highlighter now draws up to 6 outlines at once, in layers: selected
+  (yellow), draft (cyan), hover (white).
 
 ### Stage 3: Local editor that saves
 
