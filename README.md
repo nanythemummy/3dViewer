@@ -179,8 +179,10 @@ panel appears over the model:
 
 1. Choose the text the region is for.
 2. Hold Option (Alt) and click around the outline of the inscription. Points can go clockwise or
-   counterclockwise. A cyan outline previews the region once there are three points. If the panel
-   is in the way, click its title to fold it away.
+   counterclockwise. A cyan outline previews the region once there are three points. To move a
+   point, hold Option (or Ctrl) and drag it. If the panel is in the way, click its title to fold it
+   away. An inscription that bends sharply (e.g. along the lid and then up the head end) should be
+   drawn as two or more regions for the same text, split where it bends; Finish warns you if needed.
 3. Click **Finish**. The tool works out which way the region faces and how deep it must be by
    probing the model's surface, warns you if it overlaps another text's region, and shows the XML
    to paste into the page's `<model>` element. The new region works in the viewer right away (click

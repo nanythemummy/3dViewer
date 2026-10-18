@@ -23,8 +23,15 @@
 const ANNOTATE_DEPTH_SAMPLES = 16;
 // Extra depth beyond the deepest point found, as a fraction of it.
 const ANNOTATE_DEPTH_MARGIN = 0.25;
+// Warn when more than this share of the surface inside a new region's
+// outline faces too far away from it to be part of it.
+const ANNOTATE_MAX_STEEP_SHARE = 0.03;
 // Indentation of <link> elements in a page's XML file.
 const ANNOTATE_LINK_INDENT = '    ';
+// The radius of the point markers on screen, in pixels, and how close to a
+// point (also in pixels) a drag must start to move it.
+const ANNOTATE_MARKER_PIXELS = 5;
+const ANNOTATE_GRAB_PIXELS = 10;
 
 function Annotator(controller) {
   this.controller = controller;
@@ -34,18 +41,97 @@ function Annotator(controller) {
   this.points = []; // clicked points, in model coordinates
   this.normals = []; // the direction the surface faces at each point
   this.confirmingDelete = null; // the region whose Delete button was clicked once
+  this.suppressClick = false; // whether the next click ends a drag
 
-  // Markers for the clicked points, drawn on top of the model.
+  // Markers for the clicked points, drawn on top of the model. They are
+  // scaled every frame to stay the same size on screen (see beforeRender).
   this.markers = new THREE.Group();
   this.model.add(this.markers);
-  this.markerGeometry = new THREE.SphereBufferGeometry(this.modelSize * 0.003, 12, 8);
+  this.markerGeometry = new THREE.SphereBufferGeometry(1, 12, 8);
   this.markerMaterial = new THREE.MeshBasicMaterial({ color: 0x00e5ff, depthTest: false });
   this.lineMaterial = new THREE.LineBasicMaterial({ color: 0x00e5ff, depthTest: false });
+
+  // Listen before the orbit controls do, so that dragging a point doesn't also
+  // rotate the view.
+  controller.viewer.domElement.addEventListener('mousedown', (e) => { this.onMouseDown(e); }, true);
 
   this.buildPanel();
   this.update();
   this.updateRegionList();
 }
+
+// Annotator.beforeRender scales the point markers to keep them the same size
+// on screen. It is called before every frame is drawn.
+Annotator.prototype.beforeRender = function beforeRender() {
+  const { viewer } = this.controller;
+  const position = new THREE.Vector3();
+  this.markers.children.forEach((child) => {
+    if (child.geometry === this.markerGeometry) {
+      child.getWorldPosition(position);
+      child.scale.setScalar(ANNOTATE_MARKER_PIXELS * viewer.unitsPerPixel(position));
+    }
+  });
+};
+
+// Annotator.consumeClick returns whether the click that is happening ends a
+// drag, and so should be ignored; it is only ignored once.
+Annotator.prototype.consumeClick = function consumeClick() {
+  const suppress = this.suppressClick;
+  this.suppressClick = false;
+  return suppress;
+};
+
+// Annotator.pointIndexAt returns the index of the point whose marker is under
+// the mouse, or -1 if there is none.
+Annotator.prototype.pointIndexAt = function pointIndexAt(mouseEvent) {
+  const { viewer } = this.controller;
+  const rect = viewer.domElement.getBoundingClientRect();
+  let nearest = -1;
+  let nearestDistance = ANNOTATE_GRAB_PIXELS;
+  this.points.forEach((p, i) => {
+    const ndc = this.model.localToWorld(p.clone()).project(viewer.camera);
+    const x = rect.left + ((ndc.x + 1) / 2) * rect.width;
+    const y = rect.top + ((1 - ndc.y) / 2) * rect.height;
+    const distance = Math.hypot(x - mouseEvent.clientX, y - mouseEvent.clientY);
+    if (distance <= nearestDistance) {
+      nearest = i;
+      nearestDistance = distance;
+    }
+  });
+  return nearest;
+};
+
+// Annotator.onMouseDown starts dragging a point across the model's surface,
+// when the mouse goes down on a point with Option (Alt) or Ctrl held.
+Annotator.prototype.onMouseDown = function onMouseDown(e) {
+  this.suppressClick = false;
+  if (e.button !== 0 || !(e.altKey || e.ctrlKey)) {
+    return;
+  }
+  const index = this.pointIndexAt(e);
+  if (index < 0) {
+    return;
+  }
+  e.stopPropagation();
+  e.preventDefault();
+
+  const move = (moveEvent) => {
+    const hit = this.controller.viewer.intersectObject(moveEvent);
+    if (hit.point) {
+      this.points[index] = this.model.worldToLocal(hit.point.clone());
+      this.normals[index] = surfaceNormalAt(hit, this.model);
+      this.update();
+    }
+  };
+  const up = () => {
+    document.removeEventListener('mousemove', move);
+    document.removeEventListener('mouseup', up);
+    // Letting go makes a click, which shouldn't add a point.
+    this.suppressClick = true;
+  };
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
+};
 
 // Annotator.isRequested returns whether the page was opened in annotate mode.
 Annotator.isRequested = function isRequested() {
@@ -60,7 +146,8 @@ Annotator.prototype.buildPanel = function buildPanel() {
     <h3 class="title" title="Click to fold the panel away">Annotate ▾</h3>
     <div class="body">
     <label>Region for <select class="ref"></select></label>
-    <p class="hint">Option+click around the outline of the inscription, then click Finish.</p>
+    <p class="hint">Option+click around the outline of the inscription, then click Finish.
+      Option+drag (or Ctrl+drag) a point to move it.</p>
     <p class="status"></p>
     <div class="buttons">
       <button class="undo">Undo point</button>
@@ -279,6 +366,8 @@ Annotator.prototype.update = function update() {
     this.markers.add(line);
   }
 
+  this.beforeRender();
+
   const draft = this.draftRegion();
   this.selector.highlighter.setLayer('draft', draft ? [draft] : []);
 
@@ -292,17 +381,34 @@ Annotator.prototype.update = function update() {
 
 // Annotator.probeSurface finds the model's surface across the given region,
 // by casting rays through a grid of points inside its outline, along its
-// normal. It returns the surface points found (in model coordinates) and the
-// direction the surface faces at each.
+// normal. It returns:
+//
+//   samples: the surface points found (in model coordinates), the direction
+//     the surface faces at each, and their distance from the region's plane;
+//   cells: how many grid points inside the outline met the model at all;
+//   steep: how many of those met surface facing too far away to be part of
+//     the region (so those parts won't be clickable);
+//   beneath: the distances from the plane of other surfaces that face the
+//     same way as the region, but lie beneath the surface it's drawn on. If
+//     the region is deep enough to reach them, they will be highlighted too.
 Annotator.prototype.probeSurface = function probeSurface(region) {
-  const samples = [];
+  const probe = { samples: [], cells: 0, steep: 0, beneath: [] };
   const size = region.bounds.getSize(new THREE.Vector2());
-  // Look far enough either side of the plane to find the surface, however
-  // much it curves.
-  const reach = Math.max(size.x, size.y);
+  // Start the rays a little above the highest outline point, allowing for
+  // the surface bulging up between the points, so they don't hit anything
+  // unrelated on the way in.
+  let highest = -Infinity;
+  region.points.forEach((p) => {
+    highest = Math.max(highest, p.clone().sub(region.origin).dot(region.normal));
+  });
+  const start = highest + Math.min(size.x, size.y) / 2;
   const raycaster = new THREE.Raycaster();
-  raycaster.far = 2 * reach;
   const direction = region.normal.clone().negate().transformDirection(this.model.matrixWorld);
+  const facesRegion = (normal) => normal.lengthSq() === 0 || normal.dot(region.normal) >= REGION_MIN_FACING;
+  const distanceOf = (hit) => {
+    const point = this.model.worldToLocal(hit.point.clone());
+    return { point, distance: Math.abs(point.clone().sub(region.origin).dot(region.normal)) };
+  };
 
   for (let i = 0; i < ANNOTATE_DEPTH_SAMPLES; i += 1) {
     for (let j = 0; j < ANNOTATE_DEPTH_SAMPLES; j += 1) {
@@ -311,33 +417,35 @@ Annotator.prototype.probeSurface = function probeSurface(region) {
         region.bounds.min.y + ((j + 0.5) / ANNOTATE_DEPTH_SAMPLES) * size.y,
       );
       if (pointInPolygon(flat, region.outline)) {
-        const start = region.origin.clone()
+        const from = region.origin.clone()
           .addScaledVector(region.u, flat.x)
           .addScaledVector(region.v, flat.y)
-          .addScaledVector(region.normal, reach);
-        raycaster.set(this.model.localToWorld(start), direction);
+          .addScaledVector(region.normal, start);
+        raycaster.set(this.model.localToWorld(from), direction);
 
-        // Of the surfaces facing the right way along this ray, the one
-        // nearest the plane is the one the region is drawn on.
-        let best = null;
-        raycaster.intersectObjects(this.selector.surfaceMeshes).forEach((hit) => {
+        // The first surface the ray meets is the one the region is drawn on.
+        // If it faces too far away to be part of the region, nothing here
+        // is; we mustn't take surfaces hidden underneath for it.
+        const [hit, ...below] = raycaster.intersectObjects(this.selector.surfaceMeshes);
+        if (hit) {
+          probe.cells += 1;
           const normal = surfaceNormalAt(hit, this.model);
-          if (normal.lengthSq() > 0 && normal.dot(region.normal) < REGION_MIN_FACING) {
-            return;
+          if (facesRegion(normal)) {
+            const { point, distance } = distanceOf(hit);
+            probe.samples.push({ point, normal, distance });
+          } else {
+            probe.steep += 1;
           }
-          const point = this.model.worldToLocal(hit.point.clone());
-          const distance = Math.abs(point.clone().sub(region.origin).dot(region.normal));
-          if (!best || distance < best.distance) {
-            best = { point, normal, distance };
-          }
-        });
-        if (best) {
-          samples.push(best);
+          below.forEach((other) => {
+            if (facesRegion(surfaceNormalAt(other, this.model))) {
+              probe.beneath.push(distanceOf(other).distance);
+            }
+          });
         }
       }
     }
   }
-  return samples;
+  return probe;
 };
 
 // Annotator.finish turns the current points into a region: it measures the
@@ -349,7 +457,8 @@ Annotator.prototype.finish = function finish() {
     return;
   }
   const ref = this.refSelect.value;
-  const samples = this.probeSurface(draft);
+  const probe = this.probeSurface(draft);
+  const { samples } = probe;
 
   // The region must reach the clicked points and every surface point found.
   let deepest = 0;
@@ -377,9 +486,28 @@ Annotator.prototype.finish = function finish() {
       }
     });
   });
-  this.warning.hidden = overlaps.size === 0;
-  this.warning.textContent = `This region overlaps the region for ${[...overlaps].join(', ')}. `
-    + 'Clicks where they overlap may select either text.';
+  const warnings = [];
+  if (overlaps.size > 0) {
+    warnings.push(`This region overlaps the region for ${[...overlaps].join(', ')}. `
+      + 'Clicks where they overlap may select either text.');
+  }
+
+  // A region can't bend around a corner or up a steep slope: surface facing
+  // too far from the rest of it isn't part of it. And the depth needed to
+  // reach around a bend can reach surfaces underneath, like a stand.
+  const splitAdvice = 'Try drawing it as two or more regions for the same text, split where '
+    + 'the surface bends.';
+  const steepShare = probe.cells > 0 ? probe.steep / probe.cells : 0;
+  if (steepShare > ANNOTATE_MAX_STEEP_SHARE) {
+    warnings.push(`About ${Math.round(steepShare * 100)}% of the surface inside this outline faces `
+      + `too far away from the rest of it to be clickable. ${splitAdvice}`);
+  }
+  if (probe.beneath.some((distance) => distance <= depth)) {
+    warnings.push('This region is deep enough to reach another surface beneath the one it\'s drawn '
+      + `on, which would be highlighted too. ${splitAdvice}`);
+  }
+  this.warning.hidden = warnings.length === 0;
+  this.warning.textContent = warnings.join(' ');
 
   let link = this.selector.findLinkByRef(ref);
   if (!link) {

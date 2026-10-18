@@ -87,6 +87,14 @@ ModelViewer.prototype.update = function update() {
   this.dirLight.position.copy(this.camera.position);
 };
 
+// ModelViewer.unitsPerPixel returns how big one pixel on the screen is, in
+// world units, at the given point in the scene.
+ModelViewer.prototype.unitsPerPixel = function unitsPerPixel(point) {
+  const distance = this.camera.position.distanceTo(point);
+  const fov = THREE.Math.degToRad(this.camera.fov);
+  return (2 * distance * Math.tan(fov / 2)) / this.getHeight();
+};
+
 // ModelViewer.render draws the scene onto our WebGL display element.
 ModelViewer.prototype.render = function render() {
   this.renderer.render(this.scene, this.camera);
@@ -357,9 +365,12 @@ function surfaceNormalAt(hit, model) {
 const MAX_HIGHLIGHT_REGIONS = 6;
 const REGION_MASK_SIZE = 512;
 const REGION_MASK_PAD = 2;
-// The width of a highlighted region's outline, as a fraction of the size of
-// the model (the diagonal of its bounding box).
-const REGION_OUTLINE_WIDTH = 0.003;
+// The width of a highlighted region's outline on the screen, in pixels. As
+// the camera zooms, the outline is redrawn to keep it about this wide.
+const REGION_OUTLINE_PIXELS = 3;
+// The outline must be at least this many pixels wide in the mask image, or
+// it will break up. When zoomed far in on a region, this wins.
+const REGION_MASK_MIN_LINE = 2;
 
 // The ways a region can be highlighted, from most to least important: when
 // there are more regions to highlight than MAX_HIGHLIGHT_REGIONS, the less
@@ -449,7 +460,7 @@ diffuseColor.rgb = mix(diffuseColor.rgb, regionHighlightColor.rgb, regionHighlig
 // same time as the selected one.
 function RegionHighlighter() {
   this.model = null; // the model the regions belong to
-  this.lineWidth = 0; // outline width in model units, set from the model's size
+  this.lineWidth = 0; // outline width in model units (see setPixelSize)
   this.layers = {}; // the regions to highlight in each style
   this.canvas = document.createElement('canvas');
   this.canvas.width = REGION_MASK_SIZE * MAX_HIGHLIGHT_REGIONS;
@@ -475,8 +486,24 @@ function RegionHighlighter() {
 // RegionHighlighter.setModel sets the model whose regions we will highlight.
 RegionHighlighter.prototype.setModel = function setModel(model) {
   this.model = model;
+  // A starting width, until setPixelSize is first called.
   const modelSize = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3()).length();
-  this.lineWidth = modelSize * REGION_OUTLINE_WIDTH;
+  this.lineWidth = modelSize * 0.003;
+};
+
+// RegionHighlighter.setPixelSize tells us how big a pixel on the screen is in
+// model units, around the highlighted regions, so we can keep outlines the
+// same width on screen as the camera zooms.
+RegionHighlighter.prototype.setPixelSize = function setPixelSize(unitsPerPixel) {
+  const lineWidth = REGION_OUTLINE_PIXELS * unitsPerPixel;
+  // Redrawing the mask takes a little time, so only do it for a noticeable
+  // change.
+  if (Math.abs(lineWidth - this.lineWidth) > this.lineWidth * 0.05) {
+    this.lineWidth = lineWidth;
+    if (this.uniforms.uRegionCount.value > 0) {
+      this.redraw();
+    }
+  }
 };
 
 // RegionHighlighter.attach adds region highlighting to the given material.
@@ -518,8 +545,13 @@ RegionHighlighter.prototype.redraw = function redraw() {
 
   for (let i = 0; i < count; i += 1) {
     const { region } = entries[i];
+    const regionSize = region.bounds.getSize(new THREE.Vector2());
+    const lineWidth = Math.max(
+      this.lineWidth,
+      (Math.max(regionSize.x, regionSize.y) * REGION_MASK_MIN_LINE) / REGION_MASK_SIZE,
+    );
     // Leave room around the outline for the line's thickness.
-    const box = region.bounds.clone().expandByScalar(this.lineWidth);
+    const box = region.bounds.clone().expandByScalar(lineWidth);
     const { min } = box;
     const size = box.getSize(new THREE.Vector2());
     const width = Math.max(size.x, 1e-9);
@@ -535,7 +567,7 @@ RegionHighlighter.prototype.redraw = function redraw() {
     ctx.beginPath();
     region.outline.forEach((p) => { ctx.lineTo(p.x, p.y); });
     ctx.closePath();
-    ctx.lineWidth = this.lineWidth;
+    ctx.lineWidth = lineWidth;
     ctx.stroke();
     ctx.restore();
 
@@ -881,6 +913,9 @@ ModelController.prototype.onViewerClick = function onViewerClick(e) {
   // repositioning the camera (i.e. dragging), which means
   // this ought to be moved to mouseUp and combined with some
   // more sophisticated mouse logic to detect dragging.
+  if (this.annotator && this.annotator.consumeClick()) {
+    return; // the end of dragging a point, not a click
+  }
   if(e.altKey){
     const intersectedObject = this.viewer.intersectObject(e);
     if (e.shiftKey) {
@@ -954,6 +989,10 @@ ModelController.prototype.run = function run() {
   (function gameLoop() {
     requestAnimationFrame(gameLoop);
     self.viewer.update();
+    self.selector.highlighter.setPixelSize(self.viewer.unitsPerPixel(self.viewer.controls.target));
+    if (self.annotator) {
+      self.annotator.beforeRender();
+    }
     self.viewer.render();
   }());
 };
