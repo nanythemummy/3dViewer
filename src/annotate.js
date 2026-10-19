@@ -313,18 +313,21 @@ Annotator.prototype.clear = function clear() {
 };
 
 // Annotator.fittedNormal returns the direction the outline faces: the normal
-// of the plane that best fits the points, turned to face the same way as the
-// surface under them.
+// of the plane that best fits the points, turned towards the camera, since
+// you're looking at the side of the surface you're annotating.
 Annotator.prototype.fittedNormal = function fittedNormal() {
-  const surfaceNormal = new THREE.Vector3();
-  this.normals.forEach((n) => { surfaceNormal.add(n); });
   const normal = newellNormal(this.points);
   if (normal.lengthSq() === 0) {
     // The points are in a line, so they don't define a plane.
-    return surfaceNormal.normalize();
+    this.normals.forEach((n) => { normal.add(n); });
+    return normal.normalize();
   }
   normal.normalize();
-  return normal.dot(surfaceNormal) < 0 ? normal.negate() : normal;
+  const centroid = new THREE.Vector3();
+  this.points.forEach((p) => { centroid.add(p); });
+  centroid.divideScalar(this.points.length);
+  const camera = this.model.worldToLocal(this.controller.viewer.camera.position.clone());
+  return normal.dot(camera.sub(centroid)) < 0 ? normal.negate() : normal;
 };
 
 // Annotator.draftRegion returns a region from the current points, or null if
@@ -452,12 +455,26 @@ Annotator.prototype.probeSurface = function probeSurface(region) {
 // region's depth, checks it against the other regions, and adds it to the
 // viewer.
 Annotator.prototype.finish = function finish() {
-  const draft = this.draftRegion();
+  let draft = this.draftRegion();
   if (!draft) {
     return;
   }
   const ref = this.refSelect.value;
-  const probe = this.probeSurface(draft);
+  let probe = this.probeSurface(draft);
+
+  // If most of the surface seems to face away from the region, the region was
+  // probably fitted facing the wrong way round, so try it the other way.
+  if (probe.cells > 0 && probe.steep / probe.cells > 0.5) {
+    const reversed = new SurfaceRegion({
+      normal: draft.normal.clone().negate().toArray(),
+      points: draft.def.points,
+    });
+    const reversedProbe = this.probeSurface(reversed);
+    if (reversedProbe.steep < probe.steep) {
+      draft = reversed;
+      probe = reversedProbe;
+    }
+  }
   const { samples } = probe;
 
   // The region must reach the clicked points and every surface point found.
