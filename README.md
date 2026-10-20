@@ -155,6 +155,46 @@ Either way, for each text (or text fragment) you will specify:
 
 Use the existing pages as models for how to create these elements. If you want a reference, the
 full XML schema for our data is located in the `tools/schema/` directory.
+
+### Surface regions (instead of hitboxes)
+
+Instead of naming a hitbox object, a `link` can describe the clickable area directly, as one or
+more `region` elements. A region is an outline drawn on the model's surface, listed as points in
+the model's own coordinates:
+
+```xml
+<link ref="text1">
+  <region depth="0.03">
+    <pt>0.12 0.84 -0.03</pt>
+    <pt>0.19 0.86 -0.03</pt>
+    <pt>0.21 0.71 -0.02</pt>
+    <pt>0.15 0.63 -0.02</pt>
+  </region>
+</link>
+```
+
+The easiest way to make a region is annotate mode. Build the site, serve it, and open the page with
+`?annotate` at the end of its address (e.g. `http://localhost:8080/amenirdis.html?annotate`). A
+panel appears over the model:
+
+1. Choose the text the region is for.
+2. Hold Option (Alt) and click around the outline of the inscription. Points can go clockwise or
+   counterclockwise. A cyan outline previews the region once there are three points. To move a
+   point, hold Option (or Ctrl) and drag it. If the panel is in the way, click its title to fold it
+   away. An inscription that bends sharply (e.g. along the lid and then up the head end) should be
+   drawn as two or more regions for the same text, split where it bends; Finish warns you if needed.
+3. Click **Finish**. The tool works out which way the region faces and how deep it must be by
+   probing the model's surface, warns you if it overlaps another text's region, and shows the XML
+   to paste into the page's `<model>` element. The new region works in the viewer right away (click
+   the text's number to see it), until you reload the page.
+
+You can also write regions by hand: hold Option+Shift (Alt+Shift) while clicking the model, and each
+click prints a `<pt>` line in the browser's developer console. List at least three points, in order
+around the outline (clockwise or counterclockwise both work).
+
+`depth` is how far the surface may curve away from the outline's corners and still count as part of
+the region; if a region misses part of a curved text, increase it. See
+[plans/ANNOTATION_PLAN.md](plans/ANNOTATION_PLAN.md) for how regions work.
 ## Preparing the glTF File from an OBJ file
 
   * For this, please consult the [Building_a_model.md](Building_a_model.md) tutorial in this repo.

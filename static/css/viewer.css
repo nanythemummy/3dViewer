@@ -171,3 +171,69 @@ img.hi {
 #right a:active {
   color: #a3a;
 }
+
+/* annotate mode panel (see annotate.js), shown over the model */
+#annotator {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  z-index: 2;
+  width: 24em;
+  max-width: calc(100% - 4em);
+  padding: 0.75em 1em;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-family: sans-serif;
+  font-size: 13px;
+}
+
+#annotator h3 {
+  margin: 0;
+}
+
+#annotator .body {
+  margin-top: 0.5em;
+}
+
+#annotator p {
+  margin: 0.5em 0;
+}
+
+#annotator .hint, #annotator .result-hint {
+  color: #ccc;
+}
+
+#annotator .warning {
+  color: #ffb74d;
+}
+
+#annotator .buttons button {
+  margin-right: 0.25em;
+}
+
+#annotator textarea {
+  box-sizing: border-box;
+  width: 100%;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+#annotator .title {
+  cursor: pointer;
+  user-select: none;
+}
+
+#annotator .section {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+#annotator .regions {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+#annotator .regions li {
+  margin: 0.25em 0;
+}

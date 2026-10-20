@@ -84,6 +84,7 @@
         <script src="js/loaders/GLTFLoader.js"/>
         <script src="js/controls/OrbitControls.js"/>
         <script src = "js/main.js"/>
+        <script src = "js/annotate.js"/>
         <script src = "js/page.js" />
         <xsl:apply-templates select="model" mode="codegen"/>
       </body>
@@ -111,13 +112,56 @@
 
   <xsl:template match="link" mode="codegen">
     <j:map>
-      <j:string key="name">
-        <xsl:value-of select="@name"/>
-      </j:string>
+      <xsl:if test="@name">
+        <j:string key="name">
+          <xsl:value-of select="@name"/>
+        </j:string>
+      </xsl:if>
       <j:string key="ref">
         <xsl:value-of select="@ref"/>
       </j:string>
+      <xsl:if test="region">
+        <j:array key="regions">
+          <xsl:apply-templates select="region" mode="codegen"/>
+        </j:array>
+      </xsl:if>
     </j:map>
+  </xsl:template>
+
+  <xsl:template match="region" mode="codegen">
+    <j:map>
+      <xsl:if test="@normal">
+        <j:array key="normal">
+          <xsl:call-template name="vec3">
+            <xsl:with-param name="value" select="@normal"/>
+          </xsl:call-template>
+        </j:array>
+      </xsl:if>
+      <xsl:if test="@depth">
+        <j:number key="depth">
+          <xsl:value-of select="number(@depth)"/>
+        </j:number>
+      </xsl:if>
+      <j:array key="points">
+        <xsl:for-each select="pt">
+          <j:array>
+            <xsl:call-template name="vec3">
+              <xsl:with-param name="value" select="."/>
+            </xsl:call-template>
+          </j:array>
+        </xsl:for-each>
+      </j:array>
+    </j:map>
+  </xsl:template>
+
+  <!-- Converts a string like "1.0 -2 3e-2" into JSON numbers. -->
+  <xsl:template name="vec3">
+    <xsl:param name="value" as="xs:string"/>
+    <xsl:for-each select="tokenize(normalize-space($value), ' ')">
+      <j:number>
+        <xsl:value-of select="number(.)"/>
+      </j:number>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="description" mode="codegen">

@@ -37,19 +37,25 @@
   <define name="link">
     <element name="link">
       <ann:documentation>
-        Identifies a link on the model. Each link is a selectable hitbox
-        (object) on the model that refers to a description of the text and its
-        annotations elsewhere on the page.
+        Identifies a link on the model. Each link is a selectable area on the
+        model that refers to a description of the text and its annotations
+        elsewhere on the page. The area is either a hitbox object in the model
+        (the name attribute), or one or more regions on the model's surface.
       </ann:documentation>
-      <attribute name="name">
-        <ann:documentation>
-          The name of the hitbox object in the model. (Note that Three.js
-          mangles names upon loading a GLTF file, per its own naming
-          restrictions, but you may specify either the mangled or unmangled
-          name here.)
-        </ann:documentation>
-        <text/>
-      </attribute>
+      <choice>
+        <attribute name="name">
+          <ann:documentation>
+            The name of the hitbox object in the model. (Note that Three.js
+            mangles names upon loading a GLTF file, per its own naming
+            restrictions, but you may specify either the mangled or unmangled
+            name here.)
+          </ann:documentation>
+          <text/>
+        </attribute>
+        <oneOrMore>
+          <ref name="region"/>
+        </oneOrMore>
+      </choice>
       <attribute name="ref">
         <ann:documentation>
           The text or fragment that this link refers to. May refer to the ID
@@ -58,5 +64,56 @@
         <data type="IDREF"/>
       </attribute>
     </element>
+  </define>
+
+  <define name="region">
+    <element name="region">
+      <ann:documentation>
+        An area on the surface of the model, described by an outline (a
+        polygon) drawn on the surface. The outline is flattened onto a plane,
+        and anything on the model's surface within depth of that plane and
+        inside the outline belongs to the region. Coordinates are in the
+        model's own coordinate system, as exported in the GLTF file.
+      </ann:documentation>
+      <optional>
+        <attribute name="normal">
+          <ann:documentation>
+            The direction the surface faces, as three numbers "x y z". If
+            omitted, it is computed from the outline's points.
+          </ann:documentation>
+          <ref name="vec3"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="depth">
+          <ann:documentation>
+            How far in front of or behind the outline's plane the surface may
+            be and still count as part of the region. Make this large enough
+            to cover any curvature of the surface. If omitted, it defaults to
+            half the outline's smaller dimension.
+          </ann:documentation>
+          <data type="double"/>
+        </attribute>
+      </optional>
+      <oneOrMore>
+        <ref name="pt"/>
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="pt">
+    <element name="pt">
+      <ann:documentation>
+        One point of a region's outline, as three numbers "x y z". List at
+        least three points, in order around the outline.
+      </ann:documentation>
+      <ref name="vec3"/>
+    </element>
+  </define>
+
+  <define name="vec3">
+    <data type="string">
+      <param name="pattern">\s*[-+]?[0-9.eE+-]+\s+[-+]?[0-9.eE+-]+\s+[-+]?[0-9.eE+-]+\s*</param>
+    </data>
   </define>
 </grammar>
